@@ -1,10 +1,11 @@
 import flask_login
 from flask_jwt import JWT
 from App.models import User
+from App.controllers import get_user_by_username
 
 
 def authenticate(username, password):
-    user = User.query.filter_by(username).first()
+    user = get_user_by_username(username)
     if user and user.check_password(password):
         return user
     return None
