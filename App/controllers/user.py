@@ -23,8 +23,12 @@ def get_user_by_email(email):
 
 
 def get_user_by_username(username):
-    return User.query.filter_by(username=username).first()
 
+    user = User.query.filter_by(username=username).first()
+    if user:
+        print(user.to_json())
+        return user
+    return None
 
 def get_user_by_id(id):
     return User.query.get(id)
