@@ -12,12 +12,20 @@ from App.controllers.product import (
     unarchive_product,
     delete_product,
     get_all_products_json,
+    get_products_by_farmer_id_json
 )
 
 from App.controllers.user import is_farmer, is_admin
 
 product_views = Blueprint("product_views", __name__, template_folder="../templates")
 
+@product_views.route("/products/farmer/<int:id>", methods=["GET"])
+@jwt_required()
+def get_farmer_products_action(id):
+    products = get_products_by_farmer_id_json(id)
+    if products:
+        return jsonify(products), 200
+    return jsonify({"message": "No products found"}), 404
 
 @product_views.route("/products", methods=["GET"])
 def get_all_products_action():
