@@ -43,14 +43,19 @@ def get_products_by_name_json(name):
     return [product.to_json() for product in get_products_by_name(name)]
 
 
-def update_product(id, name, description, image, retail_price, product_quantity):
+def update_product(id, name="", description="", image="", retail_price="", product_quantity=""):
     product = get_product_by_id(id)
     if product:
-        product.name = name
-        product.description = description
-        product.image = image
-        product.retail_price = retail_price
-        product.product_quantity = product_quantity
+        if name:
+            product.name = name
+        if description:
+            product.description = description
+        if image:
+            product.image = image
+        if retail_price:
+            product.retail_price = retail_price
+        if product_quantity:
+            product.product_quantity = product_quantity
         db.session.add(product)
         return db.session.commit()
     return None
