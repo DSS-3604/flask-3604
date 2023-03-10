@@ -40,6 +40,7 @@ class Product(db.Model):
 
     def to_json(self):
         return {
+            "farmer_id": self.farmer_id,
             "id": self.id,
             "name": self.name,
             "description": self.description,

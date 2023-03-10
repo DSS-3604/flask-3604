@@ -86,25 +86,33 @@ def get_all_users_json():
 
 def update_user(
         id,
-        username,
-        email,
-        password,
+        username="",
+        email="",
+        password="",
         phone="",
         address="",
-        currency="USD",
-        units="kg",
+        currency="",
+        units="",
         avatar="",
 ):
     user = get_user_by_id(id)
     if user:
-        user.username = username
-        user.email = email
-        user.password = password
-        user.phone = phone
-        user.address = address
-        user.currency = currency
-        user.units = units
-        user.avatar = avatar
+        if username:
+            user.username = username
+        if email:
+            user.email = email
+        if password:
+            user.set_password(password)
+        if phone:
+            user.phone = phone
+        if address:
+            user.address = address
+        if currency:
+            user.currency = currency
+        if units:
+            user.units = units
+        if avatar:
+            user.avatar = avatar
         db.session.add(user)
         return db.session.commit()
     return None

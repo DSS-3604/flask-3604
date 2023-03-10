@@ -19,6 +19,7 @@ from App.controllers.user import is_farmer, is_admin
 
 product_views = Blueprint("product_views", __name__, template_folder="../templates")
 
+
 @product_views.route("/products/farmer/<int:id>", methods=["GET"])
 @jwt_required()
 def get_farmer_products_action(id):
@@ -26,6 +27,7 @@ def get_farmer_products_action(id):
     if products:
         return jsonify(products), 200
     return jsonify([]), 200
+
 
 @product_views.route("/products", methods=["GET"])
 def get_all_products_action():
@@ -77,15 +79,18 @@ def update_product_action(id):
                 jsonify({"message": "You are not authorized to update this product"}),
                 403,
             )
-        update_product(
-            id=id,
-            name=data["name"],
-            description=data["description"],
-            image=data["image"],
-            retail_price=data["retail_price"],
-            product_quantity=data["product_quantity"],
-        )
-        return jsonify({"message": f"Product {data['name']} updated"}), 200
+
+        if 'name' in data:
+            update_product(id=id, name=data['name'])
+        if 'description' in data:
+            update_product(id=id, description=data['description'])
+        if 'image' in data:
+            update_product(id=id, image=data['image'])
+        if 'retail_price' in data:
+            update_product(id=id, retail_price=data['retail_price'])
+        if 'product_quantity' in data:
+            update_product(id=id, product_quantity=data['product_quantity'])
+        return jsonify({"message": f"Product {id} updated"}), 200
     return jsonify({"message": "No product found"}), 404
 
 
@@ -108,7 +113,7 @@ def delete_product_action(id):
             delete_product(id)
             return jsonify({"message": f"Product {product.name} deleted"}), 200
         archive_product(id)
-        return jsonify({"message": f"Product {product.name} deleted"}), 200
+        return jsonify({"message": f"Product {product.name} archived"}), 200
     return jsonify({"message": "No product found"}), 404
 
 
