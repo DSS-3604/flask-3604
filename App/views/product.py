@@ -25,7 +25,7 @@ def get_farmer_products_action(id):
     products = get_products_by_farmer_id_json(id)
     if products:
         return jsonify(products), 200
-    return jsonify({"message": "No products found"}), 404
+    return jsonify([]), 200
 
 @product_views.route("/products", methods=["GET"])
 def get_all_products_action():
