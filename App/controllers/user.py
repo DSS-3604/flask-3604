@@ -2,17 +2,8 @@ from App.models.user import User, ACCESS
 from App.database import db
 
 
-def create_user(
-        username,
-        email,
-        password,
-        access,
-        phone="",
-        address="",
-        currency="USD",
-        units="kg",
-        avatar="",
-):
+def create_user(username, email, password, access="user", bio="", phone="", address="", currency="USD", units="kg",
+                avatar=""):
     user1 = get_user_by_email(email)
     user2 = get_user_by_username(username)
     if user1 or user2:
@@ -22,6 +13,7 @@ def create_user(
         email=email,
         password=password,
         access=access,
+        bio=bio,
         phone=phone,
         address=address,
         currency=currency,
@@ -72,6 +64,7 @@ def get_user_by_username(username):
         return user
     return None
 
+
 def get_user_by_id(id):
     return User.query.get(id)
 
@@ -89,6 +82,7 @@ def update_user(
         username="",
         email="",
         password="",
+        bio="",
         phone="",
         address="",
         currency="",
@@ -103,6 +97,8 @@ def update_user(
             user.email = email
         if password:
             user.set_password(password)
+        if bio:
+            user.bio = bio
         if phone:
             user.phone = phone
         if address:

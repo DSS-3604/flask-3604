@@ -2,8 +2,8 @@ from App.models.review import Review
 from App.database import db
 
 
-def create_review(product_id, user_id, body):
-    new_review = Review(product_id=product_id, user_id=user_id, body=body)
+def create_review(product_id, user_id, rating, body):
+    new_review = Review(product_id=product_id, rating=rating, user_id=user_id, body=body)
     db.session.add(new_review)
     db.session.commit()
     return new_review
@@ -41,10 +41,11 @@ def get_reviews_by_user_id_json(user_id):
     return [review.to_json() for review in get_reviews_by_user_id(user_id)]
 
 
-def update_review(id, body):
+def update_review(id, rating, body):
     review = get_review_by_id(id)
     if review:
         review.body = body
+        review.rating = rating
         db.session.add(review)
         return db.session.commit()
     return None

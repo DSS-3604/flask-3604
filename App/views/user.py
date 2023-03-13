@@ -139,6 +139,8 @@ def update_user_action(id):
                 update_user(id=id, email=data["email"])
             if 'password' in data:
                 update_user(id=id, password=data["password"])
+            if 'bio' in data:
+                update_user(id=id, bio=data["bio"])
             if 'phone' in data:
                 update_user(id=id, phone=data["phone"])
             if 'address' in data:
