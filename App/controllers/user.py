@@ -31,6 +31,7 @@ def create_admin(username, email, password):
         email,
         password,
         "admin",
+        bio="",
         phone="",
         address="",
         currency="USD",
@@ -39,17 +40,18 @@ def create_admin(username, email, password):
     )
 
 
-def create_farmer(username, email, password):
+def create_farmer(username, email, password, bio, phone, address, currency="USD", units="kg", avatar=""):
     return create_user(
         username,
         email,
         password,
         "farmer",
-        phone="",
-        address="",
-        currency="USD",
-        units="kg",
-        avatar="",
+        bio=bio,
+        phone=phone,
+        address=address,
+        currency=currency,
+        units=units,
+        avatar=avatar,
     )
 
 
