@@ -13,7 +13,7 @@ class Product(db.Model):
     wholesale_price = db.Column(db.Float(decimal_return_scale=2), nullable=False)  # wholesale price of product
     wholesale_unit_quantity = db.Column(db.Integer, nullable=False)  # quantity of product for wholesale price
     total_product_quantity = db.Column(db.String, nullable=False)  # unit of product
-    reviews = db.relationship("Review", backref="product", lazy=True)  # reviews of product
+    reviews = db.relationship("ProductReview", backref="product", lazy=True)  # reviews of product
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # timestamp of product creation
 
     def __init__(self, farmer_id, name, description, image, retail_price=1, wholesale_price=1,
