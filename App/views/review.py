@@ -1,7 +1,5 @@
 from flask import Blueprint, jsonify, request
 
-from flask_jwt import jwt_required, current_identity
-
 from .index import index_views
 
 from App.controllers.review import (
@@ -34,7 +32,6 @@ def get_all_reviews_action():
 @jwt_required()
 def create_review_action():
     data = request.json
-
     create_review(
         product_id=data["product_id"],
         user_id=data["user_id"],
