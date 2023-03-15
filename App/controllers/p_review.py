@@ -1,16 +1,16 @@
-from App.models.review import Review
+from App.models.p_review import ProductReview
 from App.database import db
 
 
 def create_review(product_id, user_id, rating, body):
-    new_review = Review(product_id=product_id, rating=rating, user_id=user_id, body=body)
+    new_review = ProductReview(product_id=product_id, rating=rating, user_id=user_id, body=body)
     db.session.add(new_review)
     db.session.commit()
     return new_review
 
 
 def get_all_reviews():
-    return Review.query.all()
+    return ProductReview.query.all()
 
 
 def get_all_reviews_json():
@@ -18,7 +18,7 @@ def get_all_reviews_json():
 
 
 def get_review_by_id(id):
-    return Review.query.get(id)
+    return ProductReview.query.get(id)
 
 
 def get_review_by_id_json(id):
@@ -26,7 +26,7 @@ def get_review_by_id_json(id):
 
 
 def get_reviews_by_product_id(product_id):
-    return Review.query.filter_by(product_id=product_id).all()
+    return ProductReview.query.filter_by(product_id=product_id).all()
 
 
 def get_reviews_by_product_id_json(product_id):
@@ -34,7 +34,7 @@ def get_reviews_by_product_id_json(product_id):
 
 
 def get_reviews_by_user_id(user_id):
-    return Review.query.filter_by(user_id=user_id).all()
+    return ProductReview.query.filter_by(user_id=user_id).all()
 
 
 def get_reviews_by_user_id_json(user_id):

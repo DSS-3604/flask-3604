@@ -18,7 +18,7 @@ from App.controllers.farmer_application import (
     reject_farmer_application,
 )
 
-from App.controllers.review import (
+from App.controllers.p_review import (
     create_review,
     get_all_reviews,
     get_all_reviews_json,
@@ -33,7 +33,7 @@ from App.controllers.product import (
     delete_product,
 )
 
-from App.controllers.reply import (
+from App.controllers.p_reply import (
     create_reply,
 )
 
@@ -102,7 +102,6 @@ def list_user_command(format):
 
 
 app.cli.add_command(user_cli)  # add the group to the cli
-
 
 product_cli = AppGroup("product", help="Product object commands")
 
@@ -191,7 +190,6 @@ def list_review_by_product_command(product_id, format):
 
 
 app.cli.add_command(review_cli)
-
 
 """
 Generic Commands

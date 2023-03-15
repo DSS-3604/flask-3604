@@ -4,7 +4,7 @@ from flask_jwt import jwt_required, current_identity
 
 from .index import index_views
 
-from App.controllers.reply import (
+from App.controllers.p_reply import (
     create_reply,
     get_all_replies_by_review_id,
     get_all_replies_by_review_id_json,
@@ -21,8 +21,9 @@ reply_views = Blueprint("reply_views", __name__, template_folder="../templates")
 
 @reply_views.route("/product/review/replies", methods=["GET"])
 @jwt_required()
-def get_all_replies_action():
-    replies = get_all_replies_by_review_id_json()
+def get_all_replies_by_review_id_action():
+    data = request.json
+    replies = get_all_replies_by_review_id_json(data["review_id"])
     if replies:
         return jsonify(replies), 200
     return jsonify([]), 200
@@ -47,7 +48,7 @@ def update_reply_action(id):
     reply = get_reply_by_id(id)
     if reply:
         if 'body' in data:
-            update_reply(id=id, body=data['body'])
+            update_reply(reply_id=id, body=data['body'])
         return jsonify({"message": f"Reply {id} updated"}), 200
     return jsonify({"message": "No reply found"}), 404
 

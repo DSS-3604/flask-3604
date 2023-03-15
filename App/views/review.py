@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 
 from .index import index_views
 
-from App.controllers.review import (
+from App.controllers.p_review import (
     create_review,
     get_all_reviews,
     get_all_reviews_json,
@@ -27,6 +27,7 @@ def get_all_reviews_action():
     if reviews:
         return jsonify(reviews), 200
     return jsonify([]), 200
+
 
 @review_views.route("/product/review", methods=["POST"])
 @jwt_required()

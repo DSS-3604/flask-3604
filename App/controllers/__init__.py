@@ -1,5 +1,5 @@
 from .user import *
 from .auth import *
 from .product import *
-from .review import *
-from .reply import *
+from .p_review import *
+from .p_reply import *

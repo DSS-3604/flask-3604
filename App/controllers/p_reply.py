@@ -1,16 +1,16 @@
-from App.models.reply import Reply
+from App.models.p_reply import ProductReply
 from App.database import db
 
 
 def create_reply(review_id, user_id, body):
-    new_reply = Reply(review_id=review_id, user_id=user_id, body=body)
+    new_reply = ProductReply(p_review_id=review_id, user_id=user_id, body=body)
     db.session.add(new_reply)
     db.session.commit()
     return new_reply
 
 
 def get_all_replies_by_review_id(review_id):
-    return Reply.query.filter_by(review_id=review_id).all()
+    return ProductReply.query.filter_by(review_id=review_id).all()
 
 
 def get_all_replies_by_review_id_json(review_id):
@@ -18,7 +18,7 @@ def get_all_replies_by_review_id_json(review_id):
 
 
 def get_reply_by_id(reply_id):
-    return Reply.query.get(reply_id)
+    return ProductReply.query.get(reply_id)
 
 
 def get_reply_by_id_json(reply_id):
@@ -26,7 +26,7 @@ def get_reply_by_id_json(reply_id):
 
 
 def get_replies_by_user_id(user_id):
-    return Reply.query.filter_by(user_id=user_id).all()
+    return ProductReply.query.filter_by(user_id=user_id).all()
 
 
 def get_replies_by_user_id_json(user_id):
