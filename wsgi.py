@@ -8,21 +8,12 @@ from App.main import create_app
 from App.controllers.user import (
     create_user,
     create_admin,
-    create_farmer,
-    get_user_by_email,
-    get_user_by_id,
     get_all_users,
     get_all_users_json,
-    update_user,
 )
 
 from App.controllers.farmer_application import (
     create_farmer_application,
-    get_farmer_application_by_email,
-    get_farmer_application_by_username,
-    get_farmer_application_by_id,
-    get_all_farmer_applications,
-    update_farmer_application,
     approve_farmer_application,
     reject_farmer_application,
 )
@@ -31,26 +22,19 @@ from App.controllers.review import (
     create_review,
     get_all_reviews,
     get_all_reviews_json,
-    get_review_by_id,
-    get_review_by_id_json,
     get_reviews_by_product_id,
     get_reviews_by_product_id_json,
-    update_review,
-    delete_review,
 )
 from App.controllers.product import (
     create_product,
     get_all_products,
     get_all_products_json,
-    get_product_by_id,
-    get_product_by_id_json,
     update_product,
     delete_product,
 )
 
 from App.controllers.reply import (
     create_reply,
-    get_all_replies_by_review_id,
 )
 
 # This commands file allow you to create convenient CLI commands for testing controllers

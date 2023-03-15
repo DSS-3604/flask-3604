@@ -43,14 +43,16 @@ def create_product_action():
         return jsonify({"message": "You are not authorized to create a product"}), 403
 
     create_product(
+        farmer_id=current_identity.id,
         name=data["name"],
         description=data["description"],
         image=data["image"],
         retail_price=data["retail_price"],
-        product_quantity=data["product_quantity"],
-        farmer_id=current_identity.id,
+        wholesale_price=data["wholesale_price"],
+        wholesale_unit_quantity=data["wholesale_unit_quantity"],
+        total_product_quantity=data["total_product_quantity"],
     )
-    return jsonify({"message": f"Product {data['name']} created"}), 201
+    return jsonify({"message": f"Product {data['name']} created by user: {current_identity.id}"}), 201
 
 
 @product_views.route("/products/<int:id>", methods=["GET"])
@@ -86,8 +88,12 @@ def update_product_action(id):
             update_product(id=id, image=data['image'])
         if 'retail_price' in data:
             update_product(id=id, retail_price=data['retail_price'])
-        if 'product_quantity' in data:
-            update_product(id=id, product_quantity=data['product_quantity'])
+        if 'wholesale_price' in data:
+            update_product(id=id, wholesale_price=data['wholesale_price'])
+        if 'wholesale_unit_quantity' in data:
+            update_product(id=id, wholesale_unit_quantity=data['wholesale_unit_quantity'])
+        if 'total_product_quantity' in data:
+            update_product(id=id, total_product_quantity=data['total_product_quantity'])
         return jsonify({"message": f"Product {id} updated"}), 200
     return jsonify({"message": "No product found"}), 404
 
