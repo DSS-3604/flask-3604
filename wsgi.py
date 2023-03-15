@@ -5,8 +5,6 @@ from flask.cli import with_appcontext, AppGroup
 from App.database import create_db, get_migrate
 from App.main import create_app
 
-# from App.controllers import *
-
 from App.controllers.user import (
     create_user,
     create_admin,
@@ -17,6 +15,18 @@ from App.controllers.user import (
     get_all_users_json,
     update_user,
 )
+
+from App.controllers.farmer_application import (
+    create_farmer_application,
+    get_farmer_application_by_email,
+    get_farmer_application_by_username,
+    get_farmer_application_by_id,
+    get_all_farmer_applications,
+    update_farmer_application,
+    approve_farmer_application,
+    reject_farmer_application,
+)
+
 from App.controllers.review import (
     create_review,
     get_all_reviews,
@@ -169,9 +179,10 @@ review_cli = AppGroup("review", help="Review object commands")
 @review_cli.command("create", help="Creates a review")
 @click.argument("product_id", default=1)
 @click.argument("user_id", default=1)
+@click.argument("rating", default=1)
 @click.argument("body", default="body")
-def create_review_command(product_id, user_id, body):
-    review = create_review(product_id, user_id, body)
+def create_review_command(product_id, user_id, rating, body):
+    review = create_review(product_id, user_id, rating, body)
     print(review.to_json())
 
 
@@ -231,48 +242,46 @@ test = AppGroup("test", help="Testing commands")
 
 @test.command("demo", help="Run Demo tests")
 def demo_tests_command():
-    user1 = create_user(
-        username="bob",
-        email="bob@gmail.com",
-        password="bobpass",
-        access="user",
-        phone="800-1234",
-        address="University Drive",
-        currency="USD",
-        units="kg",
-        avatar="avatar.jpg",
-    )
-    print(f"Created user: {user1.to_json()}")
-    user2 = create_farmer(
-        username="rob",
-        email="rob@gmail.com",
-        password="robpass",
-    )
-    print(f"Created farmer: {user2.to_json()}")
-    user3 = create_admin(
-        username="admin",
-        email="admin@gmail.com",
-        password="adminpass",
-    )
-    print(f"Created admin: {user3.to_json()}")
-    product1 = create_product("tomato", "red", "tomato.jpg", 1, 1, 2)
-    print(f"Created product: {product1.to_json()}")
-    product2 = create_product("potato", "brown", "potato.jpg", 2, 1, 2)
-    print(f"Created product: {product2.to_json()}")
-    product3 = create_product("carrot", "orange", "carrot.jpg", 3, 1, 2)
-    print(f"Created product: {product3.to_json()}")
-    review1 = create_review(1, 1, "Best tomato ever!")
-    print(f"Created review: {review1.to_json()}")
-    review2 = create_review(2, 1, "Best potato ever!")
-    print(f"Created review: {review2.to_json()}")
-    review3 = create_review(3, 1, "Best carrot ever!")
-    print(f"Created review: {review3.to_json()}")
-    reply1 = create_reply(1, 2, "Thanks!")
-    print(f"Created reply: {reply1.to_json()}")
-    reply2 = create_reply(2, 2, "Thanks!")
-    print(f"Created reply: {reply2.to_json()}")
-    reply3 = create_reply(3, 2, "Thanks!")
-    print(f"Created reply: {reply3.to_json()}")
+    admin1 = create_admin("admin", "admin@gmail.com", "adminpass")
+    user1 = create_user("bob", "bob@gmail.com", "bobpass", "user", "bob is a user", "800-1234", "University Drive")
+    print(f"admin1: {admin1.to_json()}")
+    print(f"user1: {user1.to_json()}")
+    f_application = create_farmer_application("farmer1", "farmer@gmail.com", "i want to be a farmer", "800-1234",
+                                              "University Drive")
+    print(f"farmer_application: {f_application.to_json()}")
+    f_application2 = create_farmer_application("farmer2", "farmer2@gmail.com", "i want to be a farmer", "800-4321",
+                                               "University Drive")
+    print(f"farmer_application2: {f_application2.to_json()}")
+    reject_farmer_application(f_application.id)
+    print(f"farmer_application: {f_application.to_json()}")
+    farmer = approve_farmer_application(f_application2.id)
+    print(f"farmer_application2: {f_application2.to_json()}")
+
+    product1 = create_product("tomato", "red", "image", 1, 1, farmer.id)
+    print(f"product1: {product1.to_json()}")
+    product2 = create_product("tomato", "green", "image", 1, 1, farmer.id)
+    print(f"product2: {product2.to_json()}")
+    product3 = create_product("tomato", "yellow", "image", 1, 1, farmer.id)
+    print(f"product3: {product3.to_json()}")
+    product4 = create_product("tomato", "blue", "image", 1, 1, farmer.id)
+    print(f"product4: {product4.to_json()}")
+
+    review1 = create_review(product1.id, user1.id, 1, "bad")
+    print(f"review1: {review1.to_json()}")
+    review2 = create_review(product1.id, admin1.id, 2, "ok")
+    print(f"review2: {review2.to_json()}")
+    review3 = create_review(product1.id, farmer.id, 3, "good")
+    print(f"review3: {review3.to_json()}")
+
+    create_reply(review1.id, admin1.id, "reply1")
+    create_reply(review2.id, admin1.id, "reply2")
+    create_reply(review3.id, admin1.id, "reply3")
+    create_reply(review1.id, farmer.id, "reply4")
+    create_reply(review2.id, farmer.id, "reply5")
+    create_reply(review3.id, farmer.id, "reply6")
+    create_reply(review1.id, user1.id, "reply7")
+    create_reply(review2.id, user1.id, "reply8")
+    create_reply(review3.id, user1.id, "reply9")
 
 
 @test.command("user", help="Run User tests")
