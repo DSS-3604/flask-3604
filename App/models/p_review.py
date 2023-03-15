@@ -11,7 +11,7 @@ class ProductReview(db.Model):
     rating = db.Column(db.Integer, nullable=False)  # rating of review
     body = db.Column(db.String(1024), nullable=False)  # body of review
     timestamp = db.Column(db.DateTime, nullable=False)  # timestamp of review
-    p_replies = db.relationship("ProductReply", backref="productreview", lazy=True)  # replies to review
+    p_replies = db.relationship("ProductReply", backref="product_review", lazy=True)  # replies to review
 
     def __init__(self, rating, product_id, user_id, body):
         self.product_id = product_id

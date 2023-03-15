@@ -7,7 +7,7 @@ class ProductReply(db.Model):
         db.Integer, primary_key=True
     )  # primary keys are required by SQLAlchemy
     p_review_id = db.Column(
-        db.Integer, db.ForeignKey("productreview.id"), nullable=False
+        db.Integer, db.ForeignKey("product_review.id"), nullable=False
     )  # foreign key links to productreview.id in review table
     user_id = db.Column(
         db.Integer, db.ForeignKey("user.id"), nullable=False
