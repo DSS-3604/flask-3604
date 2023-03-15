@@ -7,7 +7,6 @@ from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 from datetime import timedelta
 
-
 from App.database import create_db
 
 from App.controllers import setup_jwt

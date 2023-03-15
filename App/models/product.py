@@ -1,6 +1,7 @@
 from App.database import db
 from datetime import datetime
 
+
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
     farmer_id = db.Column(db.Integer, db.ForeignKey("user.id"),
