@@ -8,8 +8,6 @@ from App.controllers.product import (
     create_product,
     get_product_by_id,
     update_product,
-    archive_product,
-    unarchive_product,
     delete_product,
     get_all_products_json,
     get_products_by_farmer_id_json
@@ -109,51 +107,6 @@ def delete_product_action(id):
                 jsonify({"message": "You are not authorized to delete this product"}),
                 403,
             )
-        if product.archived:
-            delete_product(id)
-            return jsonify({"message": f"Product {product.name} deleted"}), 200
-        archive_product(id)
-        return jsonify({"message": f"Product {product.name} archived"}), 200
-    return jsonify({"message": "No product found"}), 404
-
-
-@product_views.route("/products/<int:id>/archive", methods=["PUT"])
-@jwt_required()
-def archive_product_action(id):
-    product = get_product_by_id(id)
-    if product:
-        if not is_farmer(current_identity) and not is_admin(current_identity):
-            return (
-                jsonify({"message": "You are not authorized to archive a product"}),
-                403,
-            )
-        if product.farmer_id != current_identity.id and not is_admin(current_identity):
-            return (
-                jsonify({"message": "You are not authorized to archive this product"}),
-                403,
-            )
-        archive_product(id)
-        return jsonify({"message": f"Product {product.name} archived"}), 200
-    return jsonify({"message": "No product found"}), 404
-
-
-@product_views.route("/products/<int:id>/unarchive", methods=["PUT"])
-@jwt_required()
-def unarchive_product_action(id):
-    product = get_product_by_id(id)
-    if product:
-        if not is_farmer(current_identity) and not is_admin(current_identity):
-            return (
-                jsonify({"message": "You are not authorized to unarchive a product"}),
-                403,
-            )
-        if product.farmer_id != current_identity.id and not is_admin(current_identity):
-            return (
-                jsonify(
-                    {"message": "You are not authorized to unarchive this product"}
-                ),
-                403,
-            )
-        unarchive_product(id)
-        return jsonify({"message": f"Product {product.name} unarchived"}), 200
+        delete_product(id)
+        return jsonify({"message": f"Product {product.name} deleted"}), 200
     return jsonify({"message": "No product found"}), 404

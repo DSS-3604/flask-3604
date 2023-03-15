@@ -11,7 +11,6 @@ class Product(db.Model):
     retail_price = db.Column(db.Float(decimal_return_scale=2), nullable=False)  # price of product
     product_quantity = db.Column(db.Integer, nullable=False)  # quantity of product available
     reviews = db.relationship("Review", backref="product", lazy=True)  # reviews of product
-    archived = db.Column(db.Boolean, nullable=False, default=False)  # archived status of product
 
     # wholesale_price = db.Column(db.Float(decimal_return_scale=2), nullable=False) # wholesale price of product
     # product_unit = db.Column(db.String, nullable=False) # unit of product
@@ -25,7 +24,6 @@ class Product(db.Model):
         self.retail_price = retail_price
         self.product_quantity = product_quantity
         self.farmer_id = farmer_id
-        self.archived = False
 
     def to_json(self):
         return {
@@ -38,5 +36,4 @@ class Product(db.Model):
             # "wholesale_price": round(self.wholesale_price, 2),
             "product_quantity": self.product_quantity,
             "reviews": [review.to_json() for review in self.reviews],
-            "archived": self.archived,
         }

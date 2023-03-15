@@ -46,7 +46,6 @@ from App.controllers.product import (
     get_product_by_id_json,
     update_product,
     delete_product,
-    archive_product,
 )
 
 from App.controllers.reply import (
@@ -162,13 +161,6 @@ def update_product_command(id, name, description, image, price, quantity):
 def delete_product_command(id):
     delete_product(id)
     print(f"{id} deleted!")
-
-
-@product_cli.command("archive", help="Archives a product")
-@click.argument("id", default=1)
-def archive_product_command(id):
-    archive_product(id)
-    print(f"{id} archived!")
 
 
 app.cli.add_command(product_cli)
