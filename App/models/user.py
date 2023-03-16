@@ -19,8 +19,8 @@ class User(db.Model):
     address = db.Column(db.String(120), nullable=True)  # address of user
     avatar = db.Column(db.String(120), nullable=True)  # avatar of user
     # relationships
-    p_reviews = db.relationship("ProductReview", backref="user", lazy=True)  # reviews of product
-    p_replies = db.relationship("ProductReply", backref="user", lazy=True)  # replies to review
+    p_comments = db.relationship("ProductComment", backref="user", lazy=True)  # comments of product
+    p_replies = db.relationship("ProductReply", backref="user", lazy=True)  # replies to comment
     products = db.relationship("Product", backref="user", lazy=True)  # products of farmer
 
     def __init__(self, username, email, password, access="user", bio="", phone="", address="", currency="USD",

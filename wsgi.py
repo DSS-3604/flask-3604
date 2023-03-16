@@ -18,12 +18,12 @@ from App.controllers.farmer_application import (
     reject_farmer_application,
 )
 
-from App.controllers.p_review import (
-    create_review,
-    get_all_reviews,
-    get_all_reviews_json,
-    get_reviews_by_product_id,
-    get_reviews_by_product_id_json,
+from App.controllers.p_comment import (
+    create_comment,
+    get_all_comments,
+    get_all_comments_json,
+    get_comments_by_product_id,
+    get_comments_by_product_id_json,
 )
 from App.controllers.product import (
     create_product,
@@ -148,47 +148,47 @@ def delete_product_command(id):
 
 app.cli.add_command(product_cli)
 
-review_cli = AppGroup("review", help="Review object commands")
+comment_cli = AppGroup("comment", help="comment object commands")
 
 
-@review_cli.command("create", help="Creates a review")
+@comment_cli.command("create", help="Creates a comment")
 @click.argument("product_id", default=1)
 @click.argument("user_id", default=1)
 @click.argument("body", default="body")
-def create_review_command(product_id, user_id, body):
-    review = create_review(product_id, user_id, body)
-    print(review.to_json())
+def create_comment_command(product_id, user_id, body):
+    comment = create_comment(product_id, user_id, body)
+    print(comment.to_json())
 
 
-@review_cli.command("reply", help="Replies to a review")
-@click.argument("review_id", default=1)
+@comment_cli.command("reply", help="Replies to a comment")
+@click.argument("comment_id", default=1)
 @click.argument("user_id", default=2)
 @click.argument("body", default="body")
-def reply_review_command(review_id, user_id, body):
-    review = create_reply(review_id, user_id, body)
-    print(review.to_json())
+def reply_comment_command(comment_id, user_id, body):
+    comment = create_reply(comment_id, user_id, body)
+    print(comment.to_json())
 
 
-@review_cli.command("list", help="Lists reviews in the database")
+@comment_cli.command("list", help="Lists comments in the database")
 @click.argument("format", default="string")
-def list_review_command(format):
+def list_comment_command(format):
     if format == "string":
-        print(get_all_reviews())
+        print(get_all_comments())
     else:
-        print(get_all_reviews_json())
+        print(get_all_comments_json())
 
 
-@review_cli.command("list-by-product", help="Lists reviews by product in the database")
+@comment_cli.command("list-by-product", help="Lists comments by product in the database")
 @click.argument("product_id", default=1)
 @click.argument("format", default="string")
-def list_review_by_product_command(product_id, format):
+def list_comment_by_product_command(product_id, format):
     if format == "string":
-        print(get_reviews_by_product_id(product_id))
+        print(get_comments_by_product_id(product_id))
     else:
-        print(get_reviews_by_product_id_json(product_id))
+        print(get_comments_by_product_id_json(product_id))
 
 
-app.cli.add_command(review_cli)
+app.cli.add_command(comment_cli)
 
 """
 Generic Commands
@@ -239,22 +239,22 @@ def demo_tests_command():
     product4 = create_product("tomato", "blue", "image", 1, 1, farmer.id)
     print(f"product4: {product4.to_json()}")
 
-    review1 = create_review(product1.id, user1.id, "bad")
-    print(f"review1: {review1.to_json()}")
-    review2 = create_review(product1.id, admin1.id, "ok")
-    print(f"review2: {review2.to_json()}")
-    review3 = create_review(product1.id, farmer.id, "good")
-    print(f"review3: {review3.to_json()}")
+    comment1 = create_comment(product1.id, user1.id, "bad")
+    print(f"comment1: {comment1.to_json()}")
+    comment2 = create_comment(product1.id, admin1.id, "ok")
+    print(f"comment2: {comment2.to_json()}")
+    comment3 = create_comment(product1.id, farmer.id, "good")
+    print(f"comment3: {comment3.to_json()}")
 
-    create_reply(review1.id, admin1.id, "reply1")
-    create_reply(review2.id, admin1.id, "reply2")
-    create_reply(review3.id, admin1.id, "reply3")
-    create_reply(review1.id, farmer.id, "reply4")
-    create_reply(review2.id, farmer.id, "reply5")
-    create_reply(review3.id, farmer.id, "reply6")
-    create_reply(review1.id, user1.id, "reply7")
-    create_reply(review2.id, user1.id, "reply8")
-    create_reply(review3.id, user1.id, "reply9")
+    create_reply(comment1.id, admin1.id, "reply1")
+    create_reply(comment2.id, admin1.id, "reply2")
+    create_reply(comment3.id, admin1.id, "reply3")
+    create_reply(comment1.id, farmer.id, "reply4")
+    create_reply(comment2.id, farmer.id, "reply5")
+    create_reply(comment3.id, farmer.id, "reply6")
+    create_reply(comment1.id, user1.id, "reply7")
+    create_reply(comment2.id, user1.id, "reply8")
+    create_reply(comment3.id, user1.id, "reply9")
 
 
 @test.command("user", help="Run User tests")
