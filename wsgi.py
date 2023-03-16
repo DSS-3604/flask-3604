@@ -154,10 +154,9 @@ review_cli = AppGroup("review", help="Review object commands")
 @review_cli.command("create", help="Creates a review")
 @click.argument("product_id", default=1)
 @click.argument("user_id", default=1)
-@click.argument("rating", default=1)
 @click.argument("body", default="body")
-def create_review_command(product_id, user_id, rating, body):
-    review = create_review(product_id, user_id, rating, body)
+def create_review_command(product_id, user_id, body):
+    review = create_review(product_id, user_id, body)
     print(review.to_json())
 
 
@@ -240,11 +239,11 @@ def demo_tests_command():
     product4 = create_product("tomato", "blue", "image", 1, 1, farmer.id)
     print(f"product4: {product4.to_json()}")
 
-    review1 = create_review(product1.id, user1.id, 1, "bad")
+    review1 = create_review(product1.id, user1.id, "bad")
     print(f"review1: {review1.to_json()}")
-    review2 = create_review(product1.id, admin1.id, 2, "ok")
+    review2 = create_review(product1.id, admin1.id, "ok")
     print(f"review2: {review2.to_json()}")
-    review3 = create_review(product1.id, farmer.id, 3, "good")
+    review3 = create_review(product1.id, farmer.id, "good")
     print(f"review3: {review3.to_json()}")
 
     create_reply(review1.id, admin1.id, "reply1")
