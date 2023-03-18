@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, request
 
 from flask_jwt import jwt_required, current_identity
 
+from datetime import datetime, timedelta
+
 from App.controllers.product import (
     create_product,
     get_product_by_id,
@@ -9,6 +11,7 @@ from App.controllers.product import (
     delete_product,
     get_all_products_json,
     get_products_by_farmer_id_json,
+    get_products_past_week_json,
 )
 
 from App.controllers.user import is_farmer, is_admin, get_user_by_id
@@ -37,6 +40,14 @@ def get_all_products_action():
     if products:
         return jsonify(products), 200
     return jsonify({"message": "No products found"}), 404
+
+
+@product_views.route("/products/recent", methods=["GET"])
+def get_recent_products_action():
+    products = get_products_past_week_json()
+    if products:
+        return jsonify(products), 200
+    return jsonify({"message": "No recent products found"}), 404
 
 
 @product_views.route("/products", methods=["POST"])
