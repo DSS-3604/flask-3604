@@ -55,6 +55,8 @@ def create_product_category_action():
         return jsonify({"message": "Name is required"}), 400
 
     pc = create_product_category(name=data["name"])
+    if not pc:
+        return jsonify({"message": f"Could not create product category: {data['name']}"}), 400
     return jsonify({"message": f"Product category {data['name']} created"}), 201
 
 
