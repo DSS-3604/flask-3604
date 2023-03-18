@@ -63,7 +63,7 @@ def update_farmer_application(
     return False
 
 
-def approve_farmer_application(id, comment=""):
+def approve_farmer_application(id):
     f_application = get_farmer_application_by_id(id)
     if f_application:
         farmer = create_farmer(
@@ -77,15 +77,18 @@ def approve_farmer_application(id, comment=""):
             f_application.units,
             f_application.avatar,
         )
-        f_application.status = f"Approved: {comment}"
+        f_application.status = f"Approved"
+        db.session.add(farmer)
+        db.session.add(f_application)
+        db.session.commit()
         return farmer
     return False
 
 
-def reject_farmer_application(id, comment=""):
+def reject_farmer_application(id):
     f_application = get_farmer_application_by_id(id)
     if f_application:
-        f_application.status = f"Rejected: {comment}"
+        f_application.status = f"Rejected"
         return True
     return False
 

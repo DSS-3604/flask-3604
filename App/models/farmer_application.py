@@ -48,4 +48,5 @@ class FarmerApplication(db.Model):
             "currency": self.currency,
             "units": self.units,
             "avatar": self.avatar,
+            "status": self.status,
         }
