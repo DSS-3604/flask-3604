@@ -11,7 +11,6 @@ from App.controllers.user import (
     create_admin,
     get_all_users,
     get_all_users_json,
-    update_user,
 )
 
 from App.controllers.farmer_application import (
@@ -230,28 +229,27 @@ def demo_tests_command():
         "800-1234",
         "University Drive",
     )
+    user2 = create_user(
+        "farmerguy1",
+        "farmerguy1@gmail.com",
+        "farmerguy1",
+        "user"
+    )
+    user3 = create_user(
+        "farmerguy321",
+        "farmerguy321@gmail.com",
+        "farmerguy321",
+        "user"
+    )
     print(f"admin1: {admin1.to_json()}")
     print(f"user1: {user1.to_json()}")
-    f_application = create_farmer_application(
-        "farmer1",
-        "farmer@gmail.com",
-        "i want to be a farmer",
-        "800-1234",
-        "University Drive",
-    )
+    f_application = create_farmer_application(user2.id, "i wanna be a farmer")
     print(f"farmer_application: {f_application.to_json()}")
-    f_application2 = create_farmer_application(
-        "farmer2",
-        "farmer2@gmail.com",
-        "i want to be a farmer",
-        "800-4321",
-        "University Drive",
-    )
+    f_application2 = create_farmer_application(user3.id, "i wanna be a farmer")
     print(f"farmer_application2: {f_application2.to_json()}")
     reject_farmer_application(f_application.id)
     print(f"farmer_application: {f_application.to_json()}")
-    farmer = approve_farmer_application(f_application2.id)
-    update_user(farmer.id, password="farmerpass")
+    approve_farmer_application(f_application2.id)
     print(f"farmer_application2: {f_application2.to_json()}")
 
     category1 = create_product_category("tomato")
@@ -260,7 +258,7 @@ def demo_tests_command():
     category4 = create_product_category("onion")
 
     product1 = create_product(
-        farmer_id=farmer.id,
+        farmer_id=user3.id,
         category_id=category1.id,
         name="cherry tomato",
         description="red",
@@ -271,7 +269,7 @@ def demo_tests_command():
         total_product_quantity=1,
     )
     product2 = create_product(
-        farmer_id=farmer.id,
+        farmer_id=user3.id,
         category_id=category2.id,
         name="idaho potato",
         description="brown",
@@ -282,7 +280,7 @@ def demo_tests_command():
         total_product_quantity=1,
     )
     product3 = create_product(
-        farmer_id=farmer.id,
+        farmer_id=user3.id,
         category_id=category3.id,
         name="baby carrot",
         description="orange",
@@ -293,7 +291,7 @@ def demo_tests_command():
         total_product_quantity=1,
     )
     product4 = create_product(
-        farmer_id=farmer.id,
+        farmer_id=user3.id,
         category_id=category4.id,
         name="scorpion pepper",
         description="red",
@@ -312,14 +310,14 @@ def demo_tests_command():
 
     comment2 = create_comment(product1.id, admin1.id, "ok")
 
-    comment3 = create_comment(product1.id, farmer.id, "good")
+    comment3 = create_comment(product1.id, user3.id, "good")
 
     create_reply(comment1.id, admin1.id, "reply1")
     create_reply(comment2.id, admin1.id, "reply2")
     create_reply(comment3.id, admin1.id, "reply3")
-    create_reply(comment1.id, farmer.id, "reply4")
-    create_reply(comment2.id, farmer.id, "reply5")
-    create_reply(comment3.id, farmer.id, "reply6")
+    create_reply(comment1.id, user3.id, "reply4")
+    create_reply(comment2.id, user3.id, "reply5")
+    create_reply(comment3.id, user3.id, "reply6")
     create_reply(comment1.id, user1.id, "reply7")
     create_reply(comment2.id, user1.id, "reply8")
     create_reply(comment3.id, user1.id, "reply9")
@@ -330,9 +328,9 @@ def demo_tests_command():
     print(f"comment3: {comment3.to_json()}")
     # print(get_all_replies_by_comment_id(comment3.id)
 
-    review1 = create_review(farmer.id, user1.id, 5, "great service")
-    review2 = create_review(farmer.id, admin1.id, 4, "good service")
-    review3 = create_review(farmer.id, user1.id, 1, "horrible service")
+    review1 = create_review(user3.id, user1.id, 5, "great service")
+    review2 = create_review(user3.id, admin1.id, 4, "good service")
+    review3 = create_review(user3.id, user1.id, 1, "horrible service")
     print(f"review1: {review1.to_json()}")
     print(f"review2: {review2.to_json()}")
     print(f"review3: {review3.to_json()}")

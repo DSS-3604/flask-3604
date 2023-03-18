@@ -43,6 +43,9 @@ class User(db.Model):
         lazy=True,
         foreign_keys="FarmerReview.user_id",
     )  # farmer's reviews received
+    f_application = db.relationship(
+        "FarmerApplication", backref="user", lazy=True
+    )  # farmer application of user
 
     def __init__(
         self,

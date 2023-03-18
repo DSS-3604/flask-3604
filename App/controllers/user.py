@@ -50,29 +50,13 @@ def create_admin(username, email, password):
     )
 
 
-def create_farmer(
-    username,
-    email,
-    password,
-    bio,
-    phone,
-    address,
-    currency="USD",
-    units="kg",
-    avatar="",
-):
-    return create_user(
-        username,
-        email,
-        password,
-        "farmer",
-        bio=bio,
-        phone=phone,
-        address=address,
-        currency=currency,
-        units=units,
-        avatar=avatar,
-    )
+def update_access(id, access):
+    user = get_user_by_id(id)
+    if user:
+        user.access = access
+        db.session.add(user)
+        return db.session.commit()
+    return None
 
 
 def get_user_by_email(email):
@@ -162,17 +146,18 @@ def create_default_farmer():
     farmer2 = get_user_by_email("farmer123@gmail.com")
     if not farmer1 and not farmer2:
         from App.controllers.farmer_application import create_farmer_application, approve_farmer_application
-        farmer_application = create_farmer_application(
-                                            "farmer123",
-                                            "farmer123@gmail.com",
-                                            "i want to be a farmer",
-                                            "800-1234",
-                                            "University Drive",
-                                        )
-        farmer = approve_farmer_application(farmer_application.id)
-        farmer.set_password("farmer123")
+        user = create_user(
+                        "farmer123",
+                        "farmer123@gmail.com",
+                        "farmer123",
+                        "i want to be a farmer",
+                        "800-1234",
+                        "University Drive",
+                    )
+        farmer_application = create_farmer_application(user.id, "default farmer account")
+        approve_farmer_application(farmer_application.id)
         print("farmer created")
         db.session.add(farmer_application)
-        db.session.add(farmer)
+        db.session.add(user)
         return db.session.commit()
     return None

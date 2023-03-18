@@ -14,8 +14,6 @@ from App.controllers import (
     get_user_by_email,
     update_user,
     is_admin,
-    get_farmer_application_by_email,
-    get_farmer_application_by_username,
     check_password,
 )
 
@@ -54,12 +52,10 @@ def create_user_action():
     if not data['email'] or not data['username'] or not data['password']:
         return jsonify({"message": "Please fill out all fields"}), 400
     user = get_user_by_email(data["email"])
-    application = get_farmer_application_by_email(data["email"])
-    if user or application:
+    if user:
         return jsonify({"message": "email already exists"}), 400
     user = get_user_by_username(data["username"])
-    application = get_farmer_application_by_username(data["username"])
-    if user or application:
+    if user:
         return jsonify({"message": "username already exists"}), 400
     new_user = create_user(
         data["username"], data["email"], data["password"], access="user"
@@ -77,12 +73,10 @@ def create_admin_action():
     if not is_admin(current_identity):
         return jsonify({"message": "You are not authorized to create an admin"}), 401
     user = get_user_by_email(data["email"])
-    application = get_farmer_application_by_email(data["email"])
-    if user or application:
+    if user:
         return jsonify({"message": "email already exists"}), 400
     user = get_user_by_username(data["username"])
-    application = get_farmer_application_by_username(data["username"])
-    if user or application:
+    if user:
         return jsonify({"message": "username already exists"}), 400
     new_user = create_user(
         data["username"], data["email"], data["password"], access="admin"
@@ -146,20 +140,22 @@ def update_user_action(id):
                 return jsonify({"message": "Email already exists"}), 400
             else:
                 update_user(id=id, email=data["email"])
-        if "password" in data:
+        if "password" in data and 'old_password' in data:
             if (
                 len(data["password"]) < 8
                 or not re.search(r"\d", data["password"])
                 or not re.search(r"[A-Z]", data["password"])
                 or not re.search(r"[a-z]", data["password"])
                 or check_password(current_identity, data["password"])
+                or not check_password(current_identity, data["old_password"])
             ):
                 message = (
                     "-Password must be at least 8 characters.\n"
                     "-Password must contain at least one digit.\n"
                     "-Password must contain at least one uppercase letter.\n"
                     "-Password must contain at least one lowercase letter.\n"
-                    "-New password must be different from the old password."
+                    "-New password must be different from the old password.\n"
+                    "-Old password must be correct.\n"
                 )
                 return jsonify({"message": message}), 400
             else:
