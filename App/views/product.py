@@ -62,7 +62,7 @@ def create_product_action():
     data = request.json
     if not is_farmer(current_identity) and not is_admin(current_identity):
         return jsonify({"message": "You are not authorized to create a product"}), 403
-    if not get_products_by_category_id(data["category_id"]):
+    if not get_product_category_by_id(data["category_id"]):
         return jsonify({"message": "No product category found"}), 404
     create_product(
         farmer_id=current_identity.id,
