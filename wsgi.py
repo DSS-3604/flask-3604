@@ -36,6 +36,20 @@ from App.controllers.product import (
 
 from App.controllers.p_reply import (
     create_reply,
+    get_all_replies_by_comment_id,
+)
+
+from App.controllers.farmer_review import (
+    create_review,
+    get_all_reviews,
+    get_all_reviews_json,
+    get_review_by_id,
+    get_reviews_by_farmer_id,
+    get_reviews_by_farmer_id_json,
+    get_reviews_by_user_id,
+    get_reviews_by_user_id_json,
+    update_review,
+    delete_review,
 )
 
 # This commands file allow you to create convenient CLI commands for testing controllers
@@ -266,11 +280,11 @@ def demo_tests_command():
     print(f"product4: {product4.to_json()}")
 
     comment1 = create_comment(product1.id, user1.id, "bad")
-    print(f"comment1: {comment1.to_json()}")
+
     comment2 = create_comment(product1.id, admin1.id, "ok")
-    print(f"comment2: {comment2.to_json()}")
+
     comment3 = create_comment(product1.id, farmer.id, "good")
-    print(f"comment3: {comment3.to_json()}")
+
 
     create_reply(comment1.id, admin1.id, "reply1")
     create_reply(comment2.id, admin1.id, "reply2")
@@ -281,6 +295,22 @@ def demo_tests_command():
     create_reply(comment1.id, user1.id, "reply7")
     create_reply(comment2.id, user1.id, "reply8")
     create_reply(comment3.id, user1.id, "reply9")
+    print(f"comment1: {comment1.to_json()}")
+    # print(get_all_replies_by_comment_id(comment1.id))))
+    print(f"comment2: {comment2.to_json()}")
+    # print(get_all_replies_by_comment_id(comment2.id)
+    print(f"comment3: {comment3.to_json()}")
+    # print(get_all_replies_by_comment_id(comment3.id)
+
+
+    review1 = create_review(farmer.id, user1.id, 5, "great service")
+    review2 = create_review(farmer.id, admin1.id, 4, "good service")
+    review3 = create_review(farmer.id, user1.id, 1, "horrible service")
+    print(f"review1: {review1.to_json()}")
+    print(f"review2: {review2.to_json()}")
+    print(f"review3: {review3.to_json()}")
+
+
 
 
 @test.command("user", help="Run User tests")
