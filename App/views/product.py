@@ -60,7 +60,7 @@ def get_recent_products_action():
 @jwt_required()
 def create_product_action():
     data = request.json
-    if not is_farmer(current_identity):
+    if not is_farmer(current_identity) and not is_admin(current_identity):
         return jsonify({"message": "You are not authorized to create a product"}), 403
 
     create_product(
