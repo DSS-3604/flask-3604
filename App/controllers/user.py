@@ -82,7 +82,6 @@ def get_user_by_email(email):
 def get_user_by_username(username):
     user = User.query.filter_by(username=username).first()
     if user:
-        print(user.to_json())
         return user
     return None
 
@@ -149,6 +148,11 @@ def check_password(user, password):
 
 
 def create_su():
-    user = create_admin('admin123', 'admin123@gmail.com', 'admin123')
-    db.session.add(user)
-    return db.session.commit()
+    user = get_user_by_username("admin123")
+    if not user:
+        user = create_admin('admin123', 'admin123@gmail.com', 'admin123')
+        print("admin created")
+        db.session.add(user)
+        return db.session.commit()
+    print("admin already exists")
+    return None
