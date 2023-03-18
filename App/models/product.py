@@ -1,5 +1,6 @@
 from App.database import db
 from App.models.user import User
+from App.models.product_category import ProductCategory
 from datetime import datetime
 
 
@@ -61,6 +62,7 @@ class Product(db.Model):
             "farmer_id": self.farmer_id,
             "farmer_name": User.query.filter_by(id=self.farmer_id).first().username,
             "category_id": self.category_id,
+            "category_name": ProductCategory.query.filter_by(id=self.category_id).first().name,
             "name": self.name,
             "description": self.description,
             "image": self.image,
