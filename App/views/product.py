@@ -10,10 +10,10 @@ from App.controllers.product import (
     update_product,
     delete_product,
     get_all_products_json,
-    get_products_by_farmer_id_json
+    get_products_by_farmer_id_json,
 )
 
-from App.controllers.user import is_farmer, is_admin
+from App.controllers.user import is_farmer, is_admin, get_user_by_id
 
 product_views = Blueprint("product_views", __name__, template_folder="../templates")
 
@@ -21,6 +21,12 @@ product_views = Blueprint("product_views", __name__, template_folder="../templat
 @product_views.route("/products/farmer/<int:id>", methods=["GET"])
 @jwt_required()
 def get_farmer_products_action(id):
+    farmer = get_user_by_id(id)
+    if not farmer:
+        return jsonify({"message": "No farmer found"}), 404
+    else:
+        if not is_farmer(farmer):
+            return jsonify({"message": "User is not a farmer"}), 403
     products = get_products_by_farmer_id_json(id)
     if products:
         return jsonify(products), 200
@@ -52,7 +58,14 @@ def create_product_action():
         wholesale_unit_quantity=data["wholesale_unit_quantity"],
         total_product_quantity=data["total_product_quantity"],
     )
-    return jsonify({"message": f"Product {data['name']} created by user: {current_identity.id}"}), 201
+    return (
+        jsonify(
+            {
+                "message": f"Product {data['name']} created by user: {current_identity.id}"
+            }
+        ),
+        201,
+    )
 
 
 @product_views.route("/products/<int:id>", methods=["GET"])
@@ -80,20 +93,22 @@ def update_product_action(id):
                 403,
             )
 
-        if 'name' in data:
-            update_product(id=id, name=data['name'])
-        if 'description' in data:
-            update_product(id=id, description=data['description'])
-        if 'image' in data:
-            update_product(id=id, image=data['image'])
-        if 'retail_price' in data:
-            update_product(id=id, retail_price=data['retail_price'])
-        if 'wholesale_price' in data:
-            update_product(id=id, wholesale_price=data['wholesale_price'])
-        if 'wholesale_unit_quantity' in data:
-            update_product(id=id, wholesale_unit_quantity=data['wholesale_unit_quantity'])
-        if 'total_product_quantity' in data:
-            update_product(id=id, total_product_quantity=data['total_product_quantity'])
+        if "name" in data:
+            update_product(id=id, name=data["name"])
+        if "description" in data:
+            update_product(id=id, description=data["description"])
+        if "image" in data:
+            update_product(id=id, image=data["image"])
+        if "retail_price" in data:
+            update_product(id=id, retail_price=data["retail_price"])
+        if "wholesale_price" in data:
+            update_product(id=id, wholesale_price=data["wholesale_price"])
+        if "wholesale_unit_quantity" in data:
+            update_product(
+                id=id, wholesale_unit_quantity=data["wholesale_unit_quantity"]
+            )
+        if "total_product_quantity" in data:
+            update_product(id=id, total_product_quantity=data["total_product_quantity"])
         return jsonify({"message": f"Product {id} updated"}), 200
     return jsonify({"message": "No product found"}), 404
 

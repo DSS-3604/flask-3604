@@ -3,17 +3,35 @@ from App.models.product import Product
 from datetime import datetime, timedelta
 
 
-def create_product(farmer_id, name, description, image, retail_price=1, wholesale_price=1, wholesale_unit_quantity=1,
-                   total_product_quantity=1):
-    product = Product(farmer_id, name, description, image, retail_price, wholesale_price, wholesale_unit_quantity,
-                      total_product_quantity)
+def create_product(
+    farmer_id,
+    name,
+    description,
+    image,
+    retail_price=1,
+    wholesale_price=1,
+    wholesale_unit_quantity=1,
+    total_product_quantity=1,
+):
+    product = Product(
+        farmer_id,
+        name,
+        description,
+        image,
+        retail_price,
+        wholesale_price,
+        wholesale_unit_quantity,
+        total_product_quantity,
+    )
     db.session.add(product)
     db.session.commit()
     return product
 
 
 def get_products_past_week():
-    return Product.query.filter(Product.timestamp >= datetime.now() - timedelta(days=7)).all()
+    return Product.query.filter(
+        Product.timestamp >= datetime.now() - timedelta(days=7)
+    ).all()
 
 
 def get_products_past_week_json():
@@ -21,7 +39,9 @@ def get_products_past_week_json():
 
 
 def get_products_past_month():
-    return Product.query.filter(Product.timestamp >= datetime.now() - timedelta(days=30)).all()
+    return Product.query.filter(
+        Product.timestamp >= datetime.now() - timedelta(days=30)
+    ).all()
 
 
 def get_products_past_month_json():
@@ -29,7 +49,9 @@ def get_products_past_month_json():
 
 
 def get_products_past_year():
-    return Product.query.filter(Product.timestamp >= datetime.now() - timedelta(days=365)).all()
+    return Product.query.filter(
+        Product.timestamp >= datetime.now() - timedelta(days=365)
+    ).all()
 
 
 def get_products_past_year_json():
@@ -37,8 +59,11 @@ def get_products_past_year_json():
 
 
 def get_products_past_week_by_farmer_id(farmer_id):
-    return Product.query.filter(Product.timestamp >= datetime.now() - timedelta(days=7)).filter_by(
-        farmer_id=farmer_id).all()
+    return (
+        Product.query.filter(Product.timestamp >= datetime.now() - timedelta(days=7))
+        .filter_by(farmer_id=farmer_id)
+        .all()
+    )
 
 
 def get_all_products():
@@ -73,8 +98,16 @@ def get_products_by_name_json(name):
     return [product.to_json() for product in get_products_by_name(name)]
 
 
-def update_product(id, name=None, description=None, image=None, retail_price=None, wholesale_price=None,
-                   wholesale_unit_quantity=None, total_product_quantity=None):
+def update_product(
+    id,
+    name=None,
+    description=None,
+    image=None,
+    retail_price=None,
+    wholesale_price=None,
+    wholesale_unit_quantity=None,
+    total_product_quantity=None,
+):
     product = get_product_by_id(id)
     if product:
         if name:

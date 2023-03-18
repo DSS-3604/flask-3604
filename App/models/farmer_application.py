@@ -15,7 +15,17 @@ class FarmerApplication(db.Model):
     units = db.Column(db.String(10), nullable=True)
     avatar = db.Column(db.String(120), nullable=True)
 
-    def __init__(self, username, email, bio, phone, address, currency="USD", units="kg", avatar=""):
+    def __init__(
+        self,
+        username,
+        email,
+        bio,
+        phone,
+        address,
+        currency="USD",
+        units="kg",
+        avatar="",
+    ):
         self.status = "Pending"
         self.username = username
         self.password = secrets.token_urlsafe(32)

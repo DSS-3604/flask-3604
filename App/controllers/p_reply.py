@@ -10,7 +10,7 @@ def create_reply(comment_id, user_id, body):
 
 
 def get_all_replies_by_comment_id(comment_id):
-    return ProductReply.query.filter_by(comment_id=comment_id).all()
+    return ProductReply.query.filter_by(p_comment_id=comment_id).all()
 
 
 def get_all_replies_by_comment_id_json(comment_id):

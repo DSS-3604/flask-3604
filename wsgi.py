@@ -10,6 +10,7 @@ from App.controllers.user import (
     create_admin,
     get_all_users,
     get_all_users_json,
+    update_user,
 )
 
 from App.controllers.farmer_application import (
@@ -178,7 +179,9 @@ def list_comment_command(format):
         print(get_all_comments_json())
 
 
-@comment_cli.command("list-by-product", help="Lists comments by product in the database")
+@comment_cli.command(
+    "list-by-product", help="Lists comments by product in the database"
+)
 @click.argument("product_id", default=1)
 @click.argument("format", default="string")
 def list_comment_by_product_command(product_id, format):
@@ -216,27 +219,50 @@ test = AppGroup("test", help="Testing commands")
 @test.command("demo", help="Run Demo tests")
 def demo_tests_command():
     admin1 = create_admin("admin", "admin@gmail.com", "adminpass")
-    user1 = create_user("bob", "bob@gmail.com", "bobpass", "user", "bob is a user", "800-1234", "University Drive")
+    user1 = create_user(
+        "bob",
+        "bob@gmail.com",
+        "bobpass",
+        "user",
+        "bob is a user",
+        "800-1234",
+        "University Drive",
+    )
     print(f"admin1: {admin1.to_json()}")
     print(f"user1: {user1.to_json()}")
-    f_application = create_farmer_application("farmer1", "farmer@gmail.com", "i want to be a farmer", "800-1234",
-                                              "University Drive")
+    f_application = create_farmer_application(
+        "farmer1",
+        "farmer@gmail.com",
+        "i want to be a farmer",
+        "800-1234",
+        "University Drive",
+    )
     print(f"farmer_application: {f_application.to_json()}")
-    f_application2 = create_farmer_application("farmer2", "farmer2@gmail.com", "i want to be a farmer", "800-4321",
-                                               "University Drive")
+    f_application2 = create_farmer_application(
+        "farmer2",
+        "farmer2@gmail.com",
+        "i want to be a farmer",
+        "800-4321",
+        "University Drive",
+    )
     print(f"farmer_application2: {f_application2.to_json()}")
     reject_farmer_application(f_application.id)
     print(f"farmer_application: {f_application.to_json()}")
     farmer = approve_farmer_application(f_application2.id)
+    update_user(farmer.id, password="farmerpass")
     print(f"farmer_application2: {f_application2.to_json()}")
 
-    product1 = create_product("tomato", "red", "image", 1, 1, farmer.id)
+    product1 = create_product(farmer_id=farmer.id, name="tomato", description="green", image="image", retail_price=1,
+                              wholesale_price=1, wholesale_unit_quantity=1, total_product_quantity=1)
+    product2 = create_product(farmer_id=farmer.id, name="potato", description="brown", image="image", retail_price=1,
+                              wholesale_price=1, wholesale_unit_quantity=1, total_product_quantity=1)
+    product3 = create_product(farmer_id=farmer.id, name="carrot", description="orange", image="image", retail_price=1,
+                              wholesale_price=1, wholesale_unit_quantity=1, total_product_quantity=1)
+    product4 = create_product(farmer_id=farmer.id, name="pepper", description="red", image="image", retail_price=1,
+                              wholesale_price=1, wholesale_unit_quantity=1, total_product_quantity=1)
     print(f"product1: {product1.to_json()}")
-    product2 = create_product("tomato", "green", "image", 1, 1, farmer.id)
     print(f"product2: {product2.to_json()}")
-    product3 = create_product("tomato", "yellow", "image", 1, 1, farmer.id)
     print(f"product3: {product3.to_json()}")
-    product4 = create_product("tomato", "blue", "image", 1, 1, farmer.id)
     print(f"product4: {product4.to_json()}")
 
     comment1 = create_comment(product1.id, user1.id, "bad")

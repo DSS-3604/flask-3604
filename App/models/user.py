@@ -5,27 +5,49 @@ ACCESS = {"user": 1, "farmer": 2, "admin": 3}
 
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
+    id = db.Column(
+        db.Integer, primary_key=True
+    )  # primary keys are required by SQLAlchemy
     # mandatory fields
     username = db.Column(db.String(120), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
     password = db.Column(db.String(120), nullable=False)  # password of user
     access = db.Column(db.Integer, nullable=False)  # access level of user
-    currency = db.Column(db.String(120), nullable=False, default="USD")  # preferred currency of user
-    units = db.Column(db.String(10), nullable=False, default="kg")  # preferred units of user
+    currency = db.Column(
+        db.String(120), nullable=False, default="USD"
+    )  # preferred currency of user
+    units = db.Column(
+        db.String(10), nullable=False, default="kg"
+    )  # preferred units of user
     # optional fields
     bio = db.Column(db.String(1024), nullable=True)  # bio of user
     phone = db.Column(db.String(120), nullable=True)  # phone number of user
     address = db.Column(db.String(120), nullable=True)  # address of user
     avatar = db.Column(db.String(120), nullable=True)  # avatar of user
     # relationships
-    p_comments = db.relationship("ProductComment", backref="user", lazy=True)  # comments of product
-    p_replies = db.relationship("ProductReply", backref="user", lazy=True)  # replies to comment
-    products = db.relationship("Product", backref="user", lazy=True)  # products of farmer
+    p_comments = db.relationship(
+        "ProductComment", backref="user", lazy=True
+    )  # comments of product
+    p_replies = db.relationship(
+        "ProductReply", backref="user", lazy=True
+    )  # replies to comment
+    products = db.relationship(
+        "Product", backref="user", lazy=True
+    )  # products of farmer
 
-    def __init__(self, username, email, password, access="user", bio="", phone="", address="", currency="USD",
-                 units="kg",
-                 avatar=""):
+    def __init__(
+        self,
+        username,
+        email,
+        password,
+        access="user",
+        bio="",
+        phone="",
+        address="",
+        currency="USD",
+        units="kg",
+        avatar="",
+    ):
         self.username = username
         self.set_password(password)
         self.email = email

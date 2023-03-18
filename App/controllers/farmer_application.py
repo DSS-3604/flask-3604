@@ -3,7 +3,9 @@ from App.controllers.user import create_farmer, get_user_by_email, get_user_by_u
 from App.database import db
 
 
-def create_farmer_application(username, email, bio, phone, address, currency="USD", units="kg", avatar=""):
+def create_farmer_application(
+    username, email, bio, phone, address, currency="USD", units="kg", avatar=""
+):
     farmer1 = get_user_by_email(email)
     farmer2 = get_user_by_username(username)
 
@@ -30,7 +32,9 @@ def get_farmer_application_by_email(email):
 
 
 def get_farmer_application_by_username(username):
-    return farmer_application.FarmerApplication.query.filter_by(username=username).first()
+    return farmer_application.FarmerApplication.query.filter_by(
+        username=username
+    ).first()
 
 
 def get_farmer_application_by_id(id):
@@ -41,7 +45,9 @@ def get_all_farmer_applications():
     return farmer_application.FarmerApplication.query.all()
 
 
-def update_farmer_application(id, username, email, bio, phone, address, currency="USD", units="kg", avatar=""):
+def update_farmer_application(
+    id, username, email, bio, phone, address, currency="USD", units="kg", avatar=""
+):
     f_application = get_farmer_application_by_id(id)
     if f_application:
         f_application.username = username

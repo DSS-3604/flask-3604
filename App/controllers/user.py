@@ -2,8 +2,18 @@ from App.models.user import User, ACCESS
 from App.database import db
 
 
-def create_user(username, email, password, access="user", bio="", phone="", address="", currency="USD", units="kg",
-                avatar=""):
+def create_user(
+    username,
+    email,
+    password,
+    access="user",
+    bio="",
+    phone="",
+    address="",
+    currency="USD",
+    units="kg",
+    avatar="",
+):
     user1 = get_user_by_email(email)
     user2 = get_user_by_username(username)
     if user1 or user2:
@@ -40,7 +50,17 @@ def create_admin(username, email, password):
     )
 
 
-def create_farmer(username, email, password, bio, phone, address, currency="USD", units="kg", avatar=""):
+def create_farmer(
+    username,
+    email,
+    password,
+    bio,
+    phone,
+    address,
+    currency="USD",
+    units="kg",
+    avatar="",
+):
     return create_user(
         username,
         email,
@@ -80,16 +100,16 @@ def get_all_users_json():
 
 
 def update_user(
-        id,
-        username="",
-        email="",
-        password="",
-        bio="",
-        phone="",
-        address="",
-        currency="",
-        units="",
-        avatar="",
+    id,
+    username="",
+    email="",
+    password="",
+    bio="",
+    phone="",
+    address="",
+    currency="",
+    units="",
+    avatar="",
 ):
     user = get_user_by_id(id)
     if user:
@@ -122,3 +142,7 @@ def is_admin(user):
 
 def is_farmer(user):
     return user.get_access() == ACCESS["farmer"]
+
+
+def check_password(user, password):
+    return user.check_password(password)
