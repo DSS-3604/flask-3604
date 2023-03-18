@@ -2,13 +2,10 @@ from flask import Blueprint, jsonify, request
 
 from App.controllers.farmer_review import (
     create_review,
-    get_all_reviews,
     get_all_reviews_json,
     get_review_by_id,
     get_review_by_id_json,
-    get_reviews_by_farmer_id,
     get_reviews_by_farmer_id_json,
-    get_reviews_by_user_id,
     get_reviews_by_user_id_json,
     update_review,
     delete_review,

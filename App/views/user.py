@@ -1,26 +1,19 @@
 from flask import (
     Blueprint,
-    render_template,
     jsonify,
     request,
-    send_from_directory,
-    flash,
-    redirect,
-    url_for,
 )
 from flask_jwt import jwt_required, current_identity
 import re
 
 from App.controllers import (
     create_user,
-    create_farmer,
     get_all_users_json,
     get_user_by_id,
     get_user_by_username,
     get_user_by_email,
     update_user,
     is_admin,
-    is_farmer,
     get_farmer_application_by_email,
     get_farmer_application_by_username,
     check_password,

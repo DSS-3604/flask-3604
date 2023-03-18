@@ -2,14 +2,9 @@ from flask import Blueprint, jsonify, request
 
 from App.controllers.p_comment import (
     create_comment,
-    get_all_comments,
     get_all_comments_json,
     get_comment_by_id,
     get_comment_by_id_json,
-    get_comments_by_product_id,
-    get_comments_by_product_id_json,
-    get_comments_by_user_id,
-    get_comments_by_user_id_json,
     update_comment,
     delete_comment,
 )

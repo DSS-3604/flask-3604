@@ -2,20 +2,15 @@ from flask import Blueprint, jsonify, request
 
 from flask_jwt import jwt_required, current_identity
 
-from .index import index_views
-
 from App.controllers.p_comment import get_comment_by_id
 
 from App.controllers.user import is_admin
 
 from App.controllers.p_reply import (
     create_reply,
-    get_all_replies_by_comment_id,
     get_all_replies_by_comment_id_json,
     get_reply_by_id,
     get_reply_by_id_json,
-    get_replies_by_user_id,
-    get_replies_by_user_id_json,
     update_reply,
     delete_reply,
 )

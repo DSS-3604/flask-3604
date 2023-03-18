@@ -1,6 +1,7 @@
-import click, pytest, sys
-from flask import Flask
-from flask.cli import with_appcontext, AppGroup
+import click
+import pytest
+import sys
+from flask.cli import AppGroup
 
 from App.database import create_db, get_migrate
 from App.main import create_app
@@ -36,20 +37,11 @@ from App.controllers.product import (
 
 from App.controllers.p_reply import (
     create_reply,
-    get_all_replies_by_comment_id,
 )
 
 from App.controllers.farmer_review import (
     create_review,
-    get_all_reviews,
-    get_all_reviews_json,
-    get_review_by_id,
-    get_reviews_by_farmer_id,
-    get_reviews_by_farmer_id_json,
-    get_reviews_by_user_id,
-    get_reviews_by_user_id_json,
-    update_review,
-    delete_review,
+
 )
 
 # This commands file allow you to create convenient CLI commands for testing controllers

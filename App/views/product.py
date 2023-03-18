@@ -2,8 +2,6 @@ from flask import Blueprint, jsonify, request
 
 from flask_jwt import jwt_required, current_identity
 
-from .index import index_views
-
 from App.controllers.product import (
     create_product,
     get_product_by_id,
