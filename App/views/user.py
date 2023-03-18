@@ -51,6 +51,8 @@ def identify():
 @user_views.route("/api/users", methods=["POST"])
 def create_user_action():
     data = request.json
+    if not data['email'] or not data['username'] or not data['password']:
+        return jsonify({"message": "Please fill out all fields"}), 400
     user = get_user_by_email(data["email"])
     application = get_farmer_application_by_email(data["email"])
     if user or application:
@@ -65,23 +67,6 @@ def create_user_action():
     if new_user:
         return jsonify({"message": f"{data['username']} created successfully"}), 201
     return jsonify({"message": "User could not be created"}), 400
-
-
-# Create farmer user route
-# @user_views.route("/api/users/farmer", methods=["POST"])
-# def create_farmer_action():
-#     data = request.json
-#     user = get_user_by_email(data["email"])
-#     if user:
-#         return jsonify({"message": "email already exists"}), 400
-#     user = get_user_by_username(data["username"])
-#     if user:
-#         return jsonify({"message": "username already exists"}), 400
-#     new_user = create_farmer(data["username"], data["email"], data["password"], data["bio"],
-#                              data["phone"], data["address"])
-#     if new_user:
-#         return jsonify({"message": f"{data['username']} created successfully"}), 201
-#     return jsonify({"message": "Farmer could not be created"}), 400
 
 
 # Create admin user route
