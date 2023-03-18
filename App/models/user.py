@@ -1,9 +1,6 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 from App.database import db
 
-ACCESS = {"user": 1, "farmer": 2, "admin": 3}
-
-
 class User(db.Model):
     id = db.Column(
         db.Integer, primary_key=True
@@ -12,7 +9,7 @@ class User(db.Model):
     username = db.Column(db.String(120), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
     password = db.Column(db.String(120), nullable=False)  # password of user
-    access = db.Column(db.Integer, nullable=False)  # access level of user
+    access = db.Column(db.String(32), nullable=False)  # access level of user
     currency = db.Column(
         db.String(120), nullable=False, default="USD"
     )  # preferred currency of user
@@ -63,7 +60,7 @@ class User(db.Model):
         self.username = username
         self.set_password(password)
         self.email = email
-        self.access = ACCESS[access]
+        self.access = access
         self.bio = bio
         self.phone = phone
         self.address = address

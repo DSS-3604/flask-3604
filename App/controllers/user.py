@@ -1,4 +1,4 @@
-from App.models.user import User, ACCESS
+from App.models.user import User
 from App.database import db
 
 
@@ -136,11 +136,11 @@ def update_user(
 
 
 def is_admin(user):
-    return user.get_access() == ACCESS["admin"]
+    return user.get_access() == "admin"
 
 
 def is_farmer(user):
-    return user.get_access() == ACCESS["farmer"]
+    return user.get_access() == "farmer"
 
 
 def check_password(user, password):
