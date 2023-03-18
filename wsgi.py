@@ -41,7 +41,6 @@ from App.controllers.p_reply import (
 
 from App.controllers.farmer_review import (
     create_review,
-
 )
 
 # This commands file allow you to create convenient CLI commands for testing controllers
