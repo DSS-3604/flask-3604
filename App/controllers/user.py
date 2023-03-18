@@ -146,3 +146,9 @@ def is_farmer(user):
 
 def check_password(user, password):
     return user.check_password(password)
+
+
+def create_su():
+    user = create_admin('admin123', 'admin123@gmail.com', 'admin123')
+    db.session.add(user)
+    return db.session.commit()

@@ -51,5 +51,8 @@ def create_app(config={}):
     add_views(app)
     create_db(app)
     setup_jwt(app)
-    app.app_context().push()
+    with app.app_context() as app_context:
+        from App.controllers.user import create_su
+        create_su()
+        app_context.push()
     return app
