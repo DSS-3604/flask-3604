@@ -12,6 +12,12 @@ from App.controllers.product import (
     get_all_products_json,
     get_products_by_farmer_id_json,
     get_products_past_week_json,
+    get_products_by_category_id,
+)
+
+from App.controllers.product_category import (
+    get_product_category_by_id,
+    get_products_by_category_name_json,
 )
 
 from App.controllers.user import is_farmer, is_admin, get_user_by_id
@@ -59,6 +65,7 @@ def create_product_action():
 
     create_product(
         farmer_id=current_identity.id,
+        category_id=data["category_id"],
         name=data["name"],
         description=data["description"],
         image=data["image"],
@@ -83,6 +90,27 @@ def get_product_by_id_action(id):
     if product:
         return jsonify(product.to_json()), 200
     return jsonify({"message": "No product found"}), 404
+
+
+# get product by product category
+@product_views.route("/products/category/<int:id>", methods=["GET"])
+def get_product_by_category_id_action(id):
+    products = get_products_by_category_id(id)
+    if products:
+        return jsonify(products), 200
+    return jsonify({"message": "No products found"}), 404
+
+
+# get product by product category name
+@product_views.route("/products/category/<string:name>", methods=["GET"])
+def get_product_by_category_name_action(name):
+    category = get_product_category_by_id(name)
+    if category:
+        products = get_products_by_category_name_json(name)
+        if products:
+            return jsonify(products), 200
+        return jsonify({"message": "No products found"}), 404
+    return jsonify({"message": "No category found"}), 404
 
 
 @product_views.route("/products/<int:id>", methods=["PUT"])

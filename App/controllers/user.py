@@ -154,5 +154,4 @@ def create_su():
         print("admin created")
         db.session.add(user)
         return db.session.commit()
-    print("admin already exists")
     return None

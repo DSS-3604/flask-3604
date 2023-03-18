@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 
 def create_product(
     farmer_id,
+    category_id,
     name,
     description,
     image,
@@ -15,6 +16,7 @@ def create_product(
 ):
     product = Product(
         farmer_id,
+        category_id,
         name,
         description,
         image,
@@ -26,6 +28,14 @@ def create_product(
     db.session.add(product)
     db.session.commit()
     return product
+
+
+def get_products_by_category_id(category_id):
+    return Product.query.filter_by(category_id=category_id).all()
+
+
+def get_products_by_category_id_json(category_id):
+    return [product.to_json() for product in get_products_by_category_id(category_id)]
 
 
 def get_products_past_week():

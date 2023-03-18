@@ -9,6 +9,9 @@ class Product(db.Model):
     farmer_id = db.Column(
         db.Integer, db.ForeignKey("user.id"), nullable=False
     )  # foreign key links to user.id in user table
+    category_id = db.Column(
+        db.Integer, db.ForeignKey("product_category.id"), nullable=False
+    )  # foreign key links to product_category.id in product_category table
     name = db.Column(db.String, nullable=False)  # name of product
     description = db.Column(db.String, nullable=False)  # description of product
     image = db.Column(db.String, nullable=False)  # image of product
@@ -23,7 +26,7 @@ class Product(db.Model):
     )  # quantity of product for wholesale price
     total_product_quantity = db.Column(db.String, nullable=False)  # unit of product
     comments = db.relationship(
-        "ProductComment", backref="product", lazy=True
+        "ProductComment", backref="product", lazy=True, cascade="all, delete-orphan"
     )  # comments of product
     timestamp = db.Column(
         db.DateTime, default=datetime.utcnow
@@ -32,6 +35,7 @@ class Product(db.Model):
     def __init__(
         self,
         farmer_id,
+        category_id,
         name,
         description,
         image,
@@ -41,6 +45,7 @@ class Product(db.Model):
         total_product_quantity=1,
     ):
         self.farmer_id = farmer_id
+        self.category_id = category_id
         self.name = name
         self.description = description
         self.image = image
@@ -53,6 +58,7 @@ class Product(db.Model):
         return {
             "id": self.id,
             "farmer_id": self.farmer_id,
+            "category_id": self.category_id,
             "name": self.name,
             "description": self.description,
             "image": self.image,

@@ -35,6 +35,10 @@ from App.controllers.product import (
     delete_product,
 )
 
+from App.controllers.product_category import (
+    create_product_category
+)
+
 from App.controllers.p_reply import (
     create_reply,
 )
@@ -53,7 +57,7 @@ migrate = get_migrate(app)
 @app.cli.command("init", help="Creates and initializes the database")
 def initialize():
     create_db(app)
-    print("database intialized")
+    print("database initalized")
 
 
 """
@@ -257,10 +261,16 @@ def demo_tests_command():
     update_user(farmer.id, password="farmerpass")
     print(f"farmer_application2: {f_application2.to_json()}")
 
+    category1 = create_product_category("tomato")
+    category2 = create_product_category("potato")
+    category3 = create_product_category("carrot")
+    category4 = create_product_category("onion")
+
     product1 = create_product(
         farmer_id=farmer.id,
-        name="tomato",
-        description="green",
+        category_id=category1.id,
+        name="cherry tomato",
+        description="red",
         image="image",
         retail_price=1,
         wholesale_price=1,
@@ -269,7 +279,8 @@ def demo_tests_command():
     )
     product2 = create_product(
         farmer_id=farmer.id,
-        name="potato",
+        category_id=category2.id,
+        name="idaho potato",
         description="brown",
         image="image",
         retail_price=1,
@@ -279,7 +290,8 @@ def demo_tests_command():
     )
     product3 = create_product(
         farmer_id=farmer.id,
-        name="carrot",
+        category_id=category3.id,
+        name="baby carrot",
         description="orange",
         image="image",
         retail_price=1,
@@ -289,7 +301,8 @@ def demo_tests_command():
     )
     product4 = create_product(
         farmer_id=farmer.id,
-        name="pepper",
+        category_id=category4.id,
+        name="scorpion pepper",
         description="red",
         image="image",
         retail_price=1,

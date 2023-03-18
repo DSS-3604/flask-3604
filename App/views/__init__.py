@@ -5,6 +5,7 @@ from .p_comment import comment_views
 from .p_reply import reply_views
 from .farmer_review import review_views
 from .farmer_application import farmer_application_views
+from .product_category import product_category_views
 
 views = [
     user_views,
@@ -14,4 +15,5 @@ views = [
     reply_views,
     review_views,
     farmer_application_views,
+    product_category_views
 ]
