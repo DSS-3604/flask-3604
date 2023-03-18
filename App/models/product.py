@@ -1,4 +1,5 @@
 from App.database import db
+from App.models.user import User
 from datetime import datetime
 
 
@@ -58,6 +59,7 @@ class Product(db.Model):
         return {
             "id": self.id,
             "farmer_id": self.farmer_id,
+            "farmer_name": User.query.filter_by(id=self.farmer_id).first().username,
             "category_id": self.category_id,
             "name": self.name,
             "description": self.description,
