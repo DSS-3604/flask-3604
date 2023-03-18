@@ -34,8 +34,18 @@ class User(db.Model):
     products = db.relationship(
         "Product", backref="user", lazy=True
     )  # products of farmer
-    posted_reviews = db.relationship("FarmerReview", backref="posted", lazy=True, foreign_keys='FarmerReview.farmer_id')  # reviews posted by user
-    received_reviews = db.relationship("FarmerReview", backref="received", lazy=True, foreign_keys='FarmerReview.user_id')  # farmer's reviews received
+    posted_reviews = db.relationship(
+        "FarmerReview",
+        backref="posted",
+        lazy=True,
+        foreign_keys="FarmerReview.farmer_id",
+    )  # reviews posted by user
+    received_reviews = db.relationship(
+        "FarmerReview",
+        backref="received",
+        lazy=True,
+        foreign_keys="FarmerReview.user_id",
+    )  # farmer's reviews received
 
     def __init__(
         self,

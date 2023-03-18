@@ -71,7 +71,10 @@ def create_review_action(id):
     if not farmer:
         return jsonify({"message": "No farmer found"}), 404
     review = create_review(
-        farmer_id=id, user_id=current_identity.id, rating=data["rating"], body=data["body"]
+        farmer_id=id,
+        user_id=current_identity.id,
+        rating=data["rating"],
+        body=data["body"],
     )
     return jsonify({"message": f"review {review.id} created"}), 201
 
@@ -84,7 +87,7 @@ def update_review_action(review_id):
     if review:
         if review.user_id != current_identity.id and not is_admin(current_identity):
             return jsonify({"message": "Not authorized"}), 401
-        if 'rating' in data and 'body' in data:
+        if "rating" in data and "body" in data:
             update_review(review_id, data["rating"], data["body"])
             return jsonify({"message": f"review {review_id} updated"}), 200
         return jsonify({"message": "rating and body required"}), 400

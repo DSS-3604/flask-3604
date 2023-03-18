@@ -48,9 +48,7 @@ def create_reply_action(id):
     if not comment:
         return jsonify({"message": "No comment found"}), 404
     data = request.json
-    reply = create_reply(
-        comment_id=id, user_id=current_identity.id, body=data["body"]
-    )
+    reply = create_reply(comment_id=id, user_id=current_identity.id, body=data["body"])
     return jsonify({"message": f"Reply {reply.id} created"}), 201
 
 

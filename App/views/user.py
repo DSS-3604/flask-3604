@@ -181,7 +181,8 @@ def update_user_action(id):
                     "-Password must contain at least one digit.\n"
                     "-Password must contain at least one uppercase letter.\n"
                     "-Password must contain at least one lowercase letter.\n"
-                    "-New password must be different from the old password.")
+                    "-New password must be different from the old password."
+                )
                 return jsonify({"message": message}), 400
             else:
                 update_user(id=id, password=data["password"])

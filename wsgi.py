@@ -266,14 +266,46 @@ def demo_tests_command():
     update_user(farmer.id, password="farmerpass")
     print(f"farmer_application2: {f_application2.to_json()}")
 
-    product1 = create_product(farmer_id=farmer.id, name="tomato", description="green", image="image", retail_price=1,
-                              wholesale_price=1, wholesale_unit_quantity=1, total_product_quantity=1)
-    product2 = create_product(farmer_id=farmer.id, name="potato", description="brown", image="image", retail_price=1,
-                              wholesale_price=1, wholesale_unit_quantity=1, total_product_quantity=1)
-    product3 = create_product(farmer_id=farmer.id, name="carrot", description="orange", image="image", retail_price=1,
-                              wholesale_price=1, wholesale_unit_quantity=1, total_product_quantity=1)
-    product4 = create_product(farmer_id=farmer.id, name="pepper", description="red", image="image", retail_price=1,
-                              wholesale_price=1, wholesale_unit_quantity=1, total_product_quantity=1)
+    product1 = create_product(
+        farmer_id=farmer.id,
+        name="tomato",
+        description="green",
+        image="image",
+        retail_price=1,
+        wholesale_price=1,
+        wholesale_unit_quantity=1,
+        total_product_quantity=1,
+    )
+    product2 = create_product(
+        farmer_id=farmer.id,
+        name="potato",
+        description="brown",
+        image="image",
+        retail_price=1,
+        wholesale_price=1,
+        wholesale_unit_quantity=1,
+        total_product_quantity=1,
+    )
+    product3 = create_product(
+        farmer_id=farmer.id,
+        name="carrot",
+        description="orange",
+        image="image",
+        retail_price=1,
+        wholesale_price=1,
+        wholesale_unit_quantity=1,
+        total_product_quantity=1,
+    )
+    product4 = create_product(
+        farmer_id=farmer.id,
+        name="pepper",
+        description="red",
+        image="image",
+        retail_price=1,
+        wholesale_price=1,
+        wholesale_unit_quantity=1,
+        total_product_quantity=1,
+    )
     print(f"product1: {product1.to_json()}")
     print(f"product2: {product2.to_json()}")
     print(f"product3: {product3.to_json()}")
@@ -284,7 +316,6 @@ def demo_tests_command():
     comment2 = create_comment(product1.id, admin1.id, "ok")
 
     comment3 = create_comment(product1.id, farmer.id, "good")
-
 
     create_reply(comment1.id, admin1.id, "reply1")
     create_reply(comment2.id, admin1.id, "reply2")
@@ -302,15 +333,12 @@ def demo_tests_command():
     print(f"comment3: {comment3.to_json()}")
     # print(get_all_replies_by_comment_id(comment3.id)
 
-
     review1 = create_review(farmer.id, user1.id, 5, "great service")
     review2 = create_review(farmer.id, admin1.id, 4, "good service")
     review3 = create_review(farmer.id, user1.id, 1, "horrible service")
     print(f"review1: {review1.to_json()}")
     print(f"review2: {review2.to_json()}")
     print(f"review3: {review3.to_json()}")
-
-
 
 
 @test.command("user", help="Run User tests")

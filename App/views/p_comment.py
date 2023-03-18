@@ -1,7 +1,5 @@
 from flask import Blueprint, jsonify, request
 
-from .index import index_views
-
 from App.controllers.p_comment import (
     create_comment,
     get_all_comments,
@@ -45,8 +43,8 @@ def get_comment_by_id_action(id):
 @jwt_required()
 def create_comment_action():
     data = request.json
-    if 'product_id' in data:
-        product = get_product_by_id(data['product_id'])
+    if "product_id" in data:
+        product = get_product_by_id(data["product_id"])
         if not product:
             return jsonify({"message": "No product found"}), 404
     create_comment(
@@ -62,7 +60,10 @@ def update_comment_action(id):
     comment = get_comment_by_id(id)
     if comment:
         if current_identity.id != comment.user_id and not current_identity.is_admin:
-            return jsonify({"message": "You are not allowed to update this comment"}), 403
+            return (
+                jsonify({"message": "You are not allowed to update this comment"}),
+                403,
+            )
         if "body" in data:
             update_comment(id=id, body=data["body"])
         else:
@@ -77,7 +78,10 @@ def delete_comment_action(id):
     comment = get_comment_by_id(id)
     if comment:
         if current_identity.id != comment.user_id and not current_identity.is_admin:
-            return jsonify({"message": "You are not allowed to delete this comment"}), 403
+            return (
+                jsonify({"message": "You are not allowed to delete this comment"}),
+                403,
+            )
         delete_comment(id)
         return jsonify({"message": f"comment {id} deleted"}), 200
     return jsonify({"message": "No comment found"}), 404
