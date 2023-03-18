@@ -155,3 +155,24 @@ def create_su():
         db.session.add(user)
         return db.session.commit()
     return None
+
+
+def create_default_farmer():
+    farmer1 = get_user_by_username("farmer123")
+    farmer2 = get_user_by_email("farmer123@gmail.com")
+    if not farmer1 and not farmer2:
+        from App.controllers.farmer_application import create_farmer_application, approve_farmer_application
+        farmer_application = create_farmer_application(
+                                            "farmer123",
+                                            "farmer123@gmail.com",
+                                            "i want to be a farmer",
+                                            "800-1234",
+                                            "University Drive",
+                                        )
+        farmer = approve_farmer_application(farmer_application.id)
+        farmer.set_password("farmer123")
+        print("farmer created")
+        db.session.add(farmer_application)
+        db.session.add(farmer)
+        return db.session.commit()
+    return None

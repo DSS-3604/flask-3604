@@ -53,13 +53,6 @@ app = create_app()
 migrate = get_migrate(app)
 
 
-# This command creates and initializes the database
-@app.cli.command("init", help="Creates and initializes the database")
-def initialize():
-    create_db(app)
-    print("database initalized")
-
-
 """
 User Commands
 """
@@ -210,7 +203,7 @@ Generic Commands
 @app.cli.command("init")
 def initialize():
     create_db(app)
-    print("database intialized")
+    print("database initialized")
 
 
 @app.cli.command("run")
