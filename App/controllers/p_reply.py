@@ -38,7 +38,8 @@ def update_reply(reply_id, body):
     if reply:
         reply.body = body
         db.session.add(reply)
-        return db.session.commit()
+        db.session.commit()
+        return reply
     return None
 
 

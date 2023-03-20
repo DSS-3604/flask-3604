@@ -39,6 +39,7 @@ def update_product_category(id, name):
     if product_category:
         if name:
             product_category.name = name
+            db.session.add(product_category)
             db.session.commit()
             return product_category
     return None
@@ -58,6 +59,5 @@ def delete_product_category(id):
     product_category = get_product_category_by_id(id)
     if product_category:
         db.session.delete(product_category)
-        db.session.commit()
-        return product_category
+        return db.session.commit()
     return None

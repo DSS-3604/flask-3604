@@ -55,7 +55,8 @@ def update_access(id, access):
     if user:
         user.access = access
         db.session.add(user)
-        return db.session.commit()
+        db.session.commit()
+        return user
     return None
 
 
@@ -115,7 +116,8 @@ def update_user(
         if avatar:
             user.avatar = avatar
         db.session.add(user)
-        return db.session.commit()
+        db.session.commit()
+        return user
     return None
 
 
