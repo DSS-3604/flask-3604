@@ -1,5 +1,6 @@
 from App.database import db
 import datetime
+from App.models.user import User
 
 
 class ProductComment(db.Model):
@@ -27,6 +28,7 @@ class ProductComment(db.Model):
             "id": self.id,
             "product_id": self.product_id,
             "user_id": self.user_id,
+            "user_name": User.query.filter_by(id=self.user_id).first().username,
             "body": self.body,
             "timestamp": self.timestamp,
         }
