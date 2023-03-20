@@ -49,7 +49,7 @@ def identify():
 @user_views.route("/api/users", methods=["POST"])
 def create_user_action():
     data = request.json
-    if not data['email'] or not data['username'] or not data['password']:
+    if not data["email"] or not data["username"] or not data["password"]:
         return jsonify({"message": "Please fill out all fields"}), 400
     user = get_user_by_email(data["email"])
     if user:
@@ -61,7 +61,7 @@ def create_user_action():
         data["username"], data["email"], data["password"], access="user"
     )
     if new_user:
-        return jsonify({"message": f"{data['username']} created successfully"}), 201
+        return jsonify(new_user.to_json()), 201
     return jsonify({"message": "User could not be created"}), 400
 
 
@@ -83,7 +83,7 @@ def create_admin_action():
     )
     if new_user:
         return (
-            jsonify({"message": f"Admin {data['username']} created successfully"}),
+            jsonify(new_user.to_json()),
             201,
         )
     return jsonify({"message": "Admin could not be created"}), 400
@@ -134,13 +134,13 @@ def update_user_action(id):
             if get_user_by_username(data["username"]):
                 return jsonify({"message": "Username already exists"}), 400
             else:
-                update_user(id=id, username=data["username"])
+                user = update_user(id=id, username=data["username"])
         if "email" in data:
             if get_user_by_email(data["email"]):
                 return jsonify({"message": "Email already exists"}), 400
             else:
-                update_user(id=id, email=data["email"])
-        if "password" in data and 'old_password' in data:
+                user = update_user(id=id, email=data["email"])
+        if "password" in data and "old_password" in data:
             if (
                 len(data["password"]) < 8
                 or not re.search(r"\d", data["password"])
@@ -159,18 +159,18 @@ def update_user_action(id):
                 )
                 return jsonify({"message": message}), 400
             else:
-                update_user(id=id, password=data["password"])
+                user = update_user(id=id, password=data["password"])
         if "bio" in data:
-            update_user(id=id, bio=data["bio"])
+            user = update_user(id=id, bio=data["bio"])
         if "phone" in data:
-            update_user(id=id, phone=data["phone"])
+            user = update_user(id=id, phone=data["phone"])
         if "address" in data:
-            update_user(id=id, address=data["address"])
+            user = update_user(id=id, address=data["address"])
         if "currency" in data:
-            update_user(id=id, currency=data["currency"])
+            user = update_user(id=id, currency=data["currency"])
         if "units" in data:
-            update_user(id=id, units=data["units"])
+            user = update_user(id=id, units=data["units"])
         if "avatar" in data:
-            update_user(id=id, avatar=data["avatar"])
-        return jsonify({"message": "User updated successfully"}), 200
+            user = update_user(id=id, avatar=data["avatar"])
+        return jsonify(user.to_json()), 200
     return jsonify({"message": "User not found"}), 404

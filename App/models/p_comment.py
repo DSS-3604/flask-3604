@@ -1,5 +1,6 @@
 from App.database import db
 import datetime
+from App.models.user import User
 
 
 class ProductComment(db.Model):
@@ -13,7 +14,10 @@ class ProductComment(db.Model):
     body = db.Column(db.String(1024), nullable=False)  # body of comment
     timestamp = db.Column(db.DateTime, nullable=False)  # timestamp of comment
     p_replies = db.relationship(
-        "ProductReply", backref="product_comment", lazy=True, cascade="all, delete-orphan"
+        "ProductReply",
+        backref="product_comment",
+        lazy=True,
+        cascade="all, delete-orphan",
     )  # replies to comment
 
     def __init__(self, product_id, user_id, body):
@@ -27,6 +31,7 @@ class ProductComment(db.Model):
             "id": self.id,
             "product_id": self.product_id,
             "user_id": self.user_id,
+            "user_name": User.query.filter_by(id=self.user_id).first().username,
             "body": self.body,
             "timestamp": self.timestamp,
         }

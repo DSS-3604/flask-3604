@@ -49,7 +49,8 @@ def update_review(id, rating, body):
         review.rating = rating
         review.body = body
         db.session.add(review)
-        return db.session.commit()
+        db.session.commit()
+        return review
     return None
 
 

@@ -73,7 +73,9 @@ def create_review_action(id):
         rating=data["rating"],
         body=data["body"],
     )
-    return jsonify({"message": f"review {review.id} created"}), 201
+    if review:
+        return jsonify(review.to_json()), 201
+    return jsonify({"message": "review not created"}), 400
 
 
 @review_views.route("/farmer/review/<int:review_id>", methods=["PUT"])
@@ -85,8 +87,10 @@ def update_review_action(review_id):
         if review.user_id != current_identity.id and not is_admin(current_identity):
             return jsonify({"message": "Not authorized"}), 401
         if "rating" in data and "body" in data:
-            update_review(review_id, data["rating"], data["body"])
-            return jsonify({"message": f"review {review_id} updated"}), 200
+            review = update_review(review_id, data["rating"], data["body"])
+            if review:
+                return jsonify(review.to_json()), 200
+            return jsonify({"message": "review not updated"}), 400
         return jsonify({"message": "rating and body required"}), 400
     return jsonify({"message": f"review {review_id} not found"}), 404
 

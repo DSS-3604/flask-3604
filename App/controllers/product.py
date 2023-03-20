@@ -135,7 +135,8 @@ def update_product(
         if total_product_quantity:
             product.total_product_quantity = total_product_quantity
         db.session.add(product)
-        return db.session.commit()
+        db.session.commit()
+        return product
     return None
 
 

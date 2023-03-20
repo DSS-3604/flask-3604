@@ -34,7 +34,8 @@ def update_farmer_application(id, status="", comment=""):
         if comment:
             f_application.comment = comment
         db.session.add(f_application)
-        return db.session.commit()
+        db.session.commit()
+        return f_application
     return None
 
 
@@ -61,8 +62,7 @@ def delete_farmer_application(id):
     f_application = get_farmer_application_by_id(id)
     if f_application:
         db.session.delete(f_application)
-        db.session.commit()
-        return True
+        return db.session.commit()
     return False
 
 
@@ -70,8 +70,7 @@ def delete_all_farmer_applications():
     f_applications = get_all_farmer_applications()
     for f_application in f_applications:
         db.session.delete(f_application)
-    db.session.commit()
-    return True
+    return db.session.commit()
 
 
 def get_all_approved_farmer_applications():

@@ -15,5 +15,5 @@ views = [
     reply_views,
     review_views,
     farmer_application_views,
-    product_category_views
+    product_category_views,
 ]

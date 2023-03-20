@@ -46,7 +46,8 @@ def update_comment(id, body):
     if comment:
         comment.body = body
         db.session.add(comment)
-        return db.session.commit()
+        db.session.commit()
+        return comment
     return None
 
 
