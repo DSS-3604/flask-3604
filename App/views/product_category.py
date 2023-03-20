@@ -55,9 +55,9 @@ def create_product_category_action():
         return jsonify({"message": "Name is required"}), 400
 
     pc = create_product_category(name=data["name"])
-    if not pc:
-        return jsonify({"message": f"Could not create product category: {data['name']}"}), 400
-    return jsonify({"message": f"Product category {data['name']} created"}), 201
+    if pc:
+        return jsonify(pc.to_json()), 201
+    return jsonify({"message": "Product category could not be created"}), 400
 
 
 # update product category
@@ -70,9 +70,10 @@ def update_product_category_action(id):
 
     if not data["name"]:
         return jsonify({"message": "Name is required"}), 400
-
     pc = update_product_category(id, name=data["name"])
-    return jsonify({"message": f"Product category {data['name']} updated"}), 200
+    if pc:
+        return jsonify(pc.to_json()), 200
+    return jsonify({"message": f"Product category {id} does not exist"}), 404
 
 
 # delete product category
@@ -80,8 +81,7 @@ def update_product_category_action(id):
 @jwt_required()
 def delete_product_category_action(id):
     if not is_admin(current_identity):
-        return jsonify({"message": "You are not authorized to delete a product category"}), 403
-
-    delete_product_category(id)
-    return jsonify({"message": f"Product category {id} deleted"}), 200
-
+        return jsonify({"message": "You are not authorized to delete a product "}), 403
+    if delete_product_category(id):
+        return jsonify({"message": f"Product category {id} deleted"}), 200
+    return jsonify({"message": f"Product category {id} does not exist or could not be deleted"}), 404

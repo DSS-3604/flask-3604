@@ -44,7 +44,9 @@ def create_reply_action(id):
         return jsonify({"message": "No comment found"}), 404
     data = request.json
     reply = create_reply(comment_id=id, user_id=current_identity.id, body=data["body"])
-    return jsonify({"message": f"Reply {reply.id} created"}), 201
+    if reply:
+        return jsonify(reply.to_json()), 201
+    return jsonify({"message": "Could not create reply"}), 500
 
 
 @reply_views.route("/product/comment/reply/<int:id>", methods=["PUT"])
@@ -56,8 +58,11 @@ def update_reply_action(id):
         if not reply.user_id == current_identity.id and not is_admin(current_identity):
             return jsonify({"message": "Not authorized"}), 401
         if "body" in data:
-            update_reply(reply_id=id, body=data["body"])
-        return jsonify({"message": f"Reply {id} updated"}), 200
+            reply = update_reply(reply_id=id, body=data["body"])
+            if reply:
+                return jsonify(reply), 200
+            return jsonify({"message": "Could not update reply"}), 500
+        return jsonify({"message": "No body found"}), 400
     return jsonify({"message": "No reply found"}), 404
 
 

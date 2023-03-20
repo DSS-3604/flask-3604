@@ -64,7 +64,7 @@ def create_product_action():
         return jsonify({"message": "You are not authorized to create a product"}), 403
     if not get_product_category_by_id(data["category_id"]):
         return jsonify({"message": "No product category found"}), 404
-    create_product(
+    product = create_product(
         farmer_id=current_identity.id,
         category_id=data["category_id"],
         name=data["name"],
@@ -75,14 +75,9 @@ def create_product_action():
         wholesale_unit_quantity=data["wholesale_unit_quantity"],
         total_product_quantity=data["total_product_quantity"],
     )
-    return (
-        jsonify(
-            {
-                "message": f"Product {data['name']} created by user: {current_identity.id}"
-            }
-        ),
-        201,
-    )
+    if product:
+        return jsonify(product.to_json()), 201
+    return jsonify({"message": "Product creation failed"}), 500
 
 
 @product_views.route("/products/<int:id>", methods=["GET"])
@@ -132,22 +127,22 @@ def update_product_action(id):
             )
 
         if "name" in data:
-            update_product(id=id, name=data["name"])
+            product = update_product(id=id, name=data["name"])
         if "description" in data:
-            update_product(id=id, description=data["description"])
+            product = update_product(id=id, description=data["description"])
         if "image" in data:
-            update_product(id=id, image=data["image"])
+            product = update_product(id=id, image=data["image"])
         if "retail_price" in data:
-            update_product(id=id, retail_price=data["retail_price"])
+            product = update_product(id=id, retail_price=data["retail_price"])
         if "wholesale_price" in data:
-            update_product(id=id, wholesale_price=data["wholesale_price"])
+            product = update_product(id=id, wholesale_price=data["wholesale_price"])
         if "wholesale_unit_quantity" in data:
-            update_product(
+            product = update_product(
                 id=id, wholesale_unit_quantity=data["wholesale_unit_quantity"]
             )
         if "total_product_quantity" in data:
-            update_product(id=id, total_product_quantity=data["total_product_quantity"])
-        return jsonify({"message": f"Product {id} updated"}), 200
+            product = update_product(id=id, total_product_quantity=data["total_product_quantity"])
+        return jsonify(product.to_json()), 200
     return jsonify({"message": "No product found"}), 404
 
 

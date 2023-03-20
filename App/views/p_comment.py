@@ -31,7 +31,7 @@ def get_comment_by_id_action(id):
     comment = get_comment_by_id_json(id)
     if comment:
         return jsonify(comment), 200
-    return jsonify({}), 404
+    return jsonify([]), 404
 
 
 @comment_views.route("/product/comment", methods=["POST"])
@@ -42,10 +42,12 @@ def create_comment_action():
         product = get_product_by_id(data["product_id"])
         if not product:
             return jsonify({"message": "No product found"}), 404
-    create_comment(
+    comment = create_comment(
         product_id=data["product_id"], user_id=current_identity.id, body=data["body"]
     )
-    return jsonify({"message": f"comment {data['product_id']} created"}), 201
+    if comment:
+        return jsonify(comment.to_json()), 201
+    return jsonify({"message": "Could not create comment"}), 400
 
 
 @comment_views.route("/product/comment/<int:id>", methods=["PUT"])
@@ -60,10 +62,12 @@ def update_comment_action(id):
                 403,
             )
         if "body" in data:
-            update_comment(id=id, body=data["body"])
+            comment = update_comment(id=id, body=data["body"])
+            if comment:
+                return jsonify(comment.to_json()), 200
+            return jsonify({"message": "Could not update comment"}), 400
         else:
             return jsonify({"message": "No data to update"}), 400
-        return jsonify({"message": f"comment {id} updated"}), 200
     return jsonify({"message": "No comment found"}), 404
 
 
