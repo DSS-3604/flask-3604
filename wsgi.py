@@ -147,6 +147,12 @@ def delete_product_command(id):
     delete_product(id)
     print(f"{id} deleted!")
 
+@product_cli.command("create-category", help="Creates a product category")
+@click.argument("name", default="tomato")
+def create_product_category_command(name):
+    product_category = create_product_category(name)
+    print(product_category.to_json())
+
 
 app.cli.add_command(product_cli)
 
