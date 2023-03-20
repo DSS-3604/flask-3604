@@ -49,7 +49,7 @@ def identify():
 @user_views.route("/api/users", methods=["POST"])
 def create_user_action():
     data = request.json
-    if not data['email'] or not data['username'] or not data['password']:
+    if not data["email"] or not data["username"] or not data["password"]:
         return jsonify({"message": "Please fill out all fields"}), 400
     user = get_user_by_email(data["email"])
     if user:
@@ -140,7 +140,7 @@ def update_user_action(id):
                 return jsonify({"message": "Email already exists"}), 400
             else:
                 user = update_user(id=id, email=data["email"])
-        if "password" in data and 'old_password' in data:
+        if "password" in data and "old_password" in data:
             if (
                 len(data["password"]) < 8
                 or not re.search(r"\d", data["password"])

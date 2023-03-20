@@ -136,7 +136,7 @@ def check_password(user, password):
 def create_su():
     user = get_user_by_username("admin123")
     if not user:
-        user = create_admin('admin123', 'admin123@gmail.com', 'admin123')
+        user = create_admin("admin123", "admin123@gmail.com", "admin123")
         print("admin created")
         db.session.add(user)
         return db.session.commit()
@@ -147,16 +147,22 @@ def create_default_farmer():
     farmer1 = get_user_by_username("farmer123")
     farmer2 = get_user_by_email("farmer123@gmail.com")
     if not farmer1 and not farmer2:
-        from App.controllers.farmer_application import create_farmer_application, approve_farmer_application
+        from App.controllers.farmer_application import (
+            create_farmer_application,
+            approve_farmer_application,
+        )
+
         user = create_user(
-                        "farmer123",
-                        "farmer123@gmail.com",
-                        "farmer123",
-                        "i want to be a farmer",
-                        "800-1234",
-                        "University Drive",
-                    )
-        farmer_application = create_farmer_application(user.id, "default farmer account")
+            "farmer123",
+            "farmer123@gmail.com",
+            "farmer123",
+            "i want to be a farmer",
+            "800-1234",
+            "University Drive",
+        )
+        farmer_application = create_farmer_application(
+            user.id, "default farmer account"
+        )
         approve_farmer_application(farmer_application.id)
         print("farmer created")
         db.session.add(farmer_application)

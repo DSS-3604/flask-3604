@@ -14,7 +14,10 @@ class ProductComment(db.Model):
     body = db.Column(db.String(1024), nullable=False)  # body of comment
     timestamp = db.Column(db.DateTime, nullable=False)  # timestamp of comment
     p_replies = db.relationship(
-        "ProductReply", backref="product_comment", lazy=True, cascade="all, delete-orphan"
+        "ProductReply",
+        backref="product_comment",
+        lazy=True,
+        cascade="all, delete-orphan",
     )  # replies to comment
 
     def __init__(self, product_id, user_id, body):

@@ -34,9 +34,7 @@ from App.controllers.product import (
     delete_product,
 )
 
-from App.controllers.product_category import (
-    create_product_category
-)
+from App.controllers.product_category import create_product_category
 
 from App.controllers.p_reply import (
     create_reply,
@@ -229,17 +227,9 @@ def demo_tests_command():
         "800-1234",
         "University Drive",
     )
-    user2 = create_user(
-        "farmerguy1",
-        "farmerguy1@gmail.com",
-        "farmerguy1",
-        "user"
-    )
+    user2 = create_user("farmerguy1", "farmerguy1@gmail.com", "farmerguy1", "user")
     user3 = create_user(
-        "farmerguy321",
-        "farmerguy321@gmail.com",
-        "farmerguy321",
-        "user"
+        "farmerguy321", "farmerguy321@gmail.com", "farmerguy321", "user"
     )
     print(f"admin1: {admin1.to_json()}")
     print(f"user1: {user1.to_json()}")

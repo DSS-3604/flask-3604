@@ -14,7 +14,9 @@ from App.controllers.product_category import (
 from App.controllers.user import is_admin
 
 
-product_category_views = Blueprint("product_category_views", __name__, template_folder="../templates")
+product_category_views = Blueprint(
+    "product_category_views", __name__, template_folder="../templates"
+)
 
 
 @product_category_views.route("/product_categories", methods=["GET"])
@@ -49,7 +51,10 @@ def get_product_category_by_name_action(name):
 def create_product_category_action():
     data = request.json
     if not is_admin(current_identity):
-        return jsonify({"message": "You are not authorized to create a product category"}), 403
+        return (
+            jsonify({"message": "You are not authorized to create a product category"}),
+            403,
+        )
 
     if not data["name"]:
         return jsonify({"message": "Name is required"}), 400
@@ -66,7 +71,10 @@ def create_product_category_action():
 def update_product_category_action(id):
     data = request.json
     if not is_admin(current_identity):
-        return jsonify({"message": "You are not authorized to update a product category"}), 403
+        return (
+            jsonify({"message": "You are not authorized to update a product category"}),
+            403,
+        )
 
     if not data["name"]:
         return jsonify({"message": "Name is required"}), 400
@@ -84,4 +92,9 @@ def delete_product_category_action(id):
         return jsonify({"message": "You are not authorized to delete a product "}), 403
     if delete_product_category(id):
         return jsonify({"message": f"Product category {id} deleted"}), 200
-    return jsonify({"message": f"Product category {id} does not exist or could not be deleted"}), 404
+    return (
+        jsonify(
+            {"message": f"Product category {id} does not exist or could not be deleted"}
+        ),
+        404,
+    )

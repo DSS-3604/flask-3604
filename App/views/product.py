@@ -2,8 +2,6 @@ from flask import Blueprint, jsonify, request
 
 from flask_jwt import jwt_required, current_identity
 
-from datetime import datetime, timedelta
-
 from App.controllers.product import (
     create_product,
     get_product_by_id,
@@ -141,7 +139,9 @@ def update_product_action(id):
                 id=id, wholesale_unit_quantity=data["wholesale_unit_quantity"]
             )
         if "total_product_quantity" in data:
-            product = update_product(id=id, total_product_quantity=data["total_product_quantity"])
+            product = update_product(
+                id=id, total_product_quantity=data["total_product_quantity"]
+            )
         return jsonify(product.to_json()), 200
     return jsonify({"message": "No product found"}), 404
 
