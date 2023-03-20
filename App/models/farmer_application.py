@@ -1,5 +1,6 @@
 from App.database import db
 import datetime
+from App.models.user import User
 
 
 class FarmerApplication(db.Model):
@@ -23,6 +24,7 @@ class FarmerApplication(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
+            "user_name": User.query.filter_by(id=self.user_id).first().username,
             "status": self.status,
             "comment": self.comment,
         }
