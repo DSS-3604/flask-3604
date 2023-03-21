@@ -73,4 +73,5 @@ class Product(db.Model):
             "wholesale_unit_quantity": self.wholesale_unit_quantity,
             "total_product_quantity": self.total_product_quantity,
             "comments": [comment.to_json() for comment in self.comments],
+            "timestamp": self.timestamp,
         }
