@@ -10,7 +10,7 @@ from App.controllers.product import (
     get_all_products_json,
     get_products_by_farmer_id_json,
     get_products_past_week_json,
-    get_products_by_category_id,
+    get_products_by_category_id_json,
 )
 
 from App.controllers.product_category import (
@@ -89,7 +89,7 @@ def get_product_by_id_action(id):
 # get product by product category
 @product_views.route("/products/category/<int:id>", methods=["GET"])
 def get_product_by_category_id_action(id):
-    products = get_products_by_category_id(id)
+    products = get_products_by_category_id_json(id)
     if products:
         return jsonify(products), 200
     return jsonify({"message": "No products found"}), 404
