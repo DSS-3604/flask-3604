@@ -30,6 +30,7 @@ class FarmerReview(db.Model):
             "farmer_name": User.query.filter_by(id=self.farmer_id).first().username,
             "user_id": self.user_id,
             "user_name": User.query.filter_by(id=self.user_id).first().username,
+            "user_avatar": User.query.filter_by(id=self.user_id).first().avatar,
             "rating": self.rating,
             "body": self.body,
             "timestamp": self.timestamp,
