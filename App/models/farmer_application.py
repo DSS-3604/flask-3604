@@ -27,4 +27,5 @@ class FarmerApplication(db.Model):
             "user_name": User.query.filter_by(id=self.user_id).first().username,
             "status": self.status,
             "comment": self.comment,
+            "timestamp": self.timestamp,
         }

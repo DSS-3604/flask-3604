@@ -1,5 +1,6 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 from App.database import db
+import datetime
 
 
 class User(db.Model):
@@ -47,6 +48,7 @@ class User(db.Model):
     f_application = db.relationship(
         "FarmerApplication", backref="user", lazy=True
     )  # farmer application of user
+    timestamp = db.Column(db.DateTime, nullable=False)  # date created
 
     def __init__(
         self,
@@ -71,6 +73,7 @@ class User(db.Model):
         self.currency = currency
         self.units = units
         self.avatar = avatar
+        self.timestamp = datetime.datetime.now()
 
     def to_json(self):
         return {
@@ -84,6 +87,7 @@ class User(db.Model):
             "units": self.units,
             "avatar": self.avatar,
             "access": self.access,
+            "timestamp": self.timestamp,
         }
 
     def set_password(self, password):
