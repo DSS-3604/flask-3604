@@ -6,3 +6,4 @@ from .p_reply import *
 from .farmer_application import *
 from .farmer_review import *
 from .product_category import *
+from .contact_form import *
