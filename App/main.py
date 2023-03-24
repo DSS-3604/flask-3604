@@ -53,8 +53,9 @@ def create_app(config={}):
     setup_jwt(app)
     with app.app_context() as app_context:
         from App.controllers.user import create_su, create_default_farmer
-
+        from App.controllers.dummy_data import create_dummy_data
         create_su()
         create_default_farmer()
+        create_dummy_data()
         app_context.push()
     return app
