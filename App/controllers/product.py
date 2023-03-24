@@ -120,6 +120,7 @@ def get_products_by_name_json(name):
 
 def update_product(
     id,
+    category_id=None,
     name=None,
     description=None,
     image=None,
@@ -144,6 +145,8 @@ def update_product(
             product.wholesale_unit_quantity = wholesale_unit_quantity
         if total_product_quantity:
             product.total_product_quantity = total_product_quantity
+        if category_id:
+            product.category_id = category_id
         db.session.add(product)
         db.session.commit()
         return product

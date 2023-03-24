@@ -162,6 +162,8 @@ def update_product_action(id):
             product = update_product(
                 id=id, total_product_quantity=data["total_product_quantity"]
             )
+        if "category_id" in data:
+            product = update_product(id=id, category_id=data["category_id"])
         return jsonify(product.to_json()), 200
     return jsonify({"message": "No product found"}), 404
 
