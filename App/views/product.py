@@ -48,19 +48,17 @@ def get_all_products_action():
     return jsonify({"message": "No products found"}), 404
 
 
-@product_views.route("/products/search", methods=["GET"])
-def search_products_action():
-    data = request.json
-    products = search_products_by_name_json(data["name"])
+@product_views.route("/products/search/<string:name>", methods=["GET"])
+def search_products_action(name):
+    products = search_products_by_name_json(name)
     if products:
         return jsonify(products), 200
     return jsonify({"message": "No products found"}), 404
 
 
-@product_views.route("/products/search/recent", methods=["GET"])
-def search_recent_products_action():
-    data = request.json
-    products = search_products_by_name_past_week_json(data["name"])
+@product_views.route("/products/search/recent/<string:name>", methods=["GET"])
+def search_recent_products_action(name):
+    products = search_products_by_name_past_week_json(name)
     if products:
         return jsonify(products), 200
     return jsonify({"message": "No recent products found"}), 404
