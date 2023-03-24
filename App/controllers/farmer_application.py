@@ -1,6 +1,7 @@
 from App.models.farmer_application import FarmerApplication
 from App.controllers.user import update_access
 from App.database import db
+import datetime
 
 
 def create_farmer_application(user_id, comment):
@@ -33,6 +34,7 @@ def update_farmer_application(id, status="", comment=""):
             f_application.status = status
         if comment:
             f_application.comment = comment
+        f_application.updated_timestamp = datetime.datetime.now()
         db.session.add(f_application)
         db.session.commit()
         return f_application
