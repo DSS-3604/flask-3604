@@ -16,7 +16,7 @@ class Product(db.Model):
     )  # foreign key links to product_category.id in product_category table
     name = db.Column(db.String, nullable=False)  # name of product
     description = db.Column(db.String, nullable=False)  # description of product
-    image = db.Column(db.String, nullable=False)  # image of product
+    image = db.Column(db.String, nullable=False, default="https://s3.eu-west-2.amazonaws.com/devo.core.images/products/b1bf55b2-18c6-4184-9522-72b28b13d62d_5054073003722.png")  # image of product
     retail_price = db.Column(
         db.Float(decimal_return_scale=2), nullable=False
     )  # price of product
