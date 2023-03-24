@@ -1,4 +1,5 @@
 from App.database import db
+from datetime import datetime
 
 
 class ProductCategory(db.Model):
@@ -7,9 +8,11 @@ class ProductCategory(db.Model):
     products = db.relationship(
         "Product", backref="category", lazy=True, cascade="all, delete-orphan"
     )
+    timestamp = db.Column(db.DateTime, nullable=False)
 
     def __init__(self, name):
         self.name = name
+        self.timestamp = datetime.now()
 
     def to_json(self):
         return {
