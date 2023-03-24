@@ -32,6 +32,7 @@ from App.controllers.product import (
     get_all_products_json,
     update_product,
     delete_product,
+    search_products_by_name_json,
 )
 
 from App.controllers.product_category import create_product_category
@@ -330,6 +331,13 @@ def demo_tests_command():
     print(f"review1: {review1.to_json()}")
     print(f"review2: {review2.to_json()}")
     print(f"review3: {review3.to_json()}")
+
+
+@test.command("product", help="Search for products")
+@click.argument("name")
+def product_search_command(name):
+    products = search_products_by_name_json(name)
+    print(products)
 
 
 @test.command("user", help="Run User tests")

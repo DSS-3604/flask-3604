@@ -11,6 +11,8 @@ from App.controllers.product import (
     get_products_by_farmer_id_json,
     get_products_past_week_json,
     get_products_by_category_id_json,
+    search_products_by_name_json,
+    search_products_by_name_past_week_json,
 )
 
 from App.controllers.product_category import (
@@ -44,6 +46,24 @@ def get_all_products_action():
     if products:
         return jsonify(products), 200
     return jsonify({"message": "No products found"}), 404
+
+
+@product_views.route("/products/search", methods=["GET"])
+def search_products_action():
+    data = request.json
+    products = search_products_by_name_json(data["name"])
+    if products:
+        return jsonify(products), 200
+    return jsonify({"message": "No products found"}), 404
+
+
+@product_views.route("/products/search/recent", methods=["GET"])
+def search_recent_products_action():
+    data = request.json
+    products = search_products_by_name_past_week_json(data["name"])
+    if products:
+        return jsonify(products), 200
+    return jsonify({"message": "No recent products found"}), 404
 
 
 @product_views.route("/products/recent", methods=["GET"])

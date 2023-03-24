@@ -30,6 +30,16 @@ def create_product(
     return product
 
 
+def search_products_by_name_json(name):
+    products = Product.query.filter().all()
+    return [product.to_json() for product in products if name in product.name]
+
+
+def search_products_by_name_past_week_json(name):
+    products = get_products_past_week()
+    return [product.to_json() for product in products if name in product.name]
+
+
 def get_products_by_category_id(category_id):
     return Product.query.filter_by(category_id=category_id).all()
 
