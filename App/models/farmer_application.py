@@ -8,7 +8,8 @@ class FarmerApplication(db.Model):
     status = db.Column(db.String(120), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     comment = db.Column(db.String(1024), nullable=True)
-    timestamp = db.Column(db.DateTime, nullable=False)
+    created_timestamp = db.Column(db.DateTime, nullable=False)
+    updated_timestamp = db.Column(db.DateTime, nullable=False)
 
     def __init__(
         self,
@@ -18,7 +19,8 @@ class FarmerApplication(db.Model):
         self.user_id = user_id
         self.status = "Pending"
         self.comment = comment
-        self.timestamp = datetime.datetime.now()
+        self.created_timestamp = datetime.datetime.now()
+        self.updated_timestamp = datetime.datetime.now()
 
     def to_json(self):
         return {
@@ -27,5 +29,6 @@ class FarmerApplication(db.Model):
             "user_name": User.query.filter_by(id=self.user_id).first().username,
             "status": self.status,
             "comment": self.comment,
-            "timestamp": self.timestamp,
+            "created_timestamp": self.created_timestamp,
+            "updated_timestamp": self.updated_timestamp,
         }
