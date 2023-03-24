@@ -45,6 +45,10 @@ from App.controllers.farmer_review import (
     create_review,
 )
 
+from App.controllers.dummy_data import (
+    create_dummy_data,
+)
+
 # This commands file allow you to create convenient CLI commands for testing controllers
 
 app = create_app()
@@ -259,7 +263,6 @@ def demo_tests_command():
         category_id=category1.id,
         name="cherry tomato",
         description="red",
-        image="image",
         retail_price=1,
         wholesale_price=1,
         wholesale_unit_quantity=1,
@@ -270,7 +273,6 @@ def demo_tests_command():
         category_id=category2.id,
         name="idaho potato",
         description="brown",
-        image="image",
         retail_price=1,
         wholesale_price=1,
         wholesale_unit_quantity=1,
@@ -281,7 +283,6 @@ def demo_tests_command():
         category_id=category3.id,
         name="baby carrot",
         description="orange",
-        image="image",
         retail_price=1,
         wholesale_price=1,
         wholesale_unit_quantity=1,
@@ -292,7 +293,6 @@ def demo_tests_command():
         category_id=category4.id,
         name="scorpion pepper",
         description="red",
-        image="image",
         retail_price=1,
         wholesale_price=1,
         wholesale_unit_quantity=1,
@@ -332,6 +332,21 @@ def demo_tests_command():
     print(f"review2: {review2.to_json()}")
     print(f"review3: {review3.to_json()}")
 
+
+# create dummy data
+@test.command("dummy", help="Run Dummy tests")
+def create_dummy_data_command():
+    create_dummy_data()
+
+
+# get all products then
+#replace all product images with "https://s3.eu-west-2.amazonaws.com/devo.core.images/products/b1bf55b2-18c6-4184-9522-72b28b13d62d_5054073003722.png"
+@test.command("images", help="Replace all product images with a default image")
+def replace_all_product_images_command():
+    products = get_all_products()
+    for product in products:
+        update_product(id=product.id, image="https://s3.eu-west-2.amazonaws.com/devo.core.images/products/b1bf55b2-18c6-4184-9522-72b28b13d62d_5054073003722.png")
+    print("All product images replaced with default image")
 
 @test.command("product", help="Search for products")
 @click.argument("name")
