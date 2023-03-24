@@ -97,6 +97,10 @@ def create_dummy_farmers():
 
 # create dummy data
 def create_dummy_data():
-    create_dummy_users()
-    create_dummy_admins()
-    create_dummy_farmers()
+    user = get_user_by_username("user0")
+    if user is None:
+        create_dummy_users()
+        create_dummy_admins()
+        create_dummy_farmers()
+        return True
+    return False
