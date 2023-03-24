@@ -8,7 +8,7 @@ def create_product(
     category_id,
     name,
     description,
-    image,
+    image=None,
     retail_price=1,
     wholesale_price=1,
     wholesale_unit_quantity=1,
