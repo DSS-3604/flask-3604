@@ -83,6 +83,22 @@ def get_all_users_json():
     return [user.to_json() for user in get_all_users()]
 
 
+def get_all_farmers():
+    return User.query.filter_by(access="farmer").all()
+
+
+def get_all_farmers_json():
+    return [farmer.to_json() for farmer in get_all_farmers()]
+
+
+def get_all_admins():
+    return User.query.filter_by(access="admin").all()
+
+
+def get_all_admins_json():
+    return [admin.to_json() for admin in get_all_admins()]
+
+
 def update_user(
     id,
     username="",
