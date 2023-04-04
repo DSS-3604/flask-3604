@@ -30,6 +30,13 @@ def get_all_contact_forms():
     return None
 
 
+def get_all_contact_forms_json():
+    contact_forms = get_all_contact_forms()
+    if contact_forms:
+        return [contact_form.to_json() for contact_form in contact_forms]
+    return None
+
+
 def delete_contact_form_by_id(id):
     contact_form = ContactForm.query.filter_by(id=id).first()
     if contact_form:
