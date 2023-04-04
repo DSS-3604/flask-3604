@@ -6,48 +6,52 @@ import datetime
 class User(db.Model):
     id = db.Column(
         db.Integer, primary_key=True
-    )  # primary keys are required by SQLAlchemy
-    # mandatory fields
+    )
     username = db.Column(db.String(120), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
-    password = db.Column(db.String(120), nullable=False)  # password of user
-    access = db.Column(db.String(32), nullable=False)  # access level of user
+    password = db.Column(db.String(120), nullable=False)
+    access = db.Column(db.String(32), nullable=False)
     currency = db.Column(
         db.String(120), nullable=False, default="USD"
-    )  # preferred currency of user
+    )
     units = db.Column(
         db.String(10), nullable=False, default="kg"
-    )  # preferred units of user
-    # optional fields
-    bio = db.Column(db.String(1024), nullable=True)  # bio of user
-    phone = db.Column(db.String(120), nullable=True)  # phone number of user
-    address = db.Column(db.String(120), nullable=True)  # address of user
-    avatar = db.Column(db.String(120), nullable=True)  # avatar of user
-    # relationships
+    )
+    bio = db.Column(db.String(1024), nullable=True)
+    phone = db.Column(db.String(120), nullable=True)
+    address = db.Column(db.String(120), nullable=True)
+    avatar = db.Column(db.String(120), nullable=True)
+    # comments posted by user
     p_comments = db.relationship(
         "ProductComment", backref="user", lazy=True
-    )  # comments of product
+    )
+    # replies posted by user
     p_replies = db.relationship(
         "ProductReply", backref="user", lazy=True
-    )  # replies to comment
+    )
+    # products posted by user
     products = db.relationship(
         "Product", backref="user", lazy=True
-    )  # products of farmer
+    )
+    # reviews posted by user
     posted_reviews = db.relationship(
         "FarmerReview",
         backref="posted",
         lazy=True,
         foreign_keys="FarmerReview.farmer_id",
-    )  # reviews posted by user
+    )
+    # reviews received by user
     received_reviews = db.relationship(
         "FarmerReview",
         backref="received",
         lazy=True,
         foreign_keys="FarmerReview.user_id",
-    )  # farmer's reviews received
+    )
+    # applications posted by user
     f_application = db.relationship(
         "FarmerApplication", backref="user", lazy=True
-    )  # farmer application of user
+    )
+    # timestamp of user creation
     timestamp = db.Column(db.DateTime, nullable=False)  # date created
 
     def __init__(
