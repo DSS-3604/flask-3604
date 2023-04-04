@@ -1,12 +1,7 @@
-from App.models import *
 from App.controllers.user import *
 from App.controllers.farmer_application import *
 from App.controllers.product import *
 from App.controllers.product_category import *
-from App.controllers.farmer_review import *
-from App.controllers.p_comment import *
-from App.controllers.p_reply import *
-from App.database import db
 import random
 
 # create 10 dummy regular users
