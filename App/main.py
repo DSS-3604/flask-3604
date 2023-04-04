@@ -3,6 +3,7 @@ from flask import Flask
 from flask_uploads import DOCUMENTS, IMAGES, TEXT, UploadSet, configure_uploads
 from flask_cors import CORS
 from datetime import timedelta
+import flask_excel as excel
 
 from App.database import create_db
 
@@ -48,6 +49,7 @@ def create_app(config={}):
     app.config["UPLOADED_PHOTOS_DEST"] = "App/uploads"
     photos = UploadSet("photos", TEXT + DOCUMENTS + IMAGES)
     configure_uploads(app, photos)
+    excel.init_excel(app)
     add_views(app)
     create_db(app)
     setup_jwt(app)
