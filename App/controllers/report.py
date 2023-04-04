@@ -112,7 +112,7 @@ def get_average_farmer_rating():
 
 
 # function to get farmers and the number of products they have that have been created or updated in the past week
-def get_new_products_by_farmer():
+def get_new_product_count_by_farmer():
     farmers = User.query.filter(User.access == "farmer").all()
     new_product_count_by_farmer = {}
     for farmer in farmers:
