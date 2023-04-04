@@ -1,20 +1,15 @@
-import os, tempfile, pytest, logging, unittest
-from werkzeug.security import check_password_hash, generate_password_hash
+import os
+import logging
+import pytest
+import unittest
+from werkzeug.security import generate_password_hash, check_password_hash
+import time
 
-from App.main import create_app
+from App.controllers.auth import authenticate
+from App.controllers.user import is_admin
 from App.database import create_db
-from App.models import User
-from App.controllers import (
-    create_user,
-    get_all_users_json,
-    authenticate,
-    get_user,
-    get_user_by_username,
-    update_user,
-)
-
+from App.models import User, Product, ProductCategory, ProductComment, ProductReply, FarmerReview, FarmerApplication, ContactForm
 from wsgi import app
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -25,25 +20,45 @@ LOGGER = logging.getLogger(__name__)
 
 class UserUnitTests(unittest.TestCase):
     def test_new_user(self):
-        user = User("bob", "bobpass")
-        assert user.username == "bob"
+        user = User("bob3578", "bob3578@gmail.com", "bobpass")
+        assert user.username == "bob3578"
 
-    # pure function no side effects or integrations called
-    def test_toJSON(self):
-        user = User("bob", "bobpass")
-        user_json = user.toJSON()
-        self.assertDictEqual(user_json, {"id": None, "username": "bob"})
+    def test_new_admin_user(self):
+        user = User("bob3579", "bob3579@gmail.com", "bobpass", access="admin")
+        assert user.access == "admin"
+
+    def test_new_normal_user(self):
+        user = User("bob3580", "bob3580@gmail.com", "bobpass")
+        assert user.access == "user"
+
+    def test_user_is_admin(self):
+        user = User("bob3579", "bob3579@gmail.com", "bobpass", access="admin")
+        assert user.access == "admin"
+
+    def test_user_is_not_admin(self):
+        user = User("bob3579", "bob3579@gmail.com", "bobpass")
+        assert user.access != "admin"
 
     def test_hashed_password(self):
         password = "mypass"
         hashed = generate_password_hash(password, method="sha256")
-        user = User("bob", password)
+        user = User("bob3579", "bob3579@gmail.com", password)
         assert user.password != password
 
     def test_check_password(self):
         password = "mypass"
-        user = User("bob", password)
+        user = User("bob3579", "bob3579@gmail.com", password)
         assert user.check_password(password)
+
+    def test_correct_password(self):
+        user = User("bob3579", "bob3579@gmail.com", "mypass")
+        assert user.check_password("mypass")
+
+    def test_incorrect_password(self):
+        user = User("bob3579", "bob3579@gmail.com", "mypass")
+        assert not user.check_password("wrongpass")
+
+
 
 
 """
@@ -58,7 +73,7 @@ def empty_db():
     app.config.update({"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///test.db"})
     create_db(app)
     yield app.test_client()
-    os.unlink(os.getcwd() + "/App/test.db")
+    os.remove("C:\\Users\\Satyaan\\Desktop\\flask-3604\\App\\test.db")
 
 
 def test_authenticate():
