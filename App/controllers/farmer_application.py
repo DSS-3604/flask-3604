@@ -27,6 +27,11 @@ def get_all_farmer_applications():
     return FarmerApplication.query.all()
 
 
+def get_all_farmer_applications_json():
+    return [f_application.to_json() for f_application in get_all_farmer_applications()]
+
+
+
 def update_farmer_application(id, status="", comment=""):
     f_application = get_farmer_application_by_id(id)
     if f_application:
