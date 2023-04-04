@@ -74,6 +74,18 @@ def get_products_report_action():
     return excel.make_response_from_records(products, "csv")
 
 
+# export all products created in the last 7 days to excel
+@report_views.route("/api/reports/export/products/week", methods=["GET"])
+@jwt_required()
+def get_products_report_week_action():
+    if not is_admin(current_identity):
+        return jsonify({"message": "You are not authorized to view all products"}), 401
+    products = get_products_past_week_json()
+    if not products:
+        return jsonify({"message": "No products found"}), 404
+    return excel.make_response_from_records(products, "csv")
+
+
 # Export all product categories to excel
 @report_views.route("/api/reports/export/product_categories", methods=["GET"])
 @jwt_required()
