@@ -1,5 +1,6 @@
 from App.models.product_category import ProductCategory
 from App.database import db
+from datetime import datetime
 
 
 def get_products_by_category_name(name):
@@ -42,6 +43,7 @@ def update_product_category(id, name):
     if product_category:
         if name:
             product_category.name = name
+            product_category.updated_timestamp = datetime.now()
             db.session.add(product_category)
             db.session.commit()
             return product_category

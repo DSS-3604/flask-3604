@@ -147,6 +147,7 @@ def update_product(
             product.total_product_quantity = total_product_quantity
         if category_id:
             product.category_id = category_id
+        product.updated_timestamp = datetime.now()
         db.session.add(product)
         db.session.commit()
         return product

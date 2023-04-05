@@ -1,5 +1,5 @@
 from App.database import db
-import datetime
+from datetime import datetime
 from App.models.user import User
 
 
@@ -15,13 +15,15 @@ class FarmerReview(db.Model):
     rating = db.Column(db.Integer, nullable=False)  # rating of farmer
     body = db.Column(db.String(1024), nullable=False)  # body of comment
     timestamp = db.Column(db.DateTime, nullable=False)  # timestamp of comment
+    updated_timestamp = db.Column(db.DateTime, nullable=False)
 
     def __init__(self, farmer_id, user_id, rating, body):
         self.farmer_id = farmer_id
         self.user_id = user_id
         self.rating = rating
         self.body = body
-        self.timestamp = datetime.datetime.now()
+        self.timestamp = datetime.now()
+        self.updated_timestamp = datetime.now()
 
     def to_json(self):
         return {
@@ -34,4 +36,5 @@ class FarmerReview(db.Model):
             "rating": self.rating,
             "body": self.body,
             "timestamp": self.timestamp,
+            "updated_timestamp": self.updated_timestamp,
         }

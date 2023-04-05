@@ -1,6 +1,6 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 from App.database import db
-import datetime
+from datetime import datetime
 
 
 class User(db.Model):
@@ -53,6 +53,7 @@ class User(db.Model):
     )
     # timestamp of user creation
     timestamp = db.Column(db.DateTime, nullable=False)  # date created
+    updated_timestamp = db.Column(db.DateTime, nullable=False)  # date updated
 
     def __init__(
         self,
@@ -77,7 +78,8 @@ class User(db.Model):
         self.currency = currency
         self.units = units
         self.avatar = avatar
-        self.timestamp = datetime.datetime.now()
+        self.timestamp = datetime.now()
+        self.updated_timestamp = datetime.now()
 
     def to_json(self):
         return {
@@ -92,6 +94,7 @@ class User(db.Model):
             "avatar": self.avatar,
             "access": self.access,
             "timestamp": self.timestamp,
+            "updated_timestamp": self.updated_timestamp,
         }
 
     def set_password(self, password):

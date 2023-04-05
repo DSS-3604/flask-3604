@@ -1,5 +1,6 @@
 from App.models.p_comment import ProductComment
 from App.database import db
+from datetime import datetime
 
 
 def create_comment(product_id, user_id, body):
@@ -45,6 +46,7 @@ def update_comment(id, body):
     comment = get_comment_by_id(id)
     if comment:
         comment.body = body
+        comment.updated_timestamp = datetime.now()
         db.session.add(comment)
         db.session.commit()
         return comment

@@ -1,7 +1,7 @@
 from App.database import db
 from App.models.user import User
 from App.models.product_category import ProductCategory
-import datetime
+from datetime import datetime
 
 
 class Product(db.Model):
@@ -31,6 +31,7 @@ class Product(db.Model):
         "ProductComment", backref="product", lazy=True, cascade="all, delete-orphan"
     )  # comments of product
     timestamp = db.Column(db.DateTime, nullable=False)  # timestamp of product creation
+    updated_timestamp = db.Column(db.DateTime, nullable=False)  # timestamp of product update
 
     def __init__(
         self,
@@ -53,7 +54,9 @@ class Product(db.Model):
         self.wholesale_price = wholesale_price
         self.wholesale_unit_quantity = wholesale_unit_quantity
         self.total_product_quantity = total_product_quantity
-        self.timestamp = datetime.datetime.now()
+        self.timestamp = datetime.now()
+        self.updated_timestamp = datetime.now()
+
 
     def to_json(self):
         return {
@@ -73,4 +76,5 @@ class Product(db.Model):
             "total_product_quantity": self.total_product_quantity,
             "comments": [comment.to_json() for comment in self.comments],
             "timestamp": self.timestamp,
+            "updated_timestamp": self.updated_timestamp,
         }

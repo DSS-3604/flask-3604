@@ -1,5 +1,6 @@
 from App.models.user import User
 from App.database import db
+from datetime import datetime
 
 
 def create_user(
@@ -54,6 +55,7 @@ def update_access(id, access):
     user = get_user_by_id(id)
     if user:
         user.access = access
+        user.updated_timestamp = datetime.utcnow()
         db.session.add(user)
         db.session.commit()
         return user
@@ -131,6 +133,7 @@ def update_user(
             user.units = units
         if avatar:
             user.avatar = avatar
+        user.updated_timestamp = datetime.utcnow()
         db.session.add(user)
         db.session.commit()
         return user

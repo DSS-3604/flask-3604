@@ -1,5 +1,5 @@
 from App.database import db
-import datetime
+from datetime import datetime
 
 
 class ContactForm(db.Model):
@@ -21,7 +21,7 @@ class ContactForm(db.Model):
         self.phone = phone
         self.email = email
         self.message = message
-        self.timestamp = datetime.datetime.now()
+        self.timestamp = datetime.now()
 
     def to_json(self):
         return {

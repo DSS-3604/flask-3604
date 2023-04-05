@@ -1,5 +1,6 @@
 from App.models.p_reply import ProductReply
 from App.database import db
+from datetime import datetime
 
 
 def create_reply(comment_id, user_id, body):
@@ -37,6 +38,7 @@ def update_reply(reply_id, body):
     reply = get_reply_by_id(reply_id)
     if reply:
         reply.body = body
+        reply.updated_timestamp = datetime.now()
         db.session.add(reply)
         db.session.commit()
         return reply

@@ -1,5 +1,6 @@
 from App.models.farmer_review import FarmerReview
 from App.database import db
+from datetime import datetime
 
 
 def create_review(farmer_id, user_id, rating, body):
@@ -48,6 +49,7 @@ def update_review(id, rating, body):
     if review:
         review.rating = rating
         review.body = body
+        review.updated_timestamp = datetime.now()
         db.session.add(review)
         db.session.commit()
         return review

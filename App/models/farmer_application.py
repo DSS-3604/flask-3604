@@ -1,5 +1,5 @@
 from App.database import db
-import datetime
+from datetime import datetime
 from App.models.user import User
 
 
@@ -19,8 +19,8 @@ class FarmerApplication(db.Model):
         self.user_id = user_id
         self.status = "Pending"
         self.comment = comment
-        self.created_timestamp = datetime.datetime.now()
-        self.updated_timestamp = datetime.datetime.now()
+        self.created_timestamp = datetime.now()
+        self.updated_timestamp = datetime.now()
 
     def to_json(self):
         return {
