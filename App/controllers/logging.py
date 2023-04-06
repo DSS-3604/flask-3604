@@ -1,7 +1,7 @@
 from App.models.logging import Logging
 from App.controllers import get_user_by_id
 from App.database import db
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def create_log(user_id, action, description):
@@ -17,6 +17,14 @@ def get_all_logs():
 
 def get_all_logs_json():
     return [log.to_json() for log in get_all_logs()]
+
+
+def get_all_logs_week():
+    return Logging.query.filter(Logging.timestamp >= datetime.now() - timedelta(days=7)).all()
+
+
+def get_all_logs_week_json():
+    return [log.to_json() for log in get_all_logs_week()]
 
 
 def get_log_by_id(id):
