@@ -2,9 +2,33 @@ from flask import Blueprint, jsonify
 from flask_jwt import jwt_required, current_identity
 import flask_excel as excel
 
-# import all functions form /controllers/report.py
-from App.controllers.report import *
+from App.controllers.user import is_admin, get_all_users_json, get_all_farmers_json
+from App.controllers.product import get_all_products_json, get_products_past_week_json
+from App.controllers.product_category import get_product_categories_json
+from App.controllers.contact_form import get_all_contact_forms_json
+from App.controllers.farmer_application import get_all_farmer_applications_json
+from App.controllers.farmer_review import get_all_reviews_json
 
+# import all functions form /controllers/report.py
+from App.controllers.report import (
+    get_new_user_count,
+    get_new_farmer_count,
+    get_new_product_count,
+    get_new_contact_form_count,
+    get_new_product_category_count,
+    get_total_user_count,
+    get_total_farmer_count,
+    get_product_count,
+    get_total_category_count,
+    get_total_contact_form_count,
+    get_total_farmer_application_count,
+    get_total_approved_farmer_application_count,
+    get_total_rejected_farmer_application_count,
+    get_total_pending_farmer_application_count,
+    get_total_farmer_review_count,
+    get_average_farmer_rating,
+    get_new_product_count_by_farmer,
+)
 
 
 report_views = Blueprint("report_views", __name__, template_folder="../templates")
