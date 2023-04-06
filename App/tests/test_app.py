@@ -397,7 +397,7 @@ def empty_db():
     app.config.update({"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///test.db"})
     create_db(app)
     yield app.test_client()
-    os.remove(os.getcwd().replace("tests", "\\test.db"))
+    # os.remove(os.getcwd().replace("tests", "\\test.db"))
 
 
 class AuthIntegrationTests(unittest.TestCase):
