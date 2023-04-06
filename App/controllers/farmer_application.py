@@ -1,5 +1,5 @@
 from App.models.farmer_application import FarmerApplication
-from App.controllers.user import update_access
+from App.controllers.user import update_access, get_user_by_id
 from App.database import db
 import datetime
 
@@ -9,7 +9,7 @@ def create_farmer_application(user_id, comment):
     if f_application:
         if f_application.status == "Pending" or f_application.status == "Approved":
             return None
-    new_f_application = FarmerApplication(user_id=user_id, comment=comment)
+    new_f_application = FarmerApplication(user_id=user_id, user_name=get_user_by_id(user_id).username, comment=comment)
     db.session.add(new_f_application)
     db.session.commit()
     return new_f_application
