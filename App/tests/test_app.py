@@ -3,6 +3,7 @@ import logging
 import pytest
 import unittest
 from werkzeug.security import generate_password_hash
+from datetime import datetime, timedelta
 
 from App.controllers.auth import authenticate
 from App.controllers.user import (
@@ -33,7 +34,35 @@ from App.controllers.farmer_application import (
     get_all_rejected_farmer_applications,
     get_all_pending_farmer_applications,
 )
-from App.controllers.report import get_total_user_count
+from App.controllers.report import (
+    get_total_user_count,
+    get_total_product_count,
+    get_total_category_count,
+)
+from App.controllers.product_category import (
+    create_product_category,
+    get_product_category_by_id,
+    get_product_category_by_id_json,
+    update_product_category,
+    delete_product_category,
+    get_product_category_by_name_json,
+    get_product_category_by_name,
+    get_product_categories_json,
+    get_product_categories,
+)
+from App.controllers.product import (
+    create_product,
+    get_product_by_id,
+    update_product,
+    delete_product,
+    get_all_products,
+    get_all_products_json,
+    get_products_by_farmer_id_json,
+    get_products_past_week_json,
+    get_products_by_category_id_json,
+    search_products_by_name_json,
+    search_products_by_name_past_week_json,
+)
 
 from App.database import create_db
 from App.models import (
@@ -706,3 +735,173 @@ class FarmerApplicationIntegrationTests(unittest.TestCase):
         application = create_farmer_application(user.id, "I want to be a farmer")
         applications = get_all_pending_farmer_applications()
         assert application in applications
+
+
+class ProductCategoryTests(unittest.TestCase):
+    def test_create_product_category(self):
+        count = get_total_category_count()
+        category = create_product_category(f"category{count+1}")
+        assert category.name == f"category{count+1}"
+
+    def test_get_product_category_by_id(self):
+        count = get_total_category_count()
+        category = create_product_category(f"category{count+1}")
+        category1 = get_product_category_by_id(category.id)
+        assert category1 is not None
+
+    def test_get_product_category_by_id_json(self):
+        count = get_total_category_count()
+        category = create_product_category(f"category{count+1}")
+        category1 = get_product_category_by_id_json(category.id)
+        assert category1 is not None
+
+    def test_update_product_category(self):
+        count = get_total_category_count()
+        category = create_product_category(f"category{count+1}")
+        category1 = update_product_category(category.id, f"category{count+1}1")
+        assert category1.name == f"category{count+1}1"
+
+    def test_delete_product_category(self):
+        count = get_total_category_count()
+        category = create_product_category(f"category{count+1}")
+        delete_product_category(category.id)
+        category1 = get_product_category_by_id(category.id)
+        assert category1 is None
+
+    def test_get_product_category_by_name_json(self):
+        count = get_total_category_count()
+        category = create_product_category(f"category{count+1}")
+        category1 = get_product_category_by_name_json(category.name)
+        assert category1 is not None
+
+    def test_get_product_category_by_name(self):
+        count = get_total_category_count()
+        category = create_product_category(f"category{count+1}")
+        category1 = get_product_category_by_name(category.name)
+        assert category1 is not None
+
+    def test_get_all_product_categories(self):
+        count = get_total_category_count()
+        category = create_product_category(f"category{count+1}")
+        categories = get_product_categories()
+        assert category in categories
+
+    def test_get_product_categories_json(self):
+        count = get_total_category_count()
+        category = create_product_category(f"category{count+1}")
+        categories = get_product_categories_json()
+        assert category.to_json() in categories
+
+
+
+
+
+
+class ProductIntegrationTests(unittest.TestCase):
+    def test_create_product(self):
+        ucount = get_total_user_count()
+        pcount = get_total_product_count()
+        pc_count = get_total_category_count()
+        farmer = create_user(username=f"rob{ucount}", email=f"rob{ucount}@gmail.com", password=f"robpass", access="farmer")
+        pc = create_product_category(f"category{pc_count+1}")
+        product = create_product(farmer.id, pc.id, f"product{pcount}", "description", "image.jpg", 10, 10, 10, 10)
+        assert product.name == f"product{pcount}"
+
+    def test_get_product_by_id(self):
+        ucount = get_total_user_count()
+        pcount = get_total_product_count()
+        pc_count = get_total_category_count()
+        farmer = create_user(username=f"rob{ucount}", email=f"rob{ucount}@gmail.com", password=f"robpass", access="farmer")
+        pc = create_product_category(f"category{pc_count+1}")
+        product = create_product(farmer.id, pc.id, f"product{pcount}", "description", "image.jpg", 10, 10, 10, 10)
+        product1 = get_product_by_id(product.id)
+        assert product1.name == f"product{pcount}"
+
+    def test_update_product(self):
+        ucount = get_total_user_count()
+        pcount = get_total_product_count()
+        pc_count = get_total_category_count()
+        farmer = create_user(username=f"rob{ucount}", email=f"rob{ucount}@gmail.com", password=f"robpass", access="farmer")
+        pc = create_product_category(f"category{pc_count+1}")
+        product = create_product(farmer.id, pc.id, f"product{pcount}", "description", "image.jpg", 10, 10, 10, 10)
+        with self.subTest("update category id"):
+            pc2 = create_product_category(f"category{pc_count+2}")
+            product1 = update_product(id=product.id, category_id=pc2.id)
+            assert product1.category_id == pc2.id
+        with self.subTest("update name"):
+            product1 = update_product(product.id, name=f"product{pcount+1}")
+            assert product1.name == f"product{pcount+1}"
+        with self.subTest("update description"):
+            product1 = update_product(product.id, description="new description")
+            assert product1.description == "new description"
+        with self.subTest("update image"):
+            product1 = update_product(product.id, image="new image.png")
+            assert product1.image == "new image.png"
+        with self.subTest("update retail_price"):
+            product1 = update_product(product.id, retail_price=20)
+            assert product1.retail_price == 20
+        with self.subTest("update wholesale_price"):
+            product1 = update_product(product.id, wholesale_price=20)
+            assert product1.wholesale_price == 20
+        with self.subTest("update wholesale_unit_quantity"):
+            product1 = update_product(product.id, wholesale_unit_quantity=20)
+            assert product1.wholesale_unit_quantity == 20
+        with self.subTest("update total_product_quantity"):
+            product1 = update_product(product.id, total_product_quantity=20)
+            assert product1.total_product_quantity == 20
+
+    def test_delete_product(self):
+        ucount = get_total_user_count()
+        pcount = get_total_product_count()
+        pc_count = get_total_category_count()
+        farmer = create_user(username=f"rob{ucount}", email=f"rob{ucount}@gmail.com", password=f"robpass", access="farmer")
+        pc = create_product_category(f"category{pc_count+1}")
+        product = create_product(farmer.id, pc.id, f"product{pcount}", "description", "image.jpg", 10, 10, 10, 10)
+        delete_product(product.id)
+        product1 = get_product_by_id(product.id)
+        assert product1 is None
+
+    def test_get_all_products_json(self):
+        products = get_all_products()
+        products_json = get_all_products_json()
+        assert len(products) == len(products_json)
+        for product in products:
+            assert product.to_json() in products_json
+
+    def test_get_all_products_by_farmer_id_json(self):
+        ucount = get_total_user_count()
+        pcount = get_total_product_count()
+        pc_count = get_total_category_count()
+        farmer = create_user(username=f"rob{ucount}", email=f"rob{ucount}@gmail.com", password=f"robpass", access="farmer")
+        pc = create_product_category(f"category{pc_count+1}")
+        product = create_product(farmer.id, pc.id, f"product{pcount}", "description", "image.jpg", 10, 10, 10, 10)
+        products = get_products_by_farmer_id_json(farmer.id)
+        assert product.to_json() in products
+
+    def test_get_products_past_week_json(self):
+        products = get_products_past_week_json()
+        products2 = Product.query.filter((Product.updated_timestamp >= datetime.now() - timedelta(days=7))).all()
+        assert len(products) == len(products2)
+
+    def test_get_products_by_category_json(self):
+        products = get_products_by_category_id_json("1")
+        products2 = Product.query.filter(Product.category_id == 1).all()
+        assert len(products) == len(products2)
+
+    def test_search_products_by_name_json(self):
+        pcount = get_total_product_count()
+        products = search_products_by_name_json(f"product{pcount-1}")
+        products2 = Product.query.filter_by(name=f"product{pcount-1}").all()
+        assert len(products) == len(products2)
+
+    def test_search_products_by_name_past_week_json(self):
+        pcount = get_total_product_count()
+        products = search_products_by_name_past_week_json(f"product{pcount-1}")
+        products2 = Product.query.filter_by(name=f"product{pcount-1}").filter((Product.updated_timestamp >= datetime.now() - timedelta(days=7))).all()
+        assert len(products) == len(products2)
+
+
+
+
+
+

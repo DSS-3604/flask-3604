@@ -24,7 +24,7 @@ class Product(db.Model):
     retail_price = db.Column(db.Float(decimal_return_scale=2), nullable=False)  # price of product
     wholesale_price = db.Column(db.Float(decimal_return_scale=2), nullable=False)  # wholesale price of product
     wholesale_unit_quantity = db.Column(db.Integer, nullable=False)  # quantity of product for wholesale price
-    total_product_quantity = db.Column(db.String, nullable=False)  # unit of product
+    total_product_quantity = db.Column(db.Integer, nullable=False)  # unit of product
     comments = db.relationship(
         "ProductComment", backref="product", lazy=True, cascade="all, delete-orphan"
     )  # comments of product

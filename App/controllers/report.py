@@ -21,6 +21,11 @@ def get_new_farmer_count():
     ).count()
 
 
+# function to get the total product count
+def get_total_product_count():
+    return Product.query.count()
+
+
 # function to return number of products created in the past week
 def get_new_product_count():
     return Product.query.filter(Product.timestamp >= datetime.now() - timedelta(days=7)).count()
