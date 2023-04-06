@@ -31,7 +31,7 @@ def get_all_product_queries_action():
     product_queries = get_all_product_queries_json()
     if product_queries:
         return (
-            jsonify(product_queries),
+            jsonify(product_queries.to_json()),
             200,
         )
     return jsonify([]), 200
@@ -98,7 +98,7 @@ def create_product_query_action():
     product_query = create_product_query(current_identity.id, data.get("product_id"), data.get("message"))
     if product_query:
         create_log(current_identity.id, "Product Query created", f"Product Query {product_query.id} created")
-        return jsonify(product_query), 201
+        return jsonify(product_query.to_json()), 201
     return jsonify({"message": "Product Query could not be created"}), 500
 
 
