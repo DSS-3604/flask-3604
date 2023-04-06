@@ -1,9 +1,9 @@
-from App.controllers.user import *
-from App.controllers.product import *
-from App.controllers.contact_form import *
-from App.controllers.product_category import *
-from App.controllers.farmer_application import *
-from App.controllers.farmer_review import *
+from App.models.user import User
+from App.models.farmer_application import FarmerApplication
+from App.models.product import Product
+from App.models.contact_form import ContactForm
+from App.models.product_category import ProductCategory
+from App.models.farmer_review import FarmerReview
 
 from datetime import datetime, timedelta
 
@@ -102,7 +102,7 @@ def get_total_farmer_review_count():
 
 # function to return average rating of all farmer reviews
 def get_average_farmer_rating():
-    reviews = get_all_reviews()
+    reviews = FarmerReview.query.all()
     if len(reviews) == 0:
         return 0
     else:
