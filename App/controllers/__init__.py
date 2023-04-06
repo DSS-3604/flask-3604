@@ -10,3 +10,4 @@ from .contact_form import *
 from .dummy_data import *
 from .report import *
 from .logging import *
+from .product_query import *
