@@ -84,7 +84,7 @@ def get_all_product_queries():
 
 
 def get_all_product_queries_json():
-    product_query = get_all_product_query()
+    product_query = get_all_product_queries()
     if product_query:
         return [p.to_json() for p in product_query]
     return None
