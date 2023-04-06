@@ -23,4 +23,5 @@ views = [
     contact_form_views,
     report_views,
     logging_views,
+    product_query_views,
 ]
