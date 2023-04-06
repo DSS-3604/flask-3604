@@ -36,7 +36,7 @@ from App.controllers.farmer_application import (
 from App.controllers.report import get_total_user_count
 
 from App.database import create_db
-from App.models import User, Product, ProductCategory, ProductComment, ProductReply, FarmerReview, FarmerApplication, ContactForm, Logging
+from App.models import User, Product, ProductCategory, ProductComment, ProductReply, FarmerReview, FarmerApplication, ContactForm, Logging, ProductQuery
 from wsgi import app
 
 LOGGER = logging.getLogger(__name__)
@@ -383,6 +383,101 @@ class LoggingUnitTests(unittest.TestCase):
         for key, val in log_json.items():
             assert getattr(log, key) == val
 
+
+class ProductQueryUnitTests(unittest.TestCase):
+    def test_create_product_query(self):
+        farmer = User("farmer123", "farmer123@gmail.com", "farmerpass", access="farmer")
+        pc = ProductCategory("Vegetables")
+        product = Product(
+            farmer_id=farmer.id,
+            farmer_name=farmer.username,
+            category_id=pc.id,
+            category_name=pc.name,
+            name="Tomatoes",
+            description="Fresh Tomatoes",
+            image="tomatoes.jpg",
+            retail_price=2.99,
+            wholesale_price=1.99,
+            wholesale_unit_quantity=10,
+            total_product_quantity=100,
+        )
+        user = User(username="bob3579", email="bob3579@gmail.com", password="mypass", access="user", phone="1234567890")
+        query = ProductQuery(user_id=user.id,
+                             user_name=user.username,
+                             product_id=product.id,
+                             product_name=product.name,
+                             farmer_id=product.farmer_id,
+                             farmer_name=product.farmer_name,
+                             phone=user.phone,
+                             email=user.email,
+                             message="Hello")
+        assert query.user_id == user.id
+
+    def test_product_query_attributes(self):
+        farmer = User("farmer123", "farmer123@gmail.com", "farmerpass", access="farmer")
+        pc = ProductCategory("Vegetables")
+        product = Product(
+            farmer_id=farmer.id,
+            farmer_name=farmer.username,
+            category_id=pc.id,
+            category_name=pc.name,
+            name="Tomatoes",
+            description="Fresh Tomatoes",
+            image="tomatoes.jpg",
+            retail_price=2.99,
+            wholesale_price=1.99,
+            wholesale_unit_quantity=10,
+            total_product_quantity=100,
+        )
+        user = User(username="bob3579", email="bob3579@gmail.com", password="mypass", access="user", phone="1234567890")
+        query = ProductQuery(user_id=user.id,
+                             user_name=user.username,
+                             product_id=product.id,
+                             product_name=product.name,
+                             farmer_id=product.farmer_id,
+                             farmer_name=product.farmer_name,
+                             phone=user.phone,
+                             email=user.email,
+                             message="Hello")
+        assert query.user_id == user.id
+        assert query.user_name == user.username
+        assert query.product_id == product.id
+        assert query.product_name == product.name
+        assert query.farmer_id == product.farmer_id
+        assert query.farmer_name == product.farmer_name
+        assert query.phone == user.phone
+        assert query.email == user.email
+        assert query.message == "Hello"
+
+    def test_product_query_json(self):
+        farmer = User("farmer123", "farmer123@gmail.com", "farmerpass", access="farmer")
+        pc = ProductCategory("Vegetables")
+        product = Product(
+            farmer_id=farmer.id,
+            farmer_name=farmer.username,
+            category_id=pc.id,
+            category_name=pc.name,
+            name="Tomatoes",
+            description="Fresh Tomatoes",
+            image="tomatoes.jpg",
+            retail_price=2.99,
+            wholesale_price=1.99,
+            wholesale_unit_quantity=10,
+            total_product_quantity=100,
+        )
+        user = User(username="bob3579", email="bob3579@gmail.com", password="mypass", access="user", phone="1234567890")
+        query = ProductQuery(user_id=user.id,
+                             user_name=user.username,
+                             product_id=product.id,
+                             product_name=product.name,
+                             farmer_id=product.farmer_id,
+                             farmer_name=product.farmer_name,
+                             phone=user.phone,
+                             email=user.email,
+                             message="Hello")
+        query_json = query.to_json()
+        for key, val in query_json.items():
+            assert getattr(query, key) == val
 
 
 """
