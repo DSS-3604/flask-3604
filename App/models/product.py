@@ -11,9 +11,11 @@ class Product(db.Model):
     farmer_id = db.Column(
         db.Integer, db.ForeignKey("user.id"), nullable=False
     )  # foreign key links to user.id in user table
+    farmer_name = db.Column(db.String, nullable=False)  # name of farmer
     category_id = db.Column(
         db.Integer, db.ForeignKey("product_category.id"), nullable=False
     )  # foreign key links to product_category.id in product_category table
+    category_name = db.Column(db.String, nullable=False)  # name of product category
     name = db.Column(db.String, nullable=False)  # name of product
     description = db.Column(db.String, nullable=False)  # description of product
     image = db.Column(db.String, nullable=False, default="https://s3.eu-west-2.amazonaws.com/devo.core.images/products/b1bf55b2-18c6-4184-9522-72b28b13d62d_5054073003722.png")  # image of product
@@ -36,7 +38,9 @@ class Product(db.Model):
     def __init__(
         self,
         farmer_id,
+        farmer_name,
         category_id,
+        category_name,
         name,
         description,
         image,
@@ -46,7 +50,9 @@ class Product(db.Model):
         total_product_quantity=1,
     ):
         self.farmer_id = farmer_id
+        self.farmer_name = farmer_name
         self.category_id = category_id
+        self.category_name = category_name
         self.name = name
         self.description = description
         self.image = image
@@ -62,11 +68,9 @@ class Product(db.Model):
         return {
             "id": self.id,
             "farmer_id": self.farmer_id,
-            "farmer_name": User.query.filter_by(id=self.farmer_id).first().username,
+            "farmer_name": self.farmer_name,
             "category_id": self.category_id,
-            "category_name": ProductCategory.query.filter_by(id=self.category_id)
-            .first()
-            .name,
+            "category_name": self.category_name,
             "name": self.name,
             "description": self.description,
             "image": self.image,
