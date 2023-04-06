@@ -15,6 +15,8 @@ from App.controllers.p_reply import (
     delete_reply,
 )
 
+from App.controllers.logging import create_log
+
 reply_views = Blueprint("reply_views", __name__, template_folder="../templates")
 
 
@@ -45,6 +47,7 @@ def create_reply_action(id):
     data = request.json
     reply = create_reply(comment_id=id, user_id=current_identity.id, body=data["body"])
     if reply:
+        create_log(current_identity.id, "Reply created", f"Reply {reply.id} created")
         return jsonify(reply.to_json()), 201
     return jsonify({"message": "Could not create reply"}), 500
 
@@ -60,6 +63,7 @@ def update_reply_action(id):
         if "body" in data:
             reply = update_reply(reply_id=id, body=data["body"])
             if reply:
+                create_log(current_identity.id, "Reply updated", f"Reply {reply.id} updated")
                 return jsonify(reply), 200
             return jsonify({"message": "Could not update reply"}), 500
         return jsonify({"message": "No body found"}), 400
@@ -73,6 +77,7 @@ def delete_reply_action(id):
     if reply:
         if not reply.user_id == current_identity.id and not is_admin(current_identity):
             return jsonify({"message": "Not authorized"}), 401
-        delete_reply(id)
-        return jsonify({"message": f"Reply {id} deleted"}), 200
+        if delete_reply(id):
+            create_log(current_identity.id, "Reply deleted", f"Reply {id} deleted")
+            return jsonify({"message": f"Reply {id} deleted"}), 200
     return jsonify({"message": "No reply found"}), 404

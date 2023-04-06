@@ -16,6 +16,8 @@ from App.controllers.farmer_application import (
     get_all_pending_farmer_applications,
 )
 
+from App.controllers.logging import create_log
+
 from App.controllers.user import is_admin, is_farmer
 
 farmer_application_views = Blueprint(
@@ -75,6 +77,7 @@ def create_farmer_application_action():
         user_id=current_identity.id, comment=data["comment"]
     )
     if f_application:
+        create_log(current_identity.id, "Farmer Application created", f"Farmer Application {f_application.id} created")
         return jsonify(f_application.to_json()), 201
     return jsonify({"message": "Farmer application could not be created"}), 400
 
@@ -97,6 +100,7 @@ def update_farmer_application_comment_action(id):
         return jsonify({"message": "Missing parameter: comment"}), 400
     f_application = update_farmer_application(id, comment=data["comment"])
     if f_application:
+        create_log(current_identity.id, "Farmer Application updated", f"Farmer Application {f_application.id} updated")
         return jsonify(f_application.to_json()), 200
     return jsonify({"message": "Farmer application could not be updated"}), 400
 
@@ -115,6 +119,7 @@ def delete_farmer_application_action(id):
             403,
         )
     if delete_farmer_application(id):
+        create_log(current_identity.id, "Farmer Application deleted", f"Farmer Application {f_application.id} deleted")
         return jsonify({"message": "Farmer application deleted"}), 200
     return jsonify({"message": "Farmer application could not be deleted"}), 400
 
@@ -130,6 +135,7 @@ def delete_all_farmer_applications_action():
             403,
         )
     if delete_all_farmer_applications():
+        create_log(current_identity.id, "Farmer Applications deleted", f"All farmer applications deleted")
         return jsonify({"message": "All farmer applications deleted"}), 200
     return jsonify({"message": "All farmer applications could not be deleted"}), 400
 
@@ -150,6 +156,7 @@ def approve_farmer_application_action(id):
             403,
         )
     if approve_farmer_application(id):
+        create_log(current_identity.id, "Farmer Application approved", f"Farmer Application {f_application.id} approved")
         return jsonify({"message": "Farmer application approved"}), 200
     return jsonify({"message": "Farmer application could not be approved"}), 400
 
@@ -168,6 +175,8 @@ def reject_farmer_application_action(id):
             403,
         )
     if reject_farmer_application(id):
+        create_log(current_identity.id, "Farmer Application rejected",
+                   f"Farmer Application {f_application.id} rejected")
         return jsonify({"message": "Farmer application rejected"}), 200
     return jsonify({"message": "Farmer application could not be rejected"}), 400
 

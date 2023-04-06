@@ -9,6 +9,8 @@ from App.controllers.p_comment import (
     delete_comment,
 )
 
+from App.controllers.logging import create_log
+
 from App.controllers.product import get_product_by_id
 
 from flask_jwt import jwt_required, current_identity
@@ -46,6 +48,7 @@ def create_comment_action():
         product_id=data["product_id"], user_id=current_identity.id, body=data["body"]
     )
     if comment:
+        create_log(current_identity.id, "Comment created",f"Comment {comment.id} created")
         return jsonify(comment.to_json()), 201
     return jsonify({"message": "Could not create comment"}), 400
 
@@ -64,6 +67,7 @@ def update_comment_action(id):
         if "body" in data:
             comment = update_comment(id=id, body=data["body"])
             if comment:
+                create_log(current_identity.id, "Comment updated", f"Comment {comment.id} updated")
                 return jsonify(comment.to_json()), 200
             return jsonify({"message": "Could not update comment"}), 400
         else:
@@ -81,6 +85,8 @@ def delete_comment_action(id):
                 jsonify({"message": "You are not allowed to delete this comment"}),
                 403,
             )
-        delete_comment(id)
-        return jsonify({"message": f"comment {id} deleted"}), 200
+
+        if delete_comment(id):
+            create_log(current_identity.id, "Comment deleted", f"Comment {comment.id} deleted")
+            return jsonify({"message": f"comment {id} deleted"}), 200
     return jsonify({"message": "No comment found"}), 404

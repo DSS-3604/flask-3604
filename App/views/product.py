@@ -20,6 +20,8 @@ from App.controllers.product_category import (
     get_products_by_category_name_json,
 )
 
+from App.controllers.logging import create_log
+
 from App.controllers.user import is_farmer, is_admin, get_user_by_id
 
 product_views = Blueprint("product_views", __name__, template_folder="../templates")
@@ -92,6 +94,7 @@ def create_product_action():
         total_product_quantity=data["total_product_quantity"],
     )
     if product:
+        create_log(current_identity.id, "Product created", f"Product {product.id} created")
         return jsonify(product.to_json()), 201
     return jsonify({"message": "Product creation failed"}), 500
 
@@ -162,6 +165,7 @@ def update_product_action(id):
             )
         if "category_id" in data:
             product = update_product(id=id, category_id=data["category_id"])
+        create_log(current_identity.id, "Product updated", f"Product {product.id} updated")
         return jsonify(product.to_json()), 200
     return jsonify({"message": "No product found"}), 404
 
@@ -181,6 +185,7 @@ def delete_product_action(id):
                 jsonify({"message": "You are not authorized to delete this product"}),
                 403,
             )
-        delete_product(id)
-        return jsonify({"message": f"Product {product.name} deleted"}), 200
+        if delete_product(id):
+            create_log(current_identity.id, "Product deleted", f"Product {product.id} deleted")
+            return jsonify({"message": f"Product {product.name} deleted"}), 200
     return jsonify({"message": "No product found"}), 404

@@ -15,6 +15,7 @@ from App.controllers import (
     update_user,
     is_admin,
     check_password,
+    create_log,
 )
 
 user_views = Blueprint("user_views", __name__, template_folder="../templates")
@@ -61,6 +62,7 @@ def create_user_action():
         data["username"], data["email"], data["password"], access="user"
     )
     if new_user:
+        create_log(new_user.id, "User created", f"User {new_user.username} created")
         return jsonify(new_user.to_json()), 201
     return jsonify({"message": "User could not be created"}), 400
 
@@ -82,6 +84,7 @@ def create_admin_action():
         data["username"], data["email"], data["password"], access="admin"
     )
     if new_user:
+        create_log(current_identity.id, "Admin created", f"User {new_user.username} created")
         return (
             jsonify(new_user.to_json()),
             201,
@@ -172,5 +175,6 @@ def update_user_action(id):
             user = update_user(id=id, units=data["units"])
         if "avatar" in data:
             user = update_user(id=id, avatar=data["avatar"])
+        create_log(current_identity.id, "User updated", f"User {user.username} updated")
         return jsonify(user.to_json()), 200
     return jsonify({"message": "User not found"}), 404
