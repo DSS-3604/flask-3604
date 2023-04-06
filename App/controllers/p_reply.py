@@ -1,10 +1,11 @@
 from App.models.p_reply import ProductReply
+from App.controllers import get_user_by_id
 from App.database import db
 from datetime import datetime
 
 
 def create_reply(comment_id, user_id, body):
-    new_reply = ProductReply(p_comment_id=comment_id, user_id=user_id, body=body)
+    new_reply = ProductReply(p_comment_id=comment_id, user_id=user_id, user_name=get_user_by_id(user_id).username, body=body)
     db.session.add(new_reply)
     db.session.commit()
     return new_reply
