@@ -25,6 +25,8 @@ def create_product_query(user_id, product_id, message):
         phone=user.phone,
         message=message,
     )
+    if not product_query:
+        return None
     db.session.add(product_query)
     db.session.commit()
     return product_query
