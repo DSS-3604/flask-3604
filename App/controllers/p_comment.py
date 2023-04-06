@@ -1,10 +1,11 @@
 from App.models.p_comment import ProductComment
+from App.controllers import get_user_by_id
 from App.database import db
 from datetime import datetime
 
 
 def create_comment(product_id, user_id, body):
-    new_comment = ProductComment(product_id=product_id, user_id=user_id, body=body)
+    new_comment = ProductComment(product_id=product_id, user_id=user_id, user_name=get_user_by_id(user_id).username, body=body)
     db.session.add(new_comment)
     db.session.commit()
     return new_comment
