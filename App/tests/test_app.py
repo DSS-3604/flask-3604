@@ -6,7 +6,36 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import time
 
 from App.controllers.auth import authenticate
-from App.controllers.user import is_admin, create_user, get_all_users_json, get_user_by_id, update_user
+from App.controllers.user import (
+    is_admin,
+    is_farmer,
+    create_user,
+    create_admin,
+    update_access,
+    get_user_by_email,
+    get_user_by_username,
+    get_user_by_id,
+    get_all_users,
+    get_all_farmers,
+    get_all_farmers_json,
+    get_all_users_json,
+    update_user,
+    check_password,
+)
+from App.controllers.farmer_application import (
+    create_farmer_application,
+    get_farmer_application_by_id,
+    get_all_farmer_applications,
+    update_farmer_application,
+    delete_farmer_application,
+    approve_farmer_application,
+    reject_farmer_application,
+    delete_all_farmer_applications,
+    get_all_approved_farmer_applications,
+    get_all_rejected_farmer_applications,
+    get_all_pending_farmer_applications,
+)
+from App.controllers.report import get_total_user_count
 
 from App.database import create_db
 from App.models import User, Product, ProductCategory, ProductComment, ProductReply, FarmerReview, FarmerApplication, ContactForm
@@ -342,7 +371,7 @@ class ContactFormUnitTests(unittest.TestCase):
 
 
 # This fixture creates an empty database for the test and deletes it after the test
-# scope="class" would execute the fixture once and resued for all methods in the class
+# scope="class" would execute the fixture once and reused for all methods in the class
 @pytest.fixture(autouse=True, scope="module")
 def empty_db():
     app.config.update({"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///test.db"})
@@ -350,25 +379,179 @@ def empty_db():
     yield app.test_client()
     os.remove("C:\\Users\\Satyaan\\Desktop\\flask-3604\\App\\test.db")
 
+class AuthIntegrationTests(unittest.TestCase):
+    def test_authenticate(self):
+        count = get_total_user_count()
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password="robpass")
+        assert authenticate(f"rob{count}", f"robpass") is not None
 
-# def test_authenticate():
-#     user = create_user("bob", "bobpass")
-#     assert authenticate("bob", "bobpass") != None
-#
-#
-# class UsersIntegrationTests(unittest.TestCase):
-#     def test_create_user(self):
-#         user = create_user("rick", "bobpass")
-#         assert user.username == "rick"
-#
-#     def test_get_all_users_json(self):
-#         users_json = get_all_users_json()
-#         self.assertListEqual(
-#             [{"id": 1, "username": "bob"}, {"id": 2, "username": "rick"}], users_json
-#         )
-#
-#     # Tests data changes in the database
-#     def test_update_user(self):
-#         update_user(1, "ronnie")
-#         user = get_user_by_id(1)
-#         assert user.username == "ronnie"
+    def test_authenticate_invalid(self):
+        count = get_total_user_count()
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password="robpass")
+        assert authenticate(f"rob{count}", "robpass123") is None
+
+
+class UsersIntegrationTests(unittest.TestCase):
+    def test_create_user(self):
+        count = get_total_user_count()
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password="robpass")
+        assert user.username == f"rob{count}"
+
+    def test_create_admin(self):
+        count = get_total_user_count()
+        admin = create_admin(username=f"admin{count}", email=f"admin{count}@gmail.com", password="adminpass")
+        assert admin.username == f"admin{count}"
+        assert is_admin(admin)
+
+    def test_get_all_users_json(self):
+        users = get_all_users()
+        users_json = get_all_users_json()
+        self.assertListEqual(
+            [user.to_json() for user in users], users_json
+        )
+
+    def test_update_user_access(self):
+        count = get_total_user_count()
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
+        update_access(user.id, "admin")
+        assert is_admin(user)
+
+    def test_get_user_by_email(self):
+        count = get_total_user_count()
+        create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
+        user = get_user_by_email(f"rob{count}@gmail.com")
+        assert user.username == f"rob{count}"
+
+    def test_get_user_by_username(self):
+        count = get_total_user_count()
+        create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
+        user = get_user_by_username(f"rob{count}")
+        assert user.email == f"rob{count}@gmail.com"
+
+    def test_get_user_by_id(self):
+        count = get_total_user_count()
+        user1 = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
+        user2 = get_user_by_id(user1.id)
+        assert user2 is not None
+
+    def test_get_all_farmers(self):
+        farmers = get_all_farmers()
+        for farmer in farmers:
+            assert is_farmer(farmer)
+
+    # Tests data changes in the database
+    def test_update_user(self):
+        count = get_total_user_count()
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
+        with self.subTest("Update username"):
+            user1 = update_user(user.id, username=f"tob{count}")
+            assert user1.username == f"tob{count}"
+        with self.subTest("Update email"):
+            user1 = update_user(user.id, email=f"tob{count}@gmail.com")
+            assert user1.email == f"tob{count}@gmail.com"
+        with self.subTest("Update password"):
+            user1 = update_user(user.id, password=f"tobpass1")
+            assert check_password(user1, f"tobpass1")
+        with self.subTest("Update Bio"):
+            user1 = update_user(user.id, bio="Hello World")
+            assert user1.bio == "Hello World"
+        with self.subTest("Update Phone"):
+            user1 = update_user(user.id, phone="9876543210")
+            assert user1.phone == "9876543210"
+        with self.subTest("Update Address"):
+            user1 = update_user(user.id, address="POS")
+            assert user1.address == "POS"
+        with self.subTest("Update Currency"):
+            user1 = update_user(user.id, currency="TTD")
+            assert user1.currency == "TTD"
+        with self.subTest("Update Units"):
+            user1 = update_user(user.id, units="lbs")
+            assert user1.units == "lbs"
+        with self.subTest("Update avatar"):
+            user1 = update_user(user.id, avatar=f"tob{count}.png")
+            assert user1.avatar == f"tob{count}.png"
+
+
+class FarmerApplicationIntegrationTests(unittest.TestCase):
+    def test_create_farmer_application(self):
+        count = get_total_user_count()
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
+        application = create_farmer_application(user.id, "I want to be a farmer")
+        assert application.user_id == user.id
+
+    def test_get_farmer_application_by_id(self):
+        count = get_total_user_count()
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
+        application = create_farmer_application(user.id, "I want to be a farmer")
+        application1 = get_farmer_application_by_id(application.id)
+        assert application1 is not None
+
+    def test_get_all_farmer_applications(self):
+        count = get_total_user_count()
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
+        application = create_farmer_application(user.id, "I want to be a farmer")
+        applications = get_all_farmer_applications()
+        assert application in applications
+
+    def update_farmer_application(self):
+        count = get_total_user_count()
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
+        application = create_farmer_application(user.id, "I want to be a farmer")
+        application1 = update_farmer_application(application.id, "I really want to be a farmer")
+        assert application1.message == "I really want to be a farmer"
+
+    def test_delete_farmer_application(self):
+        count = get_total_user_count()
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
+        application = create_farmer_application(user.id, "I want to be a farmer")
+        delete_farmer_application(application.id)
+        application1 = get_farmer_application_by_id(application.id)
+        assert application1 is None
+
+    def test_approve_farmer_application(self):
+        count = get_total_user_count()
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
+        application = create_farmer_application(user.id, "I want to be a farmer")
+        approve_farmer_application(application.id)
+        application1 = get_farmer_application_by_id(application.id)
+        assert application1.status == "Approved"
+
+    def test_reject_farmer_application(self):
+        count = get_total_user_count()
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
+        application = create_farmer_application(user.id, "I want to be a farmer")
+        reject_farmer_application(application.id)
+        application1 = get_farmer_application_by_id(application.id)
+        assert application1.status == "Rejected"
+
+    def test_delete_all_farmer_applications(self):
+        delete_all_farmer_applications()
+        applications = get_all_farmer_applications()
+        assert len(applications) == 0
+
+    def test_get_all_approved_farmer_applications(self):
+        count = get_total_user_count()
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
+        application = create_farmer_application(user.id, "I want to be a farmer")
+        approve_farmer_application(application.id)
+        application1 = get_farmer_application_by_id(application.id)
+        applications = get_all_approved_farmer_applications()
+        assert application1 in applications
+
+    def test_get_all_rejected_farmer_applications(self):
+        count = get_total_user_count()
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
+        application = create_farmer_application(user.id, "I want to be a farmer")
+        reject_farmer_application(application.id)
+        application1 = get_farmer_application_by_id(application.id)
+        applications = get_all_rejected_farmer_applications()
+        assert application1 in applications
+
+    def test_get_all_pending_farmer_applications(self):
+        count = get_total_user_count()
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
+        application = create_farmer_application(user.id, "I want to be a farmer")
+        applications = get_all_pending_farmer_applications()
+        assert application in applications
+
+
