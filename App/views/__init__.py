@@ -9,6 +9,7 @@ from .product_category import product_category_views
 from .contact_form import contact_form_views
 from .report import report_views
 from .logging import logging_views
+from .product_query import product_query_views
 
 views = [
     user_views,
