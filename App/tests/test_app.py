@@ -17,7 +17,6 @@ from App.controllers.user import (
     get_user_by_id,
     get_all_users,
     get_all_farmers,
-    get_all_farmers_json,
     get_all_users_json,
     update_user,
     check_password,
@@ -38,7 +37,7 @@ from App.controllers.farmer_application import (
 from App.controllers.report import get_total_user_count
 
 from App.database import create_db
-from App.models import User, Product, ProductCategory, ProductComment, ProductReply, FarmerReview, FarmerApplication, ContactForm
+from App.models import User, Product, ProductCategory, ProductComment, ProductReply, FarmerReview, FarmerApplication, ContactForm, Logging
 from wsgi import app
 
 LOGGER = logging.getLogger(__name__)
@@ -365,6 +364,28 @@ class ContactFormUnitTests(unittest.TestCase):
             assert getattr(form, key) == val
 
 
+class LoggingUnitTests(unittest.TestCase):
+    def test_create_log(self):
+        user = User("bob3579", "bob3579@gmail.com", "bobpass")
+        log = Logging(user.id, user.username, "Test Log", "Test Log Description")
+        assert log.user_id == user.id
+
+    def test_log_attributes(self):
+        user = User("bob3579", "bob3579@gmail.com", "bobpass")
+        log = Logging(user.id, user.username, "Test Log", "Test Log Description")
+        assert log.user_id == user.id
+        assert log.action == "Test Log"
+        assert log.description == "Test Log Description"
+
+    def test_log_json(self):
+        user = User("bob3579", "bob3579@gmail.com", "bobpass")
+        log = Logging(user.id, user.username, "Test Log", "Test Log Description")
+        log_json = log.to_json()
+        for key, val in log_json.items():
+            assert getattr(log, key) == val
+
+
+
 """
     Integration Tests
 """
@@ -372,14 +393,21 @@ class ContactFormUnitTests(unittest.TestCase):
 
 # This fixture creates an empty database for the test and deletes it after the test
 # scope="class" would execute the fixture once and reused for all methods in the class
-@pytest.fixture(autouse=True, scope="module")
-def empty_db():
-    app.config.update({"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///test.db"})
-    create_db(app)
-    yield app.test_client()
-    os.remove("C:\\Users\\Satyaan\\Desktop\\flask-3604\\App\\test.db")
+# @pytest.fixture(autouse=True, scope="module")
+# def empty_db():
+#     app.config.update({"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///test.db"})
+#     create_db(app)
+#     yield app.test_client()
+#     os.remove(os.getcwd().replace("tests", "\\test.db"))
 
 class AuthIntegrationTests(unittest.TestCase):
+    def setUp(self):
+        app.config.update({"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///test.db"})
+        create_db(app)
+
+    def tearDown(self):
+        os.remove(os.getcwd().replace("tests", "\\test.db"))
+
     def test_authenticate(self):
         count = get_total_user_count()
         user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password="robpass")
@@ -392,6 +420,13 @@ class AuthIntegrationTests(unittest.TestCase):
 
 
 class UsersIntegrationTests(unittest.TestCase):
+    def setUp(self):
+        app.config.update({"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///test.db"})
+        create_db(app)
+
+    def tearDown(self):
+        os.remove(os.getcwd().replace("tests", "\\test.db"))
+
     def test_create_user(self):
         count = get_total_user_count()
         user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password="robpass")
@@ -473,6 +508,13 @@ class UsersIntegrationTests(unittest.TestCase):
 
 
 class FarmerApplicationIntegrationTests(unittest.TestCase):
+    def setUp(self):
+        app.config.update({"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///test.db"})
+        create_db(app)
+
+    def tearDown(self):
+        os.remove(os.getcwd().replace("tests", "\\test.db"))
+
     def test_create_farmer_application(self):
         count = get_total_user_count()
         user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
@@ -553,5 +595,4 @@ class FarmerApplicationIntegrationTests(unittest.TestCase):
         application = create_farmer_application(user.id, "I want to be a farmer")
         applications = get_all_pending_farmer_applications()
         assert application in applications
-
 
