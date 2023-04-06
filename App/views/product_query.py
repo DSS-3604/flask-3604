@@ -31,7 +31,7 @@ def get_all_product_queries_action():
     product_queries = get_all_product_queries_json()
     if product_queries:
         return (
-            jsonify(product_queries.to_json()),
+            jsonify(product_queries),
             200,
         )
     return jsonify([]), 200
