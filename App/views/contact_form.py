@@ -71,7 +71,7 @@ def update_contact_form_by_id_action(id):
         return jsonify({"message": "Missing parameters"}), 400
     contact_form = update_contact_form_by_id(id, data["name"], data["phone"], data["email"], data["message"])
     if contact_form:
-        create_log(current_identity.id, "Contact Form Updated", f"Contact Form {id} updated")
+        create_log(current_identity.id, "Contact Form updated", f"Contact Form {id} updated")
         return jsonify(contact_form.to_json()), 200
     return jsonify({"message": "Could not update contact form"}), 400
 
@@ -84,7 +84,7 @@ def delete_contact_form_by_id_action(id):
     contact_form = get_contact_form_by_id(id)
     if contact_form:
         if delete_contact_form_by_id(id):
-            create_log(current_identity.id, "Contact Form Deleted", f"Contact Form {id} deleted")
+            create_log(current_identity.id, "Contact Form deleted", f"Contact Form {id} deleted")
             return jsonify({"message": "Contact form deleted"}), 200
     return jsonify({"message": "Could not delete contact form"}), 400
 
