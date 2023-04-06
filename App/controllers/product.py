@@ -1,5 +1,7 @@
 from App.database import db
 from App.models.product import Product
+from App.controllers.user import get_user_by_id
+from App.controllers.product_category import get_product_category_by_id_json
 from datetime import datetime, timedelta
 
 
@@ -15,15 +17,17 @@ def create_product(
     total_product_quantity=1,
 ):
     product = Product(
-        farmer_id,
-        category_id,
-        name,
-        description,
-        image,
-        retail_price,
-        wholesale_price,
-        wholesale_unit_quantity,
-        total_product_quantity,
+        farmer_id=farmer_id,
+        farmer_name=get_user_by_id(farmer_id).username,
+        category_id=category_id,
+        category_name=get_product_category_by_id_json(category_id)["name"],
+        name=name,
+        description=description,
+        image=image,
+        retail_price=retail_price,
+        wholesale_price=wholesale_price,
+        wholesale_unit_quantity=wholesale_unit_quantity,
+        total_product_quantity=total_product_quantity,
     )
     db.session.add(product)
     db.session.commit()
@@ -147,6 +151,7 @@ def update_product(
             product.total_product_quantity = total_product_quantity
         if category_id:
             product.category_id = category_id
+            product.category_name = get_product_category_by_id_json(category_id)["name"]
         product.updated_timestamp = datetime.now()
         db.session.add(product)
         db.session.commit()
