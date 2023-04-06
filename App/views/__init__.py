@@ -8,6 +8,7 @@ from .farmer_application import farmer_application_views
 from .product_category import product_category_views
 from .contact_form import contact_form_views
 from .report import report_views
+from .logging import logging_views
 
 views = [
     user_views,
@@ -20,4 +21,5 @@ views = [
     product_category_views,
     contact_form_views,
     report_views,
+    logging_views
 ]
