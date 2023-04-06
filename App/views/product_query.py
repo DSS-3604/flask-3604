@@ -34,7 +34,7 @@ def get_all_product_queries_action():
             jsonify(product_queries),
             200,
         )
-    return jsonify({"message": "No product queries found"}), 404
+    return jsonify([]), 200
 
 
 @product_query_views.route("/api/product_queries/<int:id>", methods=["GET"])
@@ -49,7 +49,7 @@ def get_product_query_by_id_action(id):
         ):
             return jsonify({"message": "You are not authorized to view this product query"}), 403
         return jsonify(product_query), 200
-    return jsonify({"message": "No product query found"}), 404
+    return jsonify([]), 200
 
 
 @product_query_views.route("/api/product_queries/user/<int:user_id>", methods=["GET"])
@@ -60,7 +60,7 @@ def get_product_query_by_user_id_action(user_id):
     product_query = get_product_query_by_user_id_json(user_id)
     if product_query:
         return jsonify(product_query), 200
-    return jsonify({"message": "No product query found"}), 404
+    return jsonify([]), 200
 
 
 @product_query_views.route("/api/product_queries/product/<int:product_id>", methods=["GET"])
@@ -71,7 +71,7 @@ def get_product_query_by_product_id_action(product_id):
         if not is_admin(current_identity) and current_identity.id != product_query.farmer_id:
             return jsonify({"message": "You are not authorized to view this product query"}), 403
         return jsonify(product_query), 200
-    return jsonify({"message": "No product query found"}), 404
+    return jsonify([]), 200
 
 
 @product_query_views.route("/api/product_queries/farmer/<int:farmer_id>", methods=["GET"])
@@ -82,7 +82,7 @@ def get_product_query_by_farmer_id_action(farmer_id):
     product_query = get_product_query_by_farmer_id_json(farmer_id)
     if product_query:
         return jsonify(product_query), 200
-    return jsonify({"message": "No product query found"}), 404
+    return jsonify([]), 200
 
 
 @product_query_views.route("/api/product_queries", methods=["POST"])
