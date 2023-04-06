@@ -8,6 +8,7 @@ from App.controllers.product_category import get_product_categories_json
 from App.controllers.contact_form import get_all_contact_forms_json
 from App.controllers.farmer_application import get_all_farmer_applications_json
 from App.controllers.farmer_review import get_all_reviews_json
+from App.controllers.logging import get_all_logs_json
 
 # import all functions form /controllers/report.py
 from App.controllers.report import (
@@ -158,3 +159,13 @@ def get_farmer_reviews_report_action():
     return excel.make_response_from_records(farmer_reviews, "csv")
 
 
+# Export all logs to excel
+@report_views.route("/api/reports/export/logs", methods=["GET"])
+@jwt_required()
+def get_logs_report_action():
+    if not is_admin(current_identity):
+        return jsonify({"message": "You are not authorized to view all logs"}), 401
+    logs = get_all_logs_json()
+    if not logs:
+        return jsonify({"message": "No logs found"}), 404
+    return excel.make_response_from_records(logs, "csv")
