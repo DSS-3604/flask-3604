@@ -16,7 +16,7 @@ from flask_jwt import jwt_required, current_identity
 logging_views = Blueprint("logging_views", __name__, template_folder="../templates")
 
 
-@logging_views.route("/logs", methods=["GET"])
+@logging_views.route("/api/logs", methods=["GET"])
 @jwt_required()
 def get_all_logs_action():
     if not is_admin(current_identity):
@@ -28,7 +28,7 @@ def get_all_logs_action():
 
 
 # get all logs past week
-@logging_views.route("/logs/week", methods=["GET"])
+@logging_views.route("/api/logs/week", methods=["GET"])
 @jwt_required()
 def get_all_logs_week_action():
     if not is_admin(current_identity):
@@ -39,7 +39,7 @@ def get_all_logs_week_action():
     return jsonify([]), 200
 
 
-@logging_views.route("/logs/<int:id>", methods=["GET"])
+@logging_views.route("/api/logs/<int:id>", methods=["GET"])
 @jwt_required()
 def get_log_by_id_action(id):
     if not is_admin(current_identity):
@@ -50,7 +50,7 @@ def get_log_by_id_action(id):
     return jsonify({"message": "No log found"}), 404
 
 
-@logging_views.route("/logs/user/<int:user_id>", methods=["GET"])
+@logging_views.route("/api/logs/user/<int:user_id>", methods=["GET"])
 @jwt_required()
 def get_logs_by_user_id_action(user_id):
     if not is_admin(current_identity):
@@ -64,7 +64,7 @@ def get_logs_by_user_id_action(user_id):
     return jsonify([]), 200
 
 
-@logging_views.route("/logs/user/<string:user_name>", methods=["GET"])
+@logging_views.route("/api/logs/user/<string:user_name>", methods=["GET"])
 @jwt_required()
 def get_logs_by_user_name_action(user_name):
     if not is_admin(current_identity):
@@ -75,7 +75,7 @@ def get_logs_by_user_name_action(user_name):
     return jsonify([]), 200
 
 
-@logging_views.route("/logs/action", methods=["GET"])
+@logging_views.route("/api/logs/action", methods=["GET"])
 @jwt_required()
 def get_logs_by_action_action():
     if not is_admin(current_identity):

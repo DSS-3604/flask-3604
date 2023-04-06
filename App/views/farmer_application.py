@@ -25,7 +25,7 @@ farmer_application_views = Blueprint(
 )
 
 
-@farmer_application_views.route("/farmer_applications", methods=["GET"])
+@farmer_application_views.route("/api/farmer_applications", methods=["GET"])
 @jwt_required()
 def get_all_farmer_applications_action():
     if not is_admin(current_identity):
@@ -44,7 +44,7 @@ def get_all_farmer_applications_action():
     return jsonify({"message": "No farmer applications found"}), 404
 
 
-@farmer_application_views.route("/farmer_applications/<int:id>", methods=["GET"])
+@farmer_application_views.route("/api/farmer_applications/<int:id>", methods=["GET"])
 @jwt_required()
 def get_farmer_application_by_id_action(id):
     if not is_admin(current_identity):
@@ -60,7 +60,7 @@ def get_farmer_application_by_id_action(id):
     return jsonify({"message": "No farmer application found"}), 404
 
 
-@farmer_application_views.route("/farmer_applications", methods=["POST"])
+@farmer_application_views.route("/api/farmer_applications", methods=["POST"])
 @jwt_required()
 def create_farmer_application_action():
     data = request.json
@@ -82,7 +82,7 @@ def create_farmer_application_action():
     return jsonify({"message": "Farmer application could not be created"}), 400
 
 
-@farmer_application_views.route("/farmer_applications/<int:id>", methods=["PUT"])
+@farmer_application_views.route("/api/farmer_applications/<int:id>", methods=["PUT"])
 @jwt_required()
 def update_farmer_application_comment_action(id):
     data = request.json
@@ -105,7 +105,7 @@ def update_farmer_application_comment_action(id):
     return jsonify({"message": "Farmer application could not be updated"}), 400
 
 
-@farmer_application_views.route("/farmer_applications/<int:id>", methods=["DELETE"])
+@farmer_application_views.route("/api/farmer_applications/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_farmer_application_action(id):
     f_application = get_farmer_application_by_id(id)
@@ -124,7 +124,7 @@ def delete_farmer_application_action(id):
     return jsonify({"message": "Farmer application could not be deleted"}), 400
 
 
-@farmer_application_views.route("/farmer_applications", methods=["DELETE"])
+@farmer_application_views.route("/api/farmer_applications", methods=["DELETE"])
 @jwt_required()
 def delete_all_farmer_applications_action():
     if not is_admin(current_identity):
@@ -161,7 +161,7 @@ def approve_farmer_application_action(id):
     return jsonify({"message": "Farmer application could not be approved"}), 400
 
 
-@farmer_application_views.route("/farmer_applications/reject/<int:id>", methods=["PUT"])
+@farmer_application_views.route("/api/farmer_applications/reject/<int:id>", methods=["PUT"])
 @jwt_required()
 def reject_farmer_application_action(id):
     f_application = get_farmer_application_by_id(id)
@@ -181,7 +181,7 @@ def reject_farmer_application_action(id):
     return jsonify({"message": "Farmer application could not be rejected"}), 400
 
 
-@farmer_application_views.route("/farmer_applications/approved", methods=["GET"])
+@farmer_application_views.route("/api/farmer_applications/approved", methods=["GET"])
 @jwt_required()
 def get_all_approved_farmer_applications_action():
     if not is_admin(current_identity):
@@ -202,7 +202,7 @@ def get_all_approved_farmer_applications_action():
     return jsonify({"message": "No approved farmer applications found"}), 404
 
 
-@farmer_application_views.route("/farmer_applications/rejected", methods=["GET"])
+@farmer_application_views.route("/api/farmer_applications/rejected", methods=["GET"])
 @jwt_required()
 def get_all_rejected_farmer_applications_action():
     if not is_admin(current_identity):
@@ -223,7 +223,7 @@ def get_all_rejected_farmer_applications_action():
     return jsonify({"message": "No rejected farmer applications found"}), 404
 
 
-@farmer_application_views.route("/farmer_applications/pending", methods=["GET"])
+@farmer_application_views.route("/api/farmer_applications/pending", methods=["GET"])
 @jwt_required()
 def get_all_pending_farmer_applications_action():
     if not is_admin(current_identity):

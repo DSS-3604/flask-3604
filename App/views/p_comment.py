@@ -18,7 +18,7 @@ from flask_jwt import jwt_required, current_identity
 comment_views = Blueprint("comment_views", __name__, template_folder="../templates")
 
 
-@comment_views.route("/product/comment", methods=["GET"])
+@comment_views.route("/api/product/comment", methods=["GET"])
 @jwt_required()
 def get_all_comments_action():
     comments = get_all_comments_json()
@@ -27,7 +27,7 @@ def get_all_comments_action():
     return jsonify([]), 200
 
 
-@comment_views.route("/product/comment/<int:id>", methods=["GET"])
+@comment_views.route("/api/product/comment/<int:id>", methods=["GET"])
 @jwt_required()
 def get_comment_by_id_action(id):
     comment = get_comment_by_id_json(id)
@@ -36,7 +36,7 @@ def get_comment_by_id_action(id):
     return jsonify([]), 404
 
 
-@comment_views.route("/product/comment", methods=["POST"])
+@comment_views.route("/api/product/comment", methods=["POST"])
 @jwt_required()
 def create_comment_action():
     data = request.json
@@ -53,7 +53,7 @@ def create_comment_action():
     return jsonify({"message": "Could not create comment"}), 400
 
 
-@comment_views.route("/product/comment/<int:id>", methods=["PUT"])
+@comment_views.route("/api/product/comment/<int:id>", methods=["PUT"])
 @jwt_required()
 def update_comment_action(id):
     data = request.json
@@ -75,7 +75,7 @@ def update_comment_action(id):
     return jsonify({"message": "No comment found"}), 404
 
 
-@comment_views.route("/product/comment/<int:id>", methods=["DELETE"])
+@comment_views.route("/api/product/comment/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_comment_action(id):
     comment = get_comment_by_id(id)

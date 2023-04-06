@@ -21,7 +21,7 @@ product_category_views = Blueprint(
 )
 
 
-@product_category_views.route("/product_categories", methods=["GET"])
+@product_category_views.route("/api/product_categories", methods=["GET"])
 def get_all_product_categories_action():
     product_categories = get_product_categories_json()
     if product_categories:
@@ -30,7 +30,7 @@ def get_all_product_categories_action():
 
 
 # get product category by id
-@product_category_views.route("/product_categories/<int:id>", methods=["GET"])
+@product_category_views.route("/api/product_categories/<int:id>", methods=["GET"])
 def get_product_category_by_id_action(id):
     product_category = get_product_category_by_id_json(id)
     if product_category:
@@ -39,7 +39,7 @@ def get_product_category_by_id_action(id):
 
 
 # get product category by name
-@product_category_views.route("/product_categories/<string:name>", methods=["GET"])
+@product_category_views.route("/api/product_categories/<string:name>", methods=["GET"])
 def get_product_category_by_name_action(name):
     product_category = get_product_category_by_name_json(name)
     if product_category:
@@ -48,7 +48,7 @@ def get_product_category_by_name_action(name):
 
 
 # create product category
-@product_category_views.route("/product_categories", methods=["POST"])
+@product_category_views.route("/api/product_categories", methods=["POST"])
 @jwt_required()
 def create_product_category_action():
     data = request.json
@@ -69,7 +69,7 @@ def create_product_category_action():
 
 
 # update product category
-@product_category_views.route("/product_categories/<int:id>", methods=["PUT"])
+@product_category_views.route("/api/product_categories/<int:id>", methods=["PUT"])
 @jwt_required()
 def update_product_category_action(id):
     data = request.json
@@ -89,7 +89,7 @@ def update_product_category_action(id):
 
 
 # delete product category
-@product_category_views.route("/product_categories/<int:id>", methods=["DELETE"])
+@product_category_views.route("/api/product_categories/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_product_category_action(id):
     if not is_admin(current_identity):

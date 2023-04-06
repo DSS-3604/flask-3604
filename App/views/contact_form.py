@@ -19,7 +19,7 @@ contact_form_views = Blueprint(
 )
 
 
-@contact_form_views.route("/contact_forms", methods=["GET"])
+@contact_form_views.route("/api/contact_forms", methods=["GET"])
 @jwt_required()
 def get_all_contact_forms_action():
     if not is_admin(current_identity):
@@ -36,7 +36,7 @@ def get_all_contact_forms_action():
     return jsonify({"message": "No contact forms found"}), 404
 
 
-@contact_form_views.route("/contact_forms/<int:id>", methods=["GET"])
+@contact_form_views.route("/api/contact_forms/<int:id>", methods=["GET"])
 @jwt_required()
 def get_contact_form_by_id_action(id):
     if not is_admin(current_identity):
@@ -47,7 +47,7 @@ def get_contact_form_by_id_action(id):
     return jsonify({"message": "No contact form found"}), 404
 
 
-@contact_form_views.route("/contact_forms", methods=["POST"])
+@contact_form_views.route("/api/contact_forms", methods=["POST"])
 def create_contact_form_action():
     data = request.json
     params = ["name", "phone", "email", "message"]
@@ -60,7 +60,7 @@ def create_contact_form_action():
     return jsonify({"message": "Could not create contact form"}), 400
 
 
-@contact_form_views.route("/contact_forms/<int:id>", methods=["PUT"])
+@contact_form_views.route("/api/contact_forms/<int:id>", methods=["PUT"])
 @jwt_required()
 def update_contact_form_by_id_action(id):
     if not is_admin(current_identity):
@@ -76,7 +76,7 @@ def update_contact_form_by_id_action(id):
     return jsonify({"message": "Could not update contact form"}), 400
 
 
-@contact_form_views.route("/contact_forms/<int:id>", methods=["DELETE"])
+@contact_form_views.route("/api/contact_forms/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_contact_form_by_id_action(id):
     if not is_admin(current_identity):

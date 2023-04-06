@@ -20,7 +20,7 @@ from App.controllers.logging import create_log
 reply_views = Blueprint("reply_views", __name__, template_folder="../templates")
 
 
-@reply_views.route("/product/comment/<int:id>/reply", methods=["GET"])
+@reply_views.route("/api/product/comment/<int:id>/reply", methods=["GET"])
 @jwt_required()
 def get_all_replies_by_comment_id_action(id):
     replies = get_all_replies_by_comment_id_json(id)
@@ -29,7 +29,7 @@ def get_all_replies_by_comment_id_action(id):
     return jsonify([]), 200
 
 
-@reply_views.route("/product/comment/reply/<int:id>", methods=["GET"])
+@reply_views.route("/api/product/comment/reply/<int:id>", methods=["GET"])
 @jwt_required()
 def get_reply_by_id_action(id):
     reply = get_reply_by_id_json(id)
@@ -38,7 +38,7 @@ def get_reply_by_id_action(id):
     return jsonify({}), 404
 
 
-@reply_views.route("/product/comment/<int:id>/reply", methods=["POST"])
+@reply_views.route("/api/product/comment/<int:id>/reply", methods=["POST"])
 @jwt_required()
 def create_reply_action(id):
     comment = get_comment_by_id(id)
@@ -52,7 +52,7 @@ def create_reply_action(id):
     return jsonify({"message": "Could not create reply"}), 500
 
 
-@reply_views.route("/product/comment/reply/<int:id>", methods=["PUT"])
+@reply_views.route("/api/product/comment/reply/<int:id>", methods=["PUT"])
 @jwt_required()
 def update_reply_action(id):
     data = request.json
@@ -70,7 +70,7 @@ def update_reply_action(id):
     return jsonify({"message": "No reply found"}), 404
 
 
-@reply_views.route("/product/comment/reply/<int:id>", methods=["DELETE"])
+@reply_views.route("/api/product/comment/reply/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_reply_action(id):
     reply = get_reply_by_id(id)

@@ -27,7 +27,7 @@ from App.controllers.user import is_farmer, is_admin, get_user_by_id
 product_views = Blueprint("product_views", __name__, template_folder="../templates")
 
 
-@product_views.route("/products/farmer/<int:id>", methods=["GET"])
+@product_views.route("/api/products/farmer/<int:id>", methods=["GET"])
 @jwt_required()
 def get_farmer_products_action(id):
     farmer = get_user_by_id(id)
@@ -42,7 +42,7 @@ def get_farmer_products_action(id):
     return jsonify([]), 200
 
 
-@product_views.route("/products", methods=["GET"])
+@product_views.route("/api/products", methods=["GET"])
 def get_all_products_action():
     products = get_all_products_json()
     if products:
@@ -50,7 +50,7 @@ def get_all_products_action():
     return jsonify({"message": "No products found"}), 404
 
 
-@product_views.route("/products/search/<string:name>", methods=["GET"])
+@product_views.route("/api/products/search/<string:name>", methods=["GET"])
 def search_products_action(name):
     products = search_products_by_name_json(name)
     if products:
@@ -58,7 +58,7 @@ def search_products_action(name):
     return jsonify({"message": "No products found"}), 404
 
 
-@product_views.route("/products/search/recent/<string:name>", methods=["GET"])
+@product_views.route("/api/products/search/recent/<string:name>", methods=["GET"])
 def search_recent_products_action(name):
     products = search_products_by_name_past_week_json(name)
     if products:
@@ -66,7 +66,7 @@ def search_recent_products_action(name):
     return jsonify({"message": "No recent products found"}), 404
 
 
-@product_views.route("/products/recent", methods=["GET"])
+@product_views.route("/api/products/recent", methods=["GET"])
 def get_recent_products_action():
     products = get_products_past_week_json()
     if products:
@@ -74,7 +74,7 @@ def get_recent_products_action():
     return jsonify({"message": "No recent products found"}), 404
 
 
-@product_views.route("/products", methods=["POST"])
+@product_views.route("/api/products", methods=["POST"])
 @jwt_required()
 def create_product_action():
     data = request.json
@@ -99,7 +99,7 @@ def create_product_action():
     return jsonify({"message": "Product creation failed"}), 500
 
 
-@product_views.route("/products/<int:id>", methods=["GET"])
+@product_views.route("/api/products/<int:id>", methods=["GET"])
 def get_product_by_id_action(id):
     product = get_product_by_id(id)
     if product:
@@ -108,7 +108,7 @@ def get_product_by_id_action(id):
 
 
 # get product by product category
-@product_views.route("/products/category/<int:id>", methods=["GET"])
+@product_views.route("/api/products/category/<int:id>", methods=["GET"])
 def get_product_by_category_id_action(id):
     products = get_products_by_category_id_json(id)
     if products:
@@ -117,7 +117,7 @@ def get_product_by_category_id_action(id):
 
 
 # get product by product category name
-@product_views.route("/products/category/<string:name>", methods=["GET"])
+@product_views.route("/api/products/category/<string:name>", methods=["GET"])
 def get_product_by_category_name_action(name):
     category = get_product_category_by_id(name)
     if category:
@@ -128,7 +128,7 @@ def get_product_by_category_name_action(name):
     return jsonify({"message": "No category found"}), 404
 
 
-@product_views.route("/products/<int:id>", methods=["PUT"])
+@product_views.route("/api/products/<int:id>", methods=["PUT"])
 @jwt_required()
 def update_product_action(id):
     data = request.json
@@ -170,7 +170,7 @@ def update_product_action(id):
     return jsonify({"message": "No product found"}), 404
 
 
-@product_views.route("/products/<int:id>", methods=["DELETE"])
+@product_views.route("/api/products/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_product_action(id):
     product = get_product_by_id(id)

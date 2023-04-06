@@ -20,7 +20,7 @@ from flask_jwt import jwt_required, current_identity
 review_views = Blueprint("review_views", __name__, template_folder="../templates")
 
 
-@review_views.route("/farmer/review", methods=["GET"])
+@review_views.route("/api/farmer/review", methods=["GET"])
 @jwt_required()
 def get_all_reviews_action():
     reviews = get_all_reviews_json()
@@ -29,7 +29,7 @@ def get_all_reviews_action():
     return jsonify([]), 200
 
 
-@review_views.route("/farmer/<int:id>/review", methods=["GET"])
+@review_views.route("/api/farmer/<int:id>/review", methods=["GET"])
 @jwt_required()
 def get_all_reviews_by_farmer_id_action(id):
     farmer = get_user_by_id(id)
@@ -41,7 +41,7 @@ def get_all_reviews_by_farmer_id_action(id):
     return jsonify([]), 200
 
 
-@review_views.route("/farmer/review/user/<int:user_id>", methods=["GET"])
+@review_views.route("/api/farmer/review/user/<int:user_id>", methods=["GET"])
 @jwt_required()
 def get_all_reviews_by_user_id_action(user_id):
     user = get_user_by_id(user_id)
@@ -53,7 +53,7 @@ def get_all_reviews_by_user_id_action(user_id):
     return jsonify([]), 200
 
 
-@review_views.route("/farmer/review/<int:review_id>", methods=["GET"])
+@review_views.route("/api/farmer/review/<int:review_id>", methods=["GET"])
 @jwt_required()
 def get_review_by_id_action(review_id):
     review = get_review_by_id_json(review_id)
@@ -62,7 +62,7 @@ def get_review_by_id_action(review_id):
     return jsonify([]), 404
 
 
-@review_views.route("/farmer/<int:id>/review", methods=["POST"])
+@review_views.route("/api/farmer/<int:id>/review", methods=["POST"])
 @jwt_required()
 def create_review_action(id):
     data = request.json
@@ -81,7 +81,7 @@ def create_review_action(id):
     return jsonify({"message": "review not created"}), 400
 
 
-@review_views.route("/farmer/review/<int:review_id>", methods=["PUT"])
+@review_views.route("/api/farmer/review/<int:review_id>", methods=["PUT"])
 @jwt_required()
 def update_review_action(review_id):
     data = request.json
@@ -99,7 +99,7 @@ def update_review_action(review_id):
     return jsonify({"message": f"review {review_id} not found"}), 404
 
 
-@review_views.route("/farmer/review/<int:review_id>", methods=["DELETE"])
+@review_views.route("/api/farmer/review/<int:review_id>", methods=["DELETE"])
 @jwt_required()
 def delete_review_action(review_id):
     review = get_review_by_id(review_id)
