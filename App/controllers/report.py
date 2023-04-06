@@ -10,9 +10,7 @@ from datetime import datetime, timedelta
 
 # function to return number of users created in the past week
 def get_new_user_count():
-    return User.query.filter(
-        User.timestamp >= datetime.now() - timedelta(days=7)
-    ).count()
+    return User.query.filter(User.timestamp >= datetime.now() - timedelta(days=7)).count()
 
 
 # function to return number of farmer applications approved in the past week
@@ -25,23 +23,17 @@ def get_new_farmer_count():
 
 # function to return number of products created in the past week
 def get_new_product_count():
-    return Product.query.filter(
-        Product.timestamp >= datetime.now() - timedelta(days=7)
-    ).count()
+    return Product.query.filter(Product.timestamp >= datetime.now() - timedelta(days=7)).count()
 
 
 # function to return number of contact form messages created in the past week
 def get_new_contact_form_count():
-    return ContactForm.query.filter(
-        ContactForm.timestamp >= datetime.now() - timedelta(days=7)
-    ).count()
+    return ContactForm.query.filter(ContactForm.timestamp >= datetime.now() - timedelta(days=7)).count()
 
 
 # function to return number of product categories created in the past week
 def get_new_product_category_count():
-    return ProductCategory.query.filter(
-        ProductCategory.timestamp >= datetime.now() - timedelta(days=7)
-    ).count()
+    return ProductCategory.query.filter(ProductCategory.timestamp >= datetime.now() - timedelta(days=7)).count()
 
 
 # function to return total number of users
@@ -76,23 +68,17 @@ def get_total_farmer_application_count():
 
 # function to return total number of approved farmer applications
 def get_total_approved_farmer_application_count():
-    return FarmerApplication.query.filter(
-        FarmerApplication.status == "approved"
-    ).count()
+    return FarmerApplication.query.filter(FarmerApplication.status == "approved").count()
 
 
 # function to return total number of pending farmer applications
 def get_total_pending_farmer_application_count():
-    return FarmerApplication.query.filter(
-        FarmerApplication.status == "pending"
-    ).count()
+    return FarmerApplication.query.filter(FarmerApplication.status == "pending").count()
 
 
 # function to return total number of rejected farmer applications
 def get_total_rejected_farmer_application_count():
-    return FarmerApplication.query.filter(
-        FarmerApplication.status == "rejected"
-    ).count()
+    return FarmerApplication.query.filter(FarmerApplication.status == "rejected").count()
 
 
 # function to return total number of farmer reviews

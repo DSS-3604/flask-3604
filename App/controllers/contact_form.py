@@ -3,12 +3,7 @@ from App.database import db
 
 
 def create_contact_form(name, phone, email, message):
-    contact_form = ContactForm(
-        name=name,
-        phone=phone,
-        email=email,
-        message=message
-    )
+    contact_form = ContactForm(name=name, phone=phone, email=email, message=message)
     if contact_form:
         db.session.add(contact_form)
         db.session.commit()
@@ -56,4 +51,3 @@ def update_contact_form_by_id(id, name, phone, email, message):
         db.session.commit()
         return contact_form
     return False
-

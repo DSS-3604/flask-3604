@@ -17,9 +17,7 @@ from App.controllers.logging import create_log
 
 from App.controllers.user import is_admin
 
-product_query_views = Blueprint(
-    "product_query_views", __name__, template_folder="../templates"
-)
+product_query_views = Blueprint("product_query_views", __name__, template_folder="../templates")
 
 
 @product_query_views.route("/api/product_queries", methods=["GET"])
@@ -44,8 +42,11 @@ def get_all_product_queries_action():
 def get_product_query_by_id_action(id):
     product_query = get_product_query_by_id_json(id)
     if product_query:
-        if not is_admin(
-                current_identity) and current_identity.id != product_query.user_id and current_identity.id != product_query.farmer_id:
+        if (
+            not is_admin(current_identity)
+            and current_identity.id != product_query.user_id
+            and current_identity.id != product_query.farmer_id
+        ):
             return jsonify({"message": "You are not authorized to view this product query"}), 403
         return jsonify(product_query), 200
     return jsonify({"message": "No product query found"}), 404
@@ -113,4 +114,3 @@ def delete_product_query_action(id):
             return jsonify({"message": "Product Query deleted"}), 200
         return jsonify({"message": "Product Query could not be deleted"}), 500
     return jsonify({"message": "No product query found"}), 404
-

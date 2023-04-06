@@ -39,5 +39,5 @@ class ProductQuery(db.Model):
             "phone": self.phone,
             "email": self.email,
             "message": self.message,
-            "timestamp": self.timestamp
+            "timestamp": self.timestamp,
         }

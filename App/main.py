@@ -24,9 +24,7 @@ def loadConfig(app, config):
         app.config.from_object("App.config")
         delta = app.config["JWT_EXPIRATION_DELTA"]
     else:
-        app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-            "SQLALCHEMY_DATABASE_URI"
-        )
+        app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("SQLALCHEMY_DATABASE_URI")
         app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
         app.config["DEBUG"] = os.environ.get("ENV").upper() != "PRODUCTION"
         app.config["ENV"] = os.environ.get("ENV")
@@ -56,6 +54,7 @@ def create_app(config={}):
     with app.app_context() as app_context:
         from App.controllers.user import create_su, create_default_farmer
         from App.controllers.dummy_data import create_dummy_data
+
         create_su()
         create_default_farmer()
         create_dummy_data()

@@ -36,7 +36,18 @@ from App.controllers.farmer_application import (
 from App.controllers.report import get_total_user_count
 
 from App.database import create_db
-from App.models import User, Product, ProductCategory, ProductComment, ProductReply, FarmerReview, FarmerApplication, ContactForm, Logging, ProductQuery
+from App.models import (
+    User,
+    Product,
+    ProductCategory,
+    ProductComment,
+    ProductReply,
+    FarmerReview,
+    FarmerApplication,
+    ContactForm,
+    Logging,
+    ProductQuery,
+)
 from wsgi import app
 
 LOGGER = logging.getLogger(__name__)
@@ -297,14 +308,29 @@ class FarmerReviewUnitTests(unittest.TestCase):
     def test_new_farmer_review(self):
         farmer = User("farmer123", "farmer123@gmail.com", "farmerpass", access="farmer")
         user = User("bob3579", "bob3579@gmail.com", "bobpass")
-        review = FarmerReview(farmer_id=farmer.id, farmer_name=farmer.username, user_id=user.id, user_name=user.username, user_avatar=user.avatar, rating=5, body="Hello")
+        review = FarmerReview(
+            farmer_id=farmer.id,
+            farmer_name=farmer.username,
+            user_id=user.id,
+            user_name=user.username,
+            user_avatar=user.avatar,
+            rating=5,
+            body="Hello",
+        )
         assert review.farmer_id == farmer.id
 
     def test_farmer_review_attributes(self):
         farmer = User("farmer123", "farmer123@gmail.com", "farmerpass", access="farmer")
         user = User("bob3579", "bob3579@gmail.com", "bobpass")
-        review = FarmerReview(farmer_id=farmer.id, farmer_name=farmer.username, user_id=user.id,
-                              user_name=user.username, user_avatar=user.avatar, rating=5, body="Hello")
+        review = FarmerReview(
+            farmer_id=farmer.id,
+            farmer_name=farmer.username,
+            user_id=user.id,
+            user_name=user.username,
+            user_avatar=user.avatar,
+            rating=5,
+            body="Hello",
+        )
         assert review.farmer_id == farmer.id
         assert review.farmer_name == farmer.username
         assert review.user_id == user.id
@@ -316,8 +342,15 @@ class FarmerReviewUnitTests(unittest.TestCase):
     def test_farmer_review_json(self):
         farmer = User("farmer123", "farmer123@gmail.com", "farmerpass", access="farmer")
         user = User("bob3579", "bob3579@gmail.com", "bobpass")
-        review = FarmerReview(farmer_id=farmer.id, farmer_name=farmer.username, user_id=user.id,
-                              user_name=user.username, user_avatar=user.avatar, rating=5, body="Hello")
+        review = FarmerReview(
+            farmer_id=farmer.id,
+            farmer_name=farmer.username,
+            user_id=user.id,
+            user_name=user.username,
+            user_avatar=user.avatar,
+            rating=5,
+            body="Hello",
+        )
         review_json = review.to_json()
         for key, val in review_json.items():
             assert getattr(review, key) == val
@@ -402,15 +435,17 @@ class ProductQueryUnitTests(unittest.TestCase):
             total_product_quantity=100,
         )
         user = User(username="bob3579", email="bob3579@gmail.com", password="mypass", access="user", phone="1234567890")
-        query = ProductQuery(user_id=user.id,
-                             user_name=user.username,
-                             product_id=product.id,
-                             product_name=product.name,
-                             farmer_id=product.farmer_id,
-                             farmer_name=product.farmer_name,
-                             phone=user.phone,
-                             email=user.email,
-                             message="Hello")
+        query = ProductQuery(
+            user_id=user.id,
+            user_name=user.username,
+            product_id=product.id,
+            product_name=product.name,
+            farmer_id=product.farmer_id,
+            farmer_name=product.farmer_name,
+            phone=user.phone,
+            email=user.email,
+            message="Hello",
+        )
         assert query.user_id == user.id
 
     def test_product_query_attributes(self):
@@ -430,15 +465,17 @@ class ProductQueryUnitTests(unittest.TestCase):
             total_product_quantity=100,
         )
         user = User(username="bob3579", email="bob3579@gmail.com", password="mypass", access="user", phone="1234567890")
-        query = ProductQuery(user_id=user.id,
-                             user_name=user.username,
-                             product_id=product.id,
-                             product_name=product.name,
-                             farmer_id=product.farmer_id,
-                             farmer_name=product.farmer_name,
-                             phone=user.phone,
-                             email=user.email,
-                             message="Hello")
+        query = ProductQuery(
+            user_id=user.id,
+            user_name=user.username,
+            product_id=product.id,
+            product_name=product.name,
+            farmer_id=product.farmer_id,
+            farmer_name=product.farmer_name,
+            phone=user.phone,
+            email=user.email,
+            message="Hello",
+        )
         assert query.user_id == user.id
         assert query.user_name == user.username
         assert query.product_id == product.id
@@ -466,15 +503,17 @@ class ProductQueryUnitTests(unittest.TestCase):
             total_product_quantity=100,
         )
         user = User(username="bob3579", email="bob3579@gmail.com", password="mypass", access="user", phone="1234567890")
-        query = ProductQuery(user_id=user.id,
-                             user_name=user.username,
-                             product_id=product.id,
-                             product_name=product.name,
-                             farmer_id=product.farmer_id,
-                             farmer_name=product.farmer_name,
-                             phone=user.phone,
-                             email=user.email,
-                             message="Hello")
+        query = ProductQuery(
+            user_id=user.id,
+            user_name=user.username,
+            product_id=product.id,
+            product_name=product.name,
+            farmer_id=product.farmer_id,
+            farmer_name=product.farmer_name,
+            phone=user.phone,
+            email=user.email,
+            message="Hello",
+        )
         query_json = query.to_json()
         for key, val in query_json.items():
             assert getattr(query, key) == val
@@ -508,7 +547,6 @@ class AuthIntegrationTests(unittest.TestCase):
 
 
 class UsersIntegrationTests(unittest.TestCase):
-
     def test_create_user(self):
         count = get_total_user_count()
         user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password="robpass")
@@ -523,9 +561,7 @@ class UsersIntegrationTests(unittest.TestCase):
     def test_get_all_users_json(self):
         users = get_all_users()
         users_json = get_all_users_json()
-        self.assertListEqual(
-            [user.to_json() for user in users], users_json
-        )
+        self.assertListEqual([user.to_json() for user in users], users_json)
 
     def test_update_user_access(self):
         count = get_total_user_count()
@@ -670,4 +706,3 @@ class FarmerApplicationIntegrationTests(unittest.TestCase):
         application = create_farmer_application(user.id, "I want to be a farmer")
         applications = get_all_pending_farmer_applications()
         assert application in applications
-

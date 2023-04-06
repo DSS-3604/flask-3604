@@ -14,9 +14,7 @@ from App.controllers.logging import create_log
 
 from App.controllers.user import is_admin
 
-contact_form_views = Blueprint(
-    "contact_form_views", __name__, template_folder="../templates"
-)
+contact_form_views = Blueprint("contact_form_views", __name__, template_folder="../templates")
 
 
 @contact_form_views.route("/api/contact_forms", methods=["GET"])
@@ -87,5 +85,3 @@ def delete_contact_form_by_id_action(id):
             create_log(current_identity.id, "Contact Form deleted", f"Contact Form {id} deleted")
             return jsonify({"message": "Contact form deleted"}), 200
     return jsonify({"message": "Could not delete contact form"}), 400
-
-

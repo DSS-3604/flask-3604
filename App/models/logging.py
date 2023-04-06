@@ -24,6 +24,5 @@ class Logging(db.Model):
             "user_name": self.user_name,
             "timestamp": self.timestamp,
             "action": self.action,
-            "description": self.description
+            "description": self.description,
         }
-

@@ -16,9 +16,7 @@ from App.controllers.logging import create_log
 from App.controllers.user import is_admin
 
 
-product_category_views = Blueprint(
-    "product_category_views", __name__, template_folder="../templates"
-)
+product_category_views = Blueprint("product_category_views", __name__, template_folder="../templates")
 
 
 @product_category_views.route("/api/product_categories", methods=["GET"])
@@ -98,8 +96,6 @@ def delete_product_category_action(id):
         create_log(current_identity.id, f"Product Category deleted", f"Product Category {id} deleted")
         return jsonify({"message": f"Product category {id} deleted"}), 200
     return (
-        jsonify(
-            {"message": f"Product category {id} does not exist or could not be deleted"}
-        ),
+        jsonify({"message": f"Product category {id} does not exist or could not be deleted"}),
         404,
     )

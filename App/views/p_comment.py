@@ -44,11 +44,9 @@ def create_comment_action():
         product = get_product_by_id(data["product_id"])
         if not product:
             return jsonify({"message": "No product found"}), 404
-    comment = create_comment(
-        product_id=data["product_id"], user_id=current_identity.id, body=data["body"]
-    )
+    comment = create_comment(product_id=data["product_id"], user_id=current_identity.id, body=data["body"])
     if comment:
-        create_log(current_identity.id, "Comment created",f"Comment {comment.id} created")
+        create_log(current_identity.id, "Comment created", f"Comment {comment.id} created")
         return jsonify(comment.to_json()), 201
     return jsonify({"message": "Could not create comment"}), 400
 

@@ -10,13 +10,7 @@ class ContactForm(db.Model):
     message = db.Column(db.String(1024), nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False)
 
-    def __init__(
-        self,
-        name,
-        phone,
-        email,
-        message
-    ):
+    def __init__(self, name, phone, email, message):
         self.name = name
         self.phone = phone
         self.email = email
@@ -30,5 +24,5 @@ class ContactForm(db.Model):
             "phone": self.phone,
             "email": self.email,
             "message": self.message,
-            "timestamp": self.timestamp
+            "timestamp": self.timestamp,
         }

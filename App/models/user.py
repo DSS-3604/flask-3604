@@ -4,35 +4,23 @@ from datetime import datetime
 
 
 class User(db.Model):
-    id = db.Column(
-        db.Integer, primary_key=True
-    )
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
     password = db.Column(db.String(120), nullable=False)
     access = db.Column(db.String(32), nullable=False)
-    currency = db.Column(
-        db.String(120), nullable=False, default="USD"
-    )
-    units = db.Column(
-        db.String(10), nullable=False, default="kg"
-    )
+    currency = db.Column(db.String(120), nullable=False, default="USD")
+    units = db.Column(db.String(10), nullable=False, default="kg")
     bio = db.Column(db.String(1024), nullable=True)
     phone = db.Column(db.String(120), nullable=True)
     address = db.Column(db.String(120), nullable=True)
     avatar = db.Column(db.String(120), nullable=True)
     # comments posted by user
-    p_comments = db.relationship(
-        "ProductComment", backref="user", lazy=True
-    )
+    p_comments = db.relationship("ProductComment", backref="user", lazy=True)
     # replies posted by user
-    p_replies = db.relationship(
-        "ProductReply", backref="user", lazy=True
-    )
+    p_replies = db.relationship("ProductReply", backref="user", lazy=True)
     # products posted by user
-    products = db.relationship(
-        "Product", backref="user", lazy=True
-    )
+    products = db.relationship("Product", backref="user", lazy=True)
     # reviews posted by user
     posted_reviews = db.relationship(
         "FarmerReview",
@@ -48,9 +36,7 @@ class User(db.Model):
         foreign_keys="FarmerReview.user_id",
     )
     # applications posted by user
-    f_application = db.relationship(
-        "FarmerApplication", backref="user", lazy=True
-    )
+    f_application = db.relationship("FarmerApplication", backref="user", lazy=True)
     # timestamp of user creation
     timestamp = db.Column(db.DateTime, nullable=False)  # date created
     updated_timestamp = db.Column(db.DateTime, nullable=False)  # date updated

@@ -1,15 +1,9 @@
-from App.controllers.user import (
-    create_user,
-    create_admin,
-    get_user_by_username
-)
-from App.controllers.farmer_application import (
-    create_farmer_application,
-    approve_farmer_application
-)
+from App.controllers.user import create_user, create_admin, get_user_by_username
+from App.controllers.farmer_application import create_farmer_application, approve_farmer_application
 from App.controllers.product import create_product
 from App.controllers.product_category import create_product_category
 import random
+
 
 # create 10 dummy regular users
 def create_dummy_users():
@@ -77,7 +71,7 @@ def create_dummy_farmers():
     for i in range(10):
         create_product(
             farmer_id=user1.id,
-            category_id=i%3+1,
+            category_id=i % 3 + 1,
             name="product" + str(i),
             description="",
             retail_price=random.randint(20, 100),
@@ -87,8 +81,8 @@ def create_dummy_farmers():
         )
         create_product(
             farmer_id=user2.id,
-            category_id=i%3+1,
-            name="product" + str(i+10),
+            category_id=i % 3 + 1,
+            name="product" + str(i + 10),
             description="",
             retail_price=random.randint(20, 100),
             wholesale_price=random.randint(20, 100),

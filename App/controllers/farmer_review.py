@@ -6,7 +6,12 @@ from datetime import datetime
 
 def create_review(farmer_id, user_id, rating, body):
     new_review = FarmerReview(
-        farmer_id=farmer_id, farmer_name=get_user_by_id(farmer_id).username, user_id=user_id, user_name=get_user_by_id(user_id).username ,rating=rating, body=body
+        farmer_id=farmer_id,
+        farmer_name=get_user_by_id(farmer_id).username,
+        user_id=user_id,
+        user_name=get_user_by_id(user_id).username,
+        rating=rating,
+        body=body,
     )
     db.session.add(new_review)
     db.session.commit()

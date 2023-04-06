@@ -156,13 +156,9 @@ def update_product_action(id):
         if "wholesale_price" in data:
             product = update_product(id=id, wholesale_price=data["wholesale_price"])
         if "wholesale_unit_quantity" in data:
-            product = update_product(
-                id=id, wholesale_unit_quantity=data["wholesale_unit_quantity"]
-            )
+            product = update_product(id=id, wholesale_unit_quantity=data["wholesale_unit_quantity"])
         if "total_product_quantity" in data:
-            product = update_product(
-                id=id, total_product_quantity=data["total_product_quantity"]
-            )
+            product = update_product(id=id, total_product_quantity=data["total_product_quantity"])
         if "category_id" in data:
             product = update_product(id=id, category_id=data["category_id"])
         create_log(current_identity.id, "Product updated", f"Product {product.id} updated")

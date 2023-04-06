@@ -5,7 +5,9 @@ from datetime import datetime, timedelta
 
 
 def create_log(user_id, action, description):
-    new_log = Logging(user_id=user_id, user_name=get_user_by_id(user_id).username, action=action, description=description)
+    new_log = Logging(
+        user_id=user_id, user_name=get_user_by_id(user_id).username, action=action, description=description
+    )
     db.session.add(new_log)
     db.session.commit()
     return new_log
