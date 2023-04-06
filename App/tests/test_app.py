@@ -2,8 +2,7 @@ import os
 import logging
 import pytest
 import unittest
-from werkzeug.security import generate_password_hash, check_password_hash
-import time
+from werkzeug.security import generate_password_hash
 
 from App.controllers.auth import authenticate
 from App.controllers.user import (
@@ -393,21 +392,15 @@ class LoggingUnitTests(unittest.TestCase):
 
 # This fixture creates an empty database for the test and deletes it after the test
 # scope="class" would execute the fixture once and reused for all methods in the class
-# @pytest.fixture(autouse=True, scope="module")
-# def empty_db():
-#     app.config.update({"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///test.db"})
-#     create_db(app)
-#     yield app.test_client()
-#     os.remove(os.getcwd().replace("tests", "\\test.db"))
+@pytest.fixture(autouse=True, scope="module")
+def empty_db():
+    app.config.update({"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///test.db"})
+    create_db(app)
+    yield app.test_client()
+    os.remove(os.getcwd().replace("tests", "\\test.db"))
+
 
 class AuthIntegrationTests(unittest.TestCase):
-    def setUp(self):
-        app.config.update({"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///test.db"})
-        create_db(app)
-
-    def tearDown(self):
-        os.remove(os.getcwd().replace("tests", "\\test.db"))
-
     def test_authenticate(self):
         count = get_total_user_count()
         user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password="robpass")
@@ -420,12 +413,6 @@ class AuthIntegrationTests(unittest.TestCase):
 
 
 class UsersIntegrationTests(unittest.TestCase):
-    def setUp(self):
-        app.config.update({"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///test.db"})
-        create_db(app)
-
-    def tearDown(self):
-        os.remove(os.getcwd().replace("tests", "\\test.db"))
 
     def test_create_user(self):
         count = get_total_user_count()
@@ -508,13 +495,6 @@ class UsersIntegrationTests(unittest.TestCase):
 
 
 class FarmerApplicationIntegrationTests(unittest.TestCase):
-    def setUp(self):
-        app.config.update({"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///test.db"})
-        create_db(app)
-
-    def tearDown(self):
-        os.remove(os.getcwd().replace("tests", "\\test.db"))
-
     def test_create_farmer_application(self):
         count = get_total_user_count()
         user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
