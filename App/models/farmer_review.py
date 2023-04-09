@@ -14,6 +14,7 @@ class FarmerReview(db.Model):
     )  # foreign key links to user.id in user table
     user_name = db.Column(db.String(120), nullable=True)
     rating = db.Column(db.Integer, nullable=False)  # rating of farmer
+    user_avatar = db.Column(db.String(120), nullable=True)
     body = db.Column(db.String(1024), nullable=False)  # body of comment
     timestamp = db.Column(db.DateTime, nullable=False)  # timestamp of comment
     updated_timestamp = db.Column(db.DateTime, nullable=False)
