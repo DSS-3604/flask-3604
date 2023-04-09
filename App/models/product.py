@@ -1,6 +1,4 @@
 from App.database import db
-from App.models.user import User
-from App.models.product_category import ProductCategory
 from datetime import datetime
 
 

@@ -1,6 +1,5 @@
 from App.database import db
 from datetime import datetime
-from App.models.user import User
 
 
 class FarmerApplication(db.Model):

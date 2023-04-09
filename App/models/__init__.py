@@ -8,3 +8,4 @@ from .product_category import *
 from .contact_form import *
 from .logging import *
 from .product_query import *
+from .query_reply import *
