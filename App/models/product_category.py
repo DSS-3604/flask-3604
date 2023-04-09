@@ -5,7 +5,9 @@ from datetime import datetime
 class ProductCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    products = db.relationship("Product", backref="category", lazy=True, cascade="all, delete-orphan")
+    products = db.relationship(
+        "Product", backref="category", lazy=True, cascade="all, delete-orphan"
+    )
     timestamp = db.Column(db.DateTime, nullable=False)
     updated_timestamp = db.Column(db.DateTime, nullable=False)
 

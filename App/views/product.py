@@ -94,7 +94,9 @@ def create_product_action():
         total_product_quantity=data["total_product_quantity"],
     )
     if product:
-        create_log(current_identity.id, "Product created", f"Product {product.id} created")
+        create_log(
+            current_identity.id, "Product created", f"Product {product.id} created"
+        )
         return jsonify(product.to_json()), 201
     return jsonify({"message": "Product creation failed"}), 500
 
@@ -156,12 +158,18 @@ def update_product_action(id):
         if "wholesale_price" in data:
             product = update_product(id=id, wholesale_price=data["wholesale_price"])
         if "wholesale_unit_quantity" in data:
-            product = update_product(id=id, wholesale_unit_quantity=data["wholesale_unit_quantity"])
+            product = update_product(
+                id=id, wholesale_unit_quantity=data["wholesale_unit_quantity"]
+            )
         if "total_product_quantity" in data:
-            product = update_product(id=id, total_product_quantity=data["total_product_quantity"])
+            product = update_product(
+                id=id, total_product_quantity=data["total_product_quantity"]
+            )
         if "category_id" in data:
             product = update_product(id=id, category_id=data["category_id"])
-        create_log(current_identity.id, "Product updated", f"Product {product.id} updated")
+        create_log(
+            current_identity.id, "Product updated", f"Product {product.id} updated"
+        )
         return jsonify(product.to_json()), 200
     return jsonify({"message": "No product found"}), 404
 
@@ -182,6 +190,8 @@ def delete_product_action(id):
                 403,
             )
         if delete_product(id):
-            create_log(current_identity.id, "Product deleted", f"Product {product.id} deleted")
+            create_log(
+                current_identity.id, "Product deleted", f"Product {product.id} deleted"
+            )
             return jsonify({"message": f"Product {product.name} deleted"}), 200
     return jsonify({"message": "No product found"}), 404

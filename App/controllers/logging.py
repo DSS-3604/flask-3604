@@ -6,7 +6,10 @@ from datetime import datetime, timedelta
 
 def create_log(user_id, action, description):
     new_log = Logging(
-        user_id=user_id, user_name=get_user_by_id(user_id).username, action=action, description=description
+        user_id=user_id,
+        user_name=get_user_by_id(user_id).username,
+        action=action,
+        description=description,
     )
     db.session.add(new_log)
     db.session.commit()
@@ -22,7 +25,9 @@ def get_all_logs_json():
 
 
 def get_all_logs_week():
-    return Logging.query.filter(Logging.timestamp >= datetime.now() - timedelta(days=7)).all()
+    return Logging.query.filter(
+        Logging.timestamp >= datetime.now() - timedelta(days=7)
+    ).all()
 
 
 def get_all_logs_week_json():

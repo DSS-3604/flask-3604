@@ -44,9 +44,13 @@ def create_comment_action():
         product = get_product_by_id(data["product_id"])
         if not product:
             return jsonify({"message": "No product found"}), 404
-    comment = create_comment(product_id=data["product_id"], user_id=current_identity.id, body=data["body"])
+    comment = create_comment(
+        product_id=data["product_id"], user_id=current_identity.id, body=data["body"]
+    )
     if comment:
-        create_log(current_identity.id, "Comment created", f"Comment {comment.id} created")
+        create_log(
+            current_identity.id, "Comment created", f"Comment {comment.id} created"
+        )
         return jsonify(comment.to_json()), 201
     return jsonify({"message": "Could not create comment"}), 400
 
@@ -65,7 +69,11 @@ def update_comment_action(id):
         if "body" in data:
             comment = update_comment(id=id, body=data["body"])
             if comment:
-                create_log(current_identity.id, "Comment updated", f"Comment {comment.id} updated")
+                create_log(
+                    current_identity.id,
+                    "Comment updated",
+                    f"Comment {comment.id} updated",
+                )
                 return jsonify(comment.to_json()), 200
             return jsonify({"message": "Could not update comment"}), 400
         else:
@@ -85,6 +93,8 @@ def delete_comment_action(id):
             )
 
         if delete_comment(id):
-            create_log(current_identity.id, "Comment deleted", f"Comment {comment.id} deleted")
+            create_log(
+                current_identity.id, "Comment deleted", f"Comment {comment.id} deleted"
+            )
             return jsonify({"message": f"comment {id} deleted"}), 200
     return jsonify({"message": "No comment found"}), 404

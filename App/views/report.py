@@ -80,7 +80,10 @@ def get_alL_users_report_action():
 @jwt_required()
 def get_farmers_report_action():
     if not is_admin(current_identity):
-        return jsonify({"message": "You are not authorized to view all farmers/co-ops"}), 401
+        return (
+            jsonify({"message": "You are not authorized to view all farmers/co-ops"}),
+            401,
+        )
     farmers = get_all_farmers_json()
     if not farmers:
         return jsonify({"message": "No farmers/co-ops found"}), 404
@@ -116,7 +119,12 @@ def get_products_report_week_action():
 @jwt_required()
 def get_product_categories_report_action():
     if not is_admin(current_identity):
-        return jsonify({"message": "You are not authorized to view all product categories"}), 401
+        return (
+            jsonify(
+                {"message": "You are not authorized to view all product categories"}
+            ),
+            401,
+        )
     product_categories = get_product_categories_json()
     if not product_categories:
         return jsonify({"message": "No product categories found"}), 404
@@ -128,7 +136,10 @@ def get_product_categories_report_action():
 @jwt_required()
 def get_contact_forms_report_action():
     if not is_admin(current_identity):
-        return jsonify({"message": "You are not authorized to view all contact forms"}), 401
+        return (
+            jsonify({"message": "You are not authorized to view all contact forms"}),
+            401,
+        )
     contact_forms = get_all_contact_forms_json()
     if not contact_forms:
         return jsonify({"message": "No contact forms found"}), 404
@@ -140,7 +151,12 @@ def get_contact_forms_report_action():
 @jwt_required()
 def get_farmer_applications_report_action():
     if not is_admin(current_identity):
-        return jsonify({"message": "You are not authorized to view all farmer applications"}), 401
+        return (
+            jsonify(
+                {"message": "You are not authorized to view all farmer applications"}
+            ),
+            401,
+        )
     farmer_applications = get_all_farmer_applications_json()
     if not farmer_applications:
         return jsonify({"message": "No farmer applications found"}), 404
@@ -152,7 +168,10 @@ def get_farmer_applications_report_action():
 @jwt_required()
 def get_farmer_reviews_report_action():
     if not is_admin(current_identity):
-        return jsonify({"message": "You are not authorized to view all farmer reviews"}), 401
+        return (
+            jsonify({"message": "You are not authorized to view all farmer reviews"}),
+            401,
+        )
     farmer_reviews = get_all_reviews_json()
     if not farmer_reviews:
         return jsonify({"message": "No farmer reviews found"}), 404

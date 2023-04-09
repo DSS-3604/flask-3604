@@ -15,7 +15,18 @@ class ProductQuery(db.Model):
     message = db.Column(db.String(1024), nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, user_id, user_name, product_id, product_name, farmer_id, farmer_name, phone, email, message):
+    def __init__(
+        self,
+        user_id,
+        user_name,
+        product_id,
+        product_name,
+        farmer_id,
+        farmer_name,
+        phone,
+        email,
+        message,
+    ):
         self.user_id = user_id
         self.user_name = user_name
         self.product_id = product_id

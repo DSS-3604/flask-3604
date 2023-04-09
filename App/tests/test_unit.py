@@ -186,7 +186,12 @@ class TestProductUnit(unittest.TestCase):
             wholesale_unit_quantity=10,
             total_product_quantity=100,
         )
-        comment = ProductComment(product_id=product.id, user_id=farmer.id, user_name=farmer.username, body="Hello")
+        comment = ProductComment(
+            product_id=product.id,
+            user_id=farmer.id,
+            user_name=farmer.username,
+            body="Hello",
+        )
         assert comment.product_id == product.id
 
     def test_product_comment_json(self):
@@ -205,7 +210,12 @@ class TestProductUnit(unittest.TestCase):
             wholesale_unit_quantity=10,
             total_product_quantity=100,
         )
-        comment = ProductComment(product_id=product.id, user_id=farmer.id, user_name=farmer.username, body="Hello")
+        comment = ProductComment(
+            product_id=product.id,
+            user_id=farmer.id,
+            user_name=farmer.username,
+            body="Hello",
+        )
         comment_json = comment.to_json()
         for key, val in comment_json.items():
             assert getattr(comment, key) == val
@@ -226,8 +236,18 @@ class TestProductUnit(unittest.TestCase):
             wholesale_unit_quantity=10,
             total_product_quantity=100,
         )
-        comment = ProductComment(product_id=product.id, user_id=farmer.id, user_name=farmer.username, body="Hello")
-        reply = ProductReply(p_comment_id=comment.id, user_id=farmer.id, user_name=farmer.username, body="Hello self")
+        comment = ProductComment(
+            product_id=product.id,
+            user_id=farmer.id,
+            user_name=farmer.username,
+            body="Hello",
+        )
+        reply = ProductReply(
+            p_comment_id=comment.id,
+            user_id=farmer.id,
+            user_name=farmer.username,
+            body="Hello self",
+        )
         assert reply.p_comment_id == comment.id
 
     def test_product_reply_json(self):
@@ -246,8 +266,18 @@ class TestProductUnit(unittest.TestCase):
             wholesale_unit_quantity=10,
             total_product_quantity=100,
         )
-        comment = ProductComment(product_id=product.id, user_id=farmer.id, user_name=farmer.username, body="Hello")
-        reply = ProductReply(p_comment_id=comment.id, user_id=farmer.id, user_name=farmer.username, body="Hello self")
+        comment = ProductComment(
+            product_id=product.id,
+            user_id=farmer.id,
+            user_name=farmer.username,
+            body="Hello",
+        )
+        reply = ProductReply(
+            p_comment_id=comment.id,
+            user_id=farmer.id,
+            user_name=farmer.username,
+            body="Hello self",
+        )
         reply_json = reply.to_json()
         for key, val in reply_json.items():
             assert getattr(reply, key) == val
@@ -324,19 +354,25 @@ class TestFarmerReviewUnit(unittest.TestCase):
 class TestFarmerApplicationUnit(unittest.TestCase):
     def test_new_farmer_application(self):
         user = User("bob3579", "bob3579@gmail.com", "bobpass")
-        application = FarmerApplication(user_id=user.id, user_name=user.username, comment="Hello")
+        application = FarmerApplication(
+            user_id=user.id, user_name=user.username, comment="Hello"
+        )
         assert application.user_id == user.id
 
     def test_farmer_application_attributes(self):
         user = User("bob3579", "bob3579@gmail.com", "bobpass")
-        application = FarmerApplication(user_id=user.id, user_name=user.username, comment="Hello")
+        application = FarmerApplication(
+            user_id=user.id, user_name=user.username, comment="Hello"
+        )
         assert application.user_id == user.id
         assert application.user_name == user.username
         assert application.comment == "Hello"
 
     def test_farmer_application_json(self):
         user = User("bob3579", "bob3579@gmail.com", "bobpass")
-        application = FarmerApplication(user_id=user.id, user_name=user.username, comment="Hello")
+        application = FarmerApplication(
+            user_id=user.id, user_name=user.username, comment="Hello"
+        )
         application_json = application.to_json()
         for key, val in application_json.items():
             assert getattr(application, key) == val
@@ -344,18 +380,24 @@ class TestFarmerApplicationUnit(unittest.TestCase):
 
 class TestContactFormUnit(unittest.TestCase):
     def test_new_contact_form(self):
-        form = ContactForm(name="Bob", phone="1234567890", email="bob@gmail.com", message="Hello")
+        form = ContactForm(
+            name="Bob", phone="1234567890", email="bob@gmail.com", message="Hello"
+        )
         assert form.name == "Bob"
 
     def test_contact_form_attributes(self):
-        form = ContactForm(name="Bob", phone="1234567890", email="bob@gmail.com", message="Hello")
+        form = ContactForm(
+            name="Bob", phone="1234567890", email="bob@gmail.com", message="Hello"
+        )
         assert form.name == "Bob"
         assert form.phone == "1234567890"
         assert form.email == "bob@gmail.com"
         assert form.message == "Hello"
 
     def test_contact_form_json(self):
-        form = ContactForm(name="Bob", phone="1234567890", email="bob@gmail.com", message="Hello")
+        form = ContactForm(
+            name="Bob", phone="1234567890", email="bob@gmail.com", message="Hello"
+        )
         form_json = form.to_json()
         for key, val in form_json.items():
             assert getattr(form, key) == val
@@ -399,7 +441,13 @@ class TestProductQueryUnit(unittest.TestCase):
             wholesale_unit_quantity=10,
             total_product_quantity=100,
         )
-        user = User(username="bob3579", email="bob3579@gmail.com", password="mypass", access="user", phone="1234567890")
+        user = User(
+            username="bob3579",
+            email="bob3579@gmail.com",
+            password="mypass",
+            access="user",
+            phone="1234567890",
+        )
         query = ProductQuery(
             user_id=user.id,
             user_name=user.username,
@@ -429,7 +477,13 @@ class TestProductQueryUnit(unittest.TestCase):
             wholesale_unit_quantity=10,
             total_product_quantity=100,
         )
-        user = User(username="bob3579", email="bob3579@gmail.com", password="mypass", access="user", phone="1234567890")
+        user = User(
+            username="bob3579",
+            email="bob3579@gmail.com",
+            password="mypass",
+            access="user",
+            phone="1234567890",
+        )
         query = ProductQuery(
             user_id=user.id,
             user_name=user.username,
@@ -467,7 +521,13 @@ class TestProductQueryUnit(unittest.TestCase):
             wholesale_unit_quantity=10,
             total_product_quantity=100,
         )
-        user = User(username="bob3579", email="bob3579@gmail.com", password="mypass", access="user", phone="1234567890")
+        user = User(
+            username="bob3579",
+            email="bob3579@gmail.com",
+            password="mypass",
+            access="user",
+            phone="1234567890",
+        )
         query = ProductQuery(
             user_id=user.id,
             user_name=user.username,

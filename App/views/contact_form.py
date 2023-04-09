@@ -14,7 +14,9 @@ from App.controllers.logging import create_log
 
 from App.controllers.user import is_admin
 
-contact_form_views = Blueprint("contact_form_views", __name__, template_folder="../templates")
+contact_form_views = Blueprint(
+    "contact_form_views", __name__, template_folder="../templates"
+)
 
 
 @contact_form_views.route("/api/contact_forms", methods=["GET"])
@@ -38,7 +40,10 @@ def get_all_contact_forms_action():
 @jwt_required()
 def get_contact_form_by_id_action(id):
     if not is_admin(current_identity):
-        return jsonify({"message": "You are not authorized to view this contact form"}), 403
+        return (
+            jsonify({"message": "You are not authorized to view this contact form"}),
+            403,
+        )
     contact_form = get_contact_form_by_id(id)
     if contact_form:
         return jsonify(contact_form.to_json()), 200
@@ -52,7 +57,9 @@ def create_contact_form_action():
     if not all(param in data for param in params):
         return jsonify({"message": "Missing parameters"}), 400
 
-    contact_form = create_contact_form(data["name"], data["phone"], data["email"], data["message"])
+    contact_form = create_contact_form(
+        data["name"], data["phone"], data["email"], data["message"]
+    )
     if contact_form:
         return jsonify(contact_form.to_json()), 201
     return jsonify({"message": "Could not create contact form"}), 400
@@ -62,14 +69,21 @@ def create_contact_form_action():
 @jwt_required()
 def update_contact_form_by_id_action(id):
     if not is_admin(current_identity):
-        return jsonify({"message": "You are not authorized to update contact forms"}), 403
+        return (
+            jsonify({"message": "You are not authorized to update contact forms"}),
+            403,
+        )
     data = request.json
     params = ["name", "phone", "email", "message"]
     if not all(param in data for param in params):
         return jsonify({"message": "Missing parameters"}), 400
-    contact_form = update_contact_form_by_id(id, data["name"], data["phone"], data["email"], data["message"])
+    contact_form = update_contact_form_by_id(
+        id, data["name"], data["phone"], data["email"], data["message"]
+    )
     if contact_form:
-        create_log(current_identity.id, "Contact Form updated", f"Contact Form {id} updated")
+        create_log(
+            current_identity.id, "Contact Form updated", f"Contact Form {id} updated"
+        )
         return jsonify(contact_form.to_json()), 200
     return jsonify({"message": "Could not update contact form"}), 400
 
@@ -78,10 +92,17 @@ def update_contact_form_by_id_action(id):
 @jwt_required()
 def delete_contact_form_by_id_action(id):
     if not is_admin(current_identity):
-        return jsonify({"message": "You are not authorized to delete contact forms"}), 403
+        return (
+            jsonify({"message": "You are not authorized to delete contact forms"}),
+            403,
+        )
     contact_form = get_contact_form_by_id(id)
     if contact_form:
         if delete_contact_form_by_id(id):
-            create_log(current_identity.id, "Contact Form deleted", f"Contact Form {id} deleted")
+            create_log(
+                current_identity.id,
+                "Contact Form deleted",
+                f"Contact Form {id} deleted",
+            )
             return jsonify({"message": "Contact form deleted"}), 200
     return jsonify({"message": "Could not delete contact form"}), 400

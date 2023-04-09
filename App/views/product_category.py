@@ -16,7 +16,9 @@ from App.controllers.logging import create_log
 from App.controllers.user import is_admin
 
 
-product_category_views = Blueprint("product_category_views", __name__, template_folder="../templates")
+product_category_views = Blueprint(
+    "product_category_views", __name__, template_folder="../templates"
+)
 
 
 @product_category_views.route("/api/product_categories", methods=["GET"])
@@ -61,7 +63,11 @@ def create_product_category_action():
 
     pc = create_product_category(name=data["name"])
     if pc:
-        create_log(current_identity.id, f"Product Category created", f"Product Category {pc.name} created")
+        create_log(
+            current_identity.id,
+            f"Product Category created",
+            f"Product Category {pc.name} created",
+        )
         return jsonify(pc.to_json()), 201
     return jsonify({"message": "Product category could not be created"}), 400
 
@@ -81,7 +87,11 @@ def update_product_category_action(id):
         return jsonify({"message": "Name is required"}), 400
     pc = update_product_category(id, name=data["name"])
     if pc:
-        create_log(current_identity.id, f"Product Category updated", f"Product Category {pc.name} updated")
+        create_log(
+            current_identity.id,
+            f"Product Category updated",
+            f"Product Category {pc.name} updated",
+        )
         return jsonify(pc.to_json()), 200
     return jsonify({"message": f"Product category {id} does not exist"}), 404
 
@@ -93,9 +103,15 @@ def delete_product_category_action(id):
     if not is_admin(current_identity):
         return jsonify({"message": "You are not authorized to delete a product "}), 403
     if delete_product_category(id):
-        create_log(current_identity.id, f"Product Category deleted", f"Product Category {id} deleted")
+        create_log(
+            current_identity.id,
+            f"Product Category deleted",
+            f"Product Category {id} deleted",
+        )
         return jsonify({"message": f"Product category {id} deleted"}), 200
     return (
-        jsonify({"message": f"Product category {id} does not exist or could not be deleted"}),
+        jsonify(
+            {"message": f"Product category {id} does not exist or could not be deleted"}
+        ),
         404,
     )

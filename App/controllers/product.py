@@ -53,7 +53,9 @@ def get_products_by_category_id_json(category_id):
 
 
 def get_products_past_week():
-    return Product.query.filter(Product.timestamp >= datetime.now() - timedelta(days=7)).all()
+    return Product.query.filter(
+        Product.timestamp >= datetime.now() - timedelta(days=7)
+    ).all()
 
 
 def get_products_past_week_json():
@@ -61,7 +63,9 @@ def get_products_past_week_json():
 
 
 def get_products_past_month():
-    return Product.query.filter(Product.timestamp >= datetime.now() - timedelta(days=30)).all()
+    return Product.query.filter(
+        Product.timestamp >= datetime.now() - timedelta(days=30)
+    ).all()
 
 
 def get_products_past_month_json():
@@ -69,7 +73,9 @@ def get_products_past_month_json():
 
 
 def get_products_past_year():
-    return Product.query.filter(Product.timestamp >= datetime.now() - timedelta(days=365)).all()
+    return Product.query.filter(
+        Product.timestamp >= datetime.now() - timedelta(days=365)
+    ).all()
 
 
 def get_products_past_year_json():

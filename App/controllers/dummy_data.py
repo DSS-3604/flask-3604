@@ -1,5 +1,8 @@
 from App.controllers.user import create_user, create_admin, get_user_by_username
-from App.controllers.farmer_application import create_farmer_application, approve_farmer_application
+from App.controllers.farmer_application import (
+    create_farmer_application,
+    approve_farmer_application,
+)
 from App.controllers.product import create_product
 from App.controllers.product_category import create_product_category
 import random
