@@ -8,6 +8,7 @@ class ContactForm(db.Model):
     phone = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     message = db.Column(db.String(1024), nullable=False)
+    resolved = db.Column(db.Boolean, nullable=False, default=False)
     timestamp = db.Column(db.DateTime, nullable=False)
 
     def __init__(self, name, phone, email, message):
@@ -16,6 +17,7 @@ class ContactForm(db.Model):
         self.email = email
         self.message = message
         self.timestamp = datetime.now()
+        self.resolved = False
 
     def to_json(self):
         return {
@@ -25,4 +27,5 @@ class ContactForm(db.Model):
             "email": self.email,
             "message": self.message,
             "timestamp": self.timestamp,
+            "resolved": self.resolved
         }
