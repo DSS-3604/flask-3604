@@ -40,13 +40,17 @@ def delete_contact_form_by_id(id):
     return False
 
 
-def update_contact_form_by_id(id, name, phone, email, message):
+def update_contact_form_by_id(id, name=None, phone=None, email=None, message=None):
     contact_form = ContactForm.query.filter_by(id=id).first()
     if contact_form:
-        contact_form.name = name
-        contact_form.phone = phone
-        contact_form.email = email
-        contact_form.message = message
+        if name:
+            contact_form.name = name
+        if phone:
+            contact_form.phone = phone
+        if email:
+            contact_form.email = email
+        if message:
+            contact_form.message = message
         db.session.add(contact_form)
         db.session.commit()
         return contact_form
