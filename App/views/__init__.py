@@ -10,6 +10,7 @@ from .contact_form import contact_form_views
 from .report import report_views
 from .logging import logging_views
 from .product_query import product_query_views
+from .query_reply import query_reply_views
 
 views = [
     user_views,
@@ -24,4 +25,5 @@ views = [
     report_views,
     logging_views,
     product_query_views,
+    query_reply_views
 ]
