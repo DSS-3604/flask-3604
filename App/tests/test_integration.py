@@ -120,6 +120,20 @@ from App.controllers.product_query import (
     get_product_query_by_farmer_id_json,
     get_product_query_by_farmer_id,
 )
+from App.controllers.query_reply import (
+    create_query_reply,
+    get_all_query_replies,
+    get_all_query_replies_by_query_id,
+    get_all_query_replies_by_query_id_json,
+    get_query_reply_by_id,
+    get_query_reply_by_id_json,
+    get_query_replies_by_user_id,
+    get_query_replies_by_user_id_json,
+    get_query_replies_by_user_name,
+    get_query_replies_by_user_name_json,
+    update_query_reply,
+    delete_query_reply,
+)
 
 from App.controllers.logging import (
     create_log,
@@ -892,6 +906,85 @@ class TestProductQueryIntegration(unittest.TestCase):
         delete_product_query(query.id)
         query1 = get_product_query_by_id(query.id)
         assert query1 is None
+
+
+class TestProductQueryReplyIntegration(unittest.TestCase):
+    ucount = get_total_user_count()
+    user = create_user(f"bob{ucount}", f"bob{ucount}", "bobpass")
+    farmer = create_user(
+        username=f"rob{ucount}",
+        email=f"rob{ucount}@gmail.com",
+        password=f"robpass",
+        access="farmer",
+    )
+    pc_count = get_total_category_count()
+    pc = create_product_category(f"category{pc_count + 1}")
+    pcount = get_total_product_count()
+    product = create_product(
+        farmer.id, pc.id, f"product{pcount}", "description", "image.jpg", 10, 10, 10, 10
+    )
+    query = create_product_query(user.id, product.id, "query")
+
+    def test_create_reply(self):
+        reply = create_query_reply(self.query.id, self.farmer.id, "reply")
+        assert reply is not None
+
+    def test_get_all_query_replies(self):
+        reply = create_query_reply(self.query.id, self.farmer.id, "reply")
+        replies = get_all_query_replies()
+        assert reply in replies
+
+    def test_get_all_query_replies_by_query_id(self):
+        reply = create_query_reply(self.query.id, self.farmer.id, "reply")
+        replies = get_all_query_replies_by_query_id(self.query.id)
+        assert reply in replies
+
+    def test_get_all_query_replies_by_query_id_json(self):
+        reply = create_query_reply(self.query.id, self.farmer.id, "reply")
+        replies = get_all_query_replies_by_query_id_json(self.query.id)
+        assert reply.to_json() in replies
+
+    def test_get_query_reply_by_id(self):
+        reply = create_query_reply(self.query.id, self.farmer.id, "reply")
+        reply1 = get_query_reply_by_id(reply.id)
+        assert reply1 == reply
+
+    def test_get_query_reply_by_id_json(self):
+        reply = create_query_reply(self.query.id, self.farmer.id, "reply")
+        reply1 = get_query_reply_by_id_json(reply.id)
+        assert reply1 == reply.to_json()
+
+    def test_get_query_replies_by_user_id(self):
+        reply = create_query_reply(self.query.id, self.farmer.id, "reply")
+        replies = get_query_replies_by_user_id(self.farmer.id)
+        assert reply in replies
+
+    def test_get_query_replies_by_user_id_json(self):
+        reply = create_query_reply(self.query.id, self.farmer.id, "reply")
+        replies = get_query_replies_by_user_id_json(self.farmer.id)
+        assert reply.to_json() in replies
+
+    def test_get_query_replies_by_user_name(self):
+        reply = create_query_reply(self.query.id, self.farmer.id, "reply")
+        replies = get_query_replies_by_user_name(self.farmer.username)
+        assert reply in replies
+
+    def test_get_query_replies_by_user_name_json(self):
+        reply = create_query_reply(self.query.id, self.farmer.id, "reply")
+        replies = get_query_replies_by_user_name_json(self.farmer.username)
+        assert reply.to_json() in replies
+
+    def test_update_query_reply(self):
+        reply = create_query_reply(self.query.id, self.farmer.id, "reply")
+        update_query_reply(reply.id, "reply1")
+        reply1 = get_query_reply_by_id(reply.id)
+        assert reply1.body == "reply1"
+
+    def test_delete_query_reply(self):
+        reply = create_query_reply(self.query.id, self.farmer.id, "reply")
+        delete_query_reply(reply.id)
+        reply1 = get_query_reply_by_id(reply.id)
+        assert reply1 is None
 
 
 class TestLoggingIntegration(unittest.TestCase):

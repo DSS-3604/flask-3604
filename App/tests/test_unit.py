@@ -13,6 +13,7 @@ from App.models import (
     ContactForm,
     Logging,
     ProductQuery,
+    QueryReply
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -425,120 +426,144 @@ class TestLoggingUnit(unittest.TestCase):
 
 
 class TestProductQueryUnit(unittest.TestCase):
+    farmer = User("farmer123", "farmer123@gmail.com", "farmerpass", access="farmer")
+    pc = ProductCategory("Vegetables")
+    product = Product(
+        farmer_id=farmer.id,
+        farmer_name=farmer.username,
+        category_id=pc.id,
+        category_name=pc.name,
+        name="Tomatoes",
+        description="Fresh Tomatoes",
+        image="tomatoes.jpg",
+        retail_price=2.99,
+        wholesale_price=1.99,
+        wholesale_unit_quantity=10,
+        total_product_quantity=100,
+    )
+    user = User(
+        username="bob3579",
+        email="bob3579@gmail.com",
+        password="mypass",
+        access="user",
+        phone="1234567890",
+    )
     def test_create_product_query(self):
-        farmer = User("farmer123", "farmer123@gmail.com", "farmerpass", access="farmer")
-        pc = ProductCategory("Vegetables")
-        product = Product(
-            farmer_id=farmer.id,
-            farmer_name=farmer.username,
-            category_id=pc.id,
-            category_name=pc.name,
-            name="Tomatoes",
-            description="Fresh Tomatoes",
-            image="tomatoes.jpg",
-            retail_price=2.99,
-            wholesale_price=1.99,
-            wholesale_unit_quantity=10,
-            total_product_quantity=100,
-        )
-        user = User(
-            username="bob3579",
-            email="bob3579@gmail.com",
-            password="mypass",
-            access="user",
-            phone="1234567890",
-        )
         query = ProductQuery(
-            user_id=user.id,
-            user_name=user.username,
-            product_id=product.id,
-            product_name=product.name,
-            farmer_id=product.farmer_id,
-            farmer_name=product.farmer_name,
-            phone=user.phone,
-            email=user.email,
+            user_id=self.user.id,
+            user_name=self.user.username,
+            product_id=self.product.id,
+            product_name=self.product.name,
+            farmer_id=self.product.farmer_id,
+            farmer_name=self.product.farmer_name,
+            phone=self.user.phone,
+            email=self.user.email,
             message="Hello",
         )
-        assert query.user_id == user.id
+        assert query.user_id == self.user.id
 
     def test_product_query_attributes(self):
-        farmer = User("farmer123", "farmer123@gmail.com", "farmerpass", access="farmer")
-        pc = ProductCategory("Vegetables")
-        product = Product(
-            farmer_id=farmer.id,
-            farmer_name=farmer.username,
-            category_id=pc.id,
-            category_name=pc.name,
-            name="Tomatoes",
-            description="Fresh Tomatoes",
-            image="tomatoes.jpg",
-            retail_price=2.99,
-            wholesale_price=1.99,
-            wholesale_unit_quantity=10,
-            total_product_quantity=100,
-        )
-        user = User(
-            username="bob3579",
-            email="bob3579@gmail.com",
-            password="mypass",
-            access="user",
-            phone="1234567890",
-        )
         query = ProductQuery(
-            user_id=user.id,
-            user_name=user.username,
-            product_id=product.id,
-            product_name=product.name,
-            farmer_id=product.farmer_id,
-            farmer_name=product.farmer_name,
-            phone=user.phone,
-            email=user.email,
+            user_id=self.user.id,
+            user_name=self.user.username,
+            product_id=self.product.id,
+            product_name=self.product.name,
+            farmer_id=self.product.farmer_id,
+            farmer_name=self.product.farmer_name,
+            phone=self.user.phone,
+            email=self.user.email,
             message="Hello",
         )
-        assert query.user_id == user.id
-        assert query.user_name == user.username
-        assert query.product_id == product.id
-        assert query.product_name == product.name
-        assert query.farmer_id == product.farmer_id
-        assert query.farmer_name == product.farmer_name
-        assert query.phone == user.phone
-        assert query.email == user.email
+        assert query.user_id == self.user.id
+        assert query.user_name == self.user.username
+        assert query.product_id == self.product.id
+        assert query.product_name == self.product.name
+        assert query.farmer_id == self.product.farmer_id
+        assert query.farmer_name == self.product.farmer_name
+        assert query.phone == self.user.phone
+        assert query.email == self.user.email
         assert query.message == "Hello"
 
     def test_product_query_json(self):
-        farmer = User("farmer123", "farmer123@gmail.com", "farmerpass", access="farmer")
-        pc = ProductCategory("Vegetables")
-        product = Product(
-            farmer_id=farmer.id,
-            farmer_name=farmer.username,
-            category_id=pc.id,
-            category_name=pc.name,
-            name="Tomatoes",
-            description="Fresh Tomatoes",
-            image="tomatoes.jpg",
-            retail_price=2.99,
-            wholesale_price=1.99,
-            wholesale_unit_quantity=10,
-            total_product_quantity=100,
-        )
-        user = User(
-            username="bob3579",
-            email="bob3579@gmail.com",
-            password="mypass",
-            access="user",
-            phone="1234567890",
-        )
         query = ProductQuery(
-            user_id=user.id,
-            user_name=user.username,
-            product_id=product.id,
-            product_name=product.name,
-            farmer_id=product.farmer_id,
-            farmer_name=product.farmer_name,
-            phone=user.phone,
-            email=user.email,
+            user_id=self.user.id,
+            user_name=self.user.username,
+            product_id=self.product.id,
+            product_name=self.product.name,
+            farmer_id=self.product.farmer_id,
+            farmer_name=self.product.farmer_name,
+            phone=self.user.phone,
+            email=self.user.email,
             message="Hello",
         )
         query_json = query.to_json()
         for key, val in query_json.items():
             assert getattr(query, key) == val
+
+
+class TestProductQueryReplyUnit(unittest.TestCase):
+    farmer = User("farmer123", "farmer123@gmail.com", "farmerpass", access="farmer")
+    pc = ProductCategory("Vegetables")
+    product = Product(
+        farmer_id=farmer.id,
+        farmer_name=farmer.username,
+        category_id=pc.id,
+        category_name=pc.name,
+        name="Tomatoes",
+        description="Fresh Tomatoes",
+        image="tomatoes.jpg",
+        retail_price=2.99,
+        wholesale_price=1.99,
+        wholesale_unit_quantity=10,
+        total_product_quantity=100,
+    )
+    user = User(
+        username="bob3579",
+        email="bob3579@gmail.com",
+        password="mypass",
+        access="user",
+        phone="1234567890",
+    )
+    query = ProductQuery(
+        user_id=user.id,
+        user_name=user.username,
+        product_id=product.id,
+        product_name=product.name,
+        farmer_id=product.farmer_id,
+        farmer_name=product.farmer_name,
+        phone=user.phone,
+        email=user.email,
+        message="Hello",
+    )
+
+    def test_create_product_query_reply(self):
+        reply = QueryReply(
+            query_id=self.query.id,
+            user_id=self.user.id,
+            user_name=self.user.username,
+            body="Hello",
+        )
+        assert reply.query_id == self.query.id
+
+    def test_product_query_reply_attributes(self):
+        reply = QueryReply(
+            query_id=self.query.id,
+            user_id=self.user.id,
+            user_name=self.user.username,
+            body="Hello",
+        )
+        assert reply.query_id == self.query.id
+        assert reply.user_id == self.user.id
+        assert reply.user_name == self.user.username
+        assert reply.body == "Hello"
+
+    def test_product_query_reply_json(self):
+        reply = QueryReply(
+            query_id=self.query.id,
+            user_id=self.user.id,
+            user_name=self.user.username,
+            body="Hello",
+        )
+        reply_json = reply.to_json()
+        for key, val in reply_json.items():
+            assert getattr(reply, key) == val
