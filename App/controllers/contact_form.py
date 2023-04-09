@@ -55,3 +55,14 @@ def update_contact_form_by_id(id, name=None, phone=None, email=None, message=Non
         db.session.commit()
         return contact_form
     return False
+
+
+def resolve_contact_form_by_id(id):
+    contact_form = ContactForm.query.filter_by(id=id).first()
+    if contact_form:
+        contact_form.resolved = True
+        db.session.add(contact_form)
+        db.session.commit()
+        return contact_form
+    return False
+
