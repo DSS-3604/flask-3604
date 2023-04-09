@@ -10,6 +10,7 @@ def create_review(farmer_id, user_id, rating, body):
         farmer_name=get_user_by_id(farmer_id).username,
         user_id=user_id,
         user_name=get_user_by_id(user_id).username,
+        user_avatar=get_user_by_id(user_id).avatar,
         rating=rating,
         body=body,
     )
