@@ -8,6 +8,7 @@ from App.controllers.contact_form import (
     get_all_contact_forms,
     update_contact_form_by_id,
     delete_contact_form_by_id,
+    resolve_contact_form_by_id,
 )
 
 from App.controllers.logging import create_log
@@ -106,3 +107,23 @@ def delete_contact_form_by_id_action(id):
             )
             return jsonify({"message": "Contact form deleted"}), 200
     return jsonify({"message": "Could not delete contact form"}), 400
+
+
+@contact_form_views.route("/api/contact_forms/<int:id>/resolve", methods=["PUT"])
+@jwt_required()
+def resolve_contact_form_by_id_action(id):
+    if not is_admin(current_identity):
+        return (
+            jsonify({"message": "You are not authorized to resolve contact forms"}),
+            403,
+        )
+    contact_form = get_contact_form_by_id(id)
+    if contact_form:
+        if resolve_contact_form_by_id(id):
+            create_log(
+                current_identity.id,
+                "Contact Form resolved",
+                f"Contact Form {id} resolved",
+            )
+            return jsonify({"message": "Contact form resolved"}), 200
+    return jsonify({"message": "Could not resolve contact form"}), 400
