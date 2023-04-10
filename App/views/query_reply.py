@@ -30,6 +30,8 @@ def create_query_reply_action(id):
     if not query:
         return jsonify({"message": "No query found"}), 404
     data = request.json
+    if not data["body"]:
+        return jsonify({"message": "Body is required"}), 400
     reply = create_query_reply(query_id=id, user_id=current_identity.id, body=data["body"])
     if reply:
         create_log(current_identity.id, "Query reply created", f"Query reply {reply.id} created")
@@ -42,7 +44,7 @@ def create_query_reply_action(id):
 @jwt_required()
 def update_query_reply_action(id):
     reply = get_query_reply_by_id_json(id)
-    if not is_admin(current_identity.id) and reply["user_id"] != current_identity.id:
+    if not is_admin(current_identity) and reply["user_id"] != current_identity.id:
         return jsonify({"message": "You are not authorized to update this query reply"}), 403
     data = request.json
     if not data["body"]:
@@ -59,7 +61,7 @@ def update_query_reply_action(id):
 @jwt_required()
 def delete_query_reply_action(id):
     reply = get_query_reply_by_id_json(id)
-    if not is_admin(current_identity.id) and reply["user_id"] != current_identity.id:
+    if not is_admin(current_identity) and reply["user_id"] != current_identity.id:
         return jsonify({"message": "You are not authorized to delete this query reply"}), 403
     if not reply:
         return jsonify({"message": "No query reply found"}), 404
@@ -78,7 +80,7 @@ def get_all_query_replies_by_query_id_action(id):
     if not query:
         return jsonify({"message": "No query found"}), 404
     if (
-        not is_admin(current_identity.id)
+        not is_admin(current_identity)
         and query.user_id != current_identity.id
         and query.farmer_id != current_identity.id
     ):
@@ -96,7 +98,7 @@ def get_query_reply_by_id_action(id):
     reply = get_query_reply_by_id_json(id)
     query = get_product_query_by_id(reply["query_id"])
     if (
-        not is_admin(current_identity.id)
+        not is_admin(current_identity)
         and query.user_id != current_identity.id
         and query.farmer_id != current_identity.id
     ):
@@ -111,7 +113,7 @@ def get_query_reply_by_id_action(id):
 @jwt_required()
 def get_query_replies_by_user_id_action(id):
     replies = get_query_replies_by_user_id_json(id)
-    if not is_admin(current_identity.id) and current_identity.id != id:
+    if not is_admin(current_identity) and current_identity.id != id:
         return jsonify({"message": "You are not authorized to view this query replies"}), 403
     if replies:
         return jsonify(replies), 200
@@ -123,7 +125,7 @@ def get_query_replies_by_user_id_action(id):
 @jwt_required()
 def get_query_replies_by_user_name_action(name):
     replies = get_query_replies_by_user_name_json(name)
-    if not is_admin(current_identity.id) and current_identity.username != name:
+    if not is_admin(current_identity) and current_identity.username != name:
         return jsonify({"message": "You are not authorized to view this query replies"}), 403
     if replies:
         return jsonify(replies), 200
@@ -134,7 +136,7 @@ def get_query_replies_by_user_name_action(name):
 @query_reply_views.route("/api/query/replies", methods=["GET"])
 @jwt_required()
 def get_query_replies_action():
-    if not is_admin(current_identity.id):
+    if not is_admin(current_identity):
         return jsonify({"message": "You are not authorized to view this query replies"}), 403
     replies = get_all_query_replies()
     if replies:
