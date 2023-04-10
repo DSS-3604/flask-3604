@@ -24,7 +24,7 @@ def get_all_product_categories_action():
     product_categories = get_product_categories_json()
     if product_categories:
         return jsonify(product_categories), 200
-    return jsonify({"message": "No product categories found"}), 404
+    return jsonify([]), 200
 
 
 # get product category by id
@@ -33,7 +33,7 @@ def get_product_category_by_id_action(id):
     product_category = get_product_category_by_id_json(id)
     if product_category:
         return jsonify(product_category), 200
-    return jsonify({"message": "No product category found"}), 404
+    return jsonify([]), 200
 
 
 # get product category by name
@@ -42,7 +42,7 @@ def get_product_category_by_name_action(name):
     product_category = get_product_category_by_name_json(name)
     if product_category:
         return jsonify(product_category), 200
-    return jsonify({"message": "No product category found"}), 404
+    return jsonify([]), 200
 
 
 # create product category

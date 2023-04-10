@@ -51,7 +51,7 @@ def get_farmer_application_by_id_action(id):
     f_application = get_farmer_application_by_id(id)
     if f_application:
         return jsonify(f_application.to_json()), 200
-    return jsonify({"message": "No farmer application found"}), 404
+    return jsonify([]), 200
 
 
 @farmer_application_views.route("/api/farmer_applications", methods=["POST"])

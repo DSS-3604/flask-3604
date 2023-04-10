@@ -29,7 +29,7 @@ def get_users_action():
         return jsonify({"message": "You are not authorized to view all users"}), 401
     users = get_all_users_json()
     if not users:
-        return jsonify({"message": "No users found"}), 404
+        return jsonify([]), 200
     return jsonify(users)
 
 

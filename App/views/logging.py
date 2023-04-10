@@ -47,7 +47,7 @@ def get_log_by_id_action(id):
     log = get_log_by_id_json(id)
     if log:
         return jsonify(log), 200
-    return jsonify({"message": "No log found"}), 404
+    return jsonify([]), 200
 
 
 @logging_views.route("/api/logs/user/<int:user_id>", methods=["GET"])

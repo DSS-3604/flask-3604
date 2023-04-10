@@ -47,7 +47,7 @@ def get_all_products_action():
     products = get_all_products_json()
     if products:
         return jsonify(products), 200
-    return jsonify({"message": "No products found"}), 404
+    return jsonify([]), 200
 
 
 @product_views.route("/api/products/search/<string:name>", methods=["GET"])
@@ -55,7 +55,7 @@ def search_products_action(name):
     products = search_products_by_name_json(name)
     if products:
         return jsonify(products), 200
-    return jsonify({"message": "No products found"}), 404
+    return jsonify([]), 200
 
 
 @product_views.route("/api/products/search/recent/<string:name>", methods=["GET"])
@@ -63,7 +63,7 @@ def search_recent_products_action(name):
     products = search_products_by_name_past_week_json(name)
     if products:
         return jsonify(products), 200
-    return jsonify({"message": "No recent products found"}), 404
+    return jsonify([]), 200
 
 
 @product_views.route("/api/products/recent", methods=["GET"])
@@ -71,7 +71,7 @@ def get_recent_products_action():
     products = get_products_past_week_json()
     if products:
         return jsonify(products), 200
-    return jsonify({"message": "No recent products found"}), 404
+    return jsonify([]), 200
 
 
 @product_views.route("/api/products", methods=["POST"])
@@ -104,7 +104,7 @@ def get_product_by_id_action(id):
     product = get_product_by_id(id)
     if product:
         return jsonify(product.to_json()), 200
-    return jsonify({"message": "No product found"}), 404
+    return jsonify([]), 200
 
 
 # get product by product category
@@ -113,7 +113,7 @@ def get_product_by_category_id_action(id):
     products = get_products_by_category_id_json(id)
     if products:
         return jsonify(products), 200
-    return jsonify({"message": "No products found"}), 404
+    return jsonify([]), 200
 
 
 # get product by product category name
@@ -124,7 +124,7 @@ def get_product_by_category_name_action(name):
         products = get_products_by_category_name_json(name)
         if products:
             return jsonify(products), 200
-        return jsonify({"message": "No products found"}), 404
+        return jsonify([]), 200
     return jsonify({"message": "No category found"}), 404
 
 

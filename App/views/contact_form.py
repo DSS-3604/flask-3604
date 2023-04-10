@@ -32,7 +32,7 @@ def get_all_contact_forms_action():
             jsonify([contact_form.to_json() for contact_form in contact_forms]),
             200,
         )
-    return jsonify({"message": "No contact forms found"}), 404
+    return jsonify([]), 200
 
 
 @contact_form_views.route("/api/contact_forms/<int:id>", methods=["GET"])
@@ -46,7 +46,7 @@ def get_contact_form_by_id_action(id):
     contact_form = get_contact_form_by_id(id)
     if contact_form:
         return jsonify(contact_form.to_json()), 200
-    return jsonify({"message": "No contact form found"}), 404
+    return jsonify([]), 200
 
 
 @contact_form_views.route("/api/contact_forms", methods=["POST"])
