@@ -40,6 +40,8 @@ in configuration information via environment tab of your render project's dashbo
 
 ![perms](./images/fig1.png)
 
+N.B. This has been tested on Python 3.9.10. If you are using a different version of Python, you may need to change the version of the python package in requirements.txt.
+
 
 # Running the Project
 
