@@ -190,9 +190,7 @@ def list_comment_command(format):
         print(get_all_comments_json())
 
 
-@comment_cli.command(
-    "list-by-product", help="Lists comments by product in the database"
-)
+@comment_cli.command("list-by-product", help="Lists comments by product in the database")
 @click.argument("product_id", default=1)
 @click.argument("format", default="string")
 def list_comment_by_product_command(product_id, format):
@@ -240,9 +238,7 @@ def demo_tests_command():
         "University Drive",
     )
     user2 = create_user("farmerguy1", "farmerguy1@gmail.com", "farmerguy1", "user")
-    user3 = create_user(
-        "farmerguy321", "farmerguy321@gmail.com", "farmerguy321", "user"
-    )
+    user3 = create_user("farmerguy321", "farmerguy321@gmail.com", "farmerguy321", "user")
     print(f"admin1: {admin1.to_json()}")
     print(f"user1: {user1.to_json()}")
     f_application = create_farmer_application(user2.id, "i wanna be a farmer")

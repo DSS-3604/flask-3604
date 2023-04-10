@@ -173,25 +173,19 @@ def empty_db():
 class TestAuthIntegration(unittest.TestCase):
     def test_authenticate(self):
         count = get_total_user_count()
-        user = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password="robpass"
-        )
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password="robpass")
         assert authenticate(f"rob{count}", f"robpass") is not None
 
     def test_authenticate_invalid(self):
         count = get_total_user_count()
-        user = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password="robpass"
-        )
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password="robpass")
         assert authenticate(f"rob{count}", "robpass123") is None
 
 
 class TestUsersIntegration(unittest.TestCase):
     def test_create_user(self):
         count = get_total_user_count()
-        user = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password="robpass"
-        )
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password="robpass")
         assert user.username == f"rob{count}"
 
     def test_create_admin(self):
@@ -211,33 +205,25 @@ class TestUsersIntegration(unittest.TestCase):
 
     def test_update_user_access(self):
         count = get_total_user_count()
-        user = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass"
-        )
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
         update_access(user.id, "admin")
         assert is_admin(user)
 
     def test_get_user_by_email(self):
         count = get_total_user_count()
-        create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass"
-        )
+        create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
         user = get_user_by_email(f"rob{count}@gmail.com")
         assert user.username == f"rob{count}"
 
     def test_get_user_by_username(self):
         count = get_total_user_count()
-        create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass"
-        )
+        create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
         user = get_user_by_username(f"rob{count}")
         assert user.email == f"rob{count}@gmail.com"
 
     def test_get_user_by_id(self):
         count = get_total_user_count()
-        user1 = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass"
-        )
+        user1 = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
         user2 = get_user_by_id(user1.id)
         assert user2 is not None
 
@@ -249,9 +235,7 @@ class TestUsersIntegration(unittest.TestCase):
     # Tests data changes in the database
     def test_update_user(self):
         count = get_total_user_count()
-        user = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass"
-        )
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
         with self.subTest("Update username"):
             user1 = update_user(user.id, username=f"tob{count}")
             assert user1.username == f"tob{count}"
@@ -284,46 +268,34 @@ class TestUsersIntegration(unittest.TestCase):
 class TestFarmerApplicationIntegration(unittest.TestCase):
     def test_create_farmer_application(self):
         count = get_total_user_count()
-        user = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass"
-        )
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
         application = create_farmer_application(user.id, "I want to be a farmer")
         assert application.user_id == user.id
 
     def test_get_farmer_application_by_id(self):
         count = get_total_user_count()
-        user = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass"
-        )
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
         application = create_farmer_application(user.id, "I want to be a farmer")
         application1 = get_farmer_application_by_id(application.id)
         assert application1 is not None
 
     def test_get_all_farmer_applications(self):
         count = get_total_user_count()
-        user = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass"
-        )
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
         application = create_farmer_application(user.id, "I want to be a farmer")
         applications = get_all_farmer_applications()
         assert application in applications
 
     def test_update_farmer_application(self):
         count = get_total_user_count()
-        user = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass"
-        )
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
         application = create_farmer_application(user.id, "I want to be a farmer")
-        application1 = update_farmer_application(
-            application.id, comment="I really want to be a farmer"
-        )
+        application1 = update_farmer_application(application.id, comment="I really want to be a farmer")
         assert application1.comment == "I really want to be a farmer"
 
     def test_delete_farmer_application(self):
         count = get_total_user_count()
-        user = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass"
-        )
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
         application = create_farmer_application(user.id, "I want to be a farmer")
         delete_farmer_application(application.id)
         application1 = get_farmer_application_by_id(application.id)
@@ -331,9 +303,7 @@ class TestFarmerApplicationIntegration(unittest.TestCase):
 
     def test_approve_farmer_application(self):
         count = get_total_user_count()
-        user = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass"
-        )
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
         application = create_farmer_application(user.id, "I want to be a farmer")
         approve_farmer_application(application.id)
         application1 = get_farmer_application_by_id(application.id)
@@ -341,9 +311,7 @@ class TestFarmerApplicationIntegration(unittest.TestCase):
 
     def test_reject_farmer_application(self):
         count = get_total_user_count()
-        user = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass"
-        )
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
         application = create_farmer_application(user.id, "I want to be a farmer")
         reject_farmer_application(application.id)
         application1 = get_farmer_application_by_id(application.id)
@@ -356,9 +324,7 @@ class TestFarmerApplicationIntegration(unittest.TestCase):
 
     def test_get_all_approved_farmer_applications(self):
         count = get_total_user_count()
-        user = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass"
-        )
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
         application = create_farmer_application(user.id, "I want to be a farmer")
         approve_farmer_application(application.id)
         application1 = get_farmer_application_by_id(application.id)
@@ -367,9 +333,7 @@ class TestFarmerApplicationIntegration(unittest.TestCase):
 
     def test_get_all_rejected_farmer_applications(self):
         count = get_total_user_count()
-        user = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass"
-        )
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
         application = create_farmer_application(user.id, "I want to be a farmer")
         reject_farmer_application(application.id)
         application1 = get_farmer_application_by_id(application.id)
@@ -378,9 +342,7 @@ class TestFarmerApplicationIntegration(unittest.TestCase):
 
     def test_get_all_pending_farmer_applications(self):
         count = get_total_user_count()
-        user = create_user(
-            username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass"
-        )
+        user = create_user(username=f"rob{count}", email=f"rob{count}@gmail.com", password=f"robpass")
         application = create_farmer_application(user.id, "I want to be a farmer")
         applications = get_all_pending_farmer_applications()
         assert application in applications
@@ -566,9 +528,7 @@ class TestProductIntegration(unittest.TestCase):
 
     def test_get_products_past_week_json(self):
         products = get_products_past_week_json()
-        products2 = Product.query.filter(
-            (Product.updated_timestamp >= datetime.now() - timedelta(days=7))
-        ).all()
+        products2 = Product.query.filter((Product.updated_timestamp >= datetime.now() - timedelta(days=7))).all()
         assert len(products) == len(products2)
 
     def test_get_products_by_category_json(self):
@@ -708,9 +668,7 @@ class TestProductCommentIntegration(unittest.TestCase):
     pc_count = get_total_category_count()
     pc = create_product_category(f"category{pc_count + 1}")
     pcount = get_total_product_count()
-    product = create_product(
-        farmer.id, pc.id, f"product{pcount}", "description", "image.jpg", 10, 10, 10, 10
-    )
+    product = create_product(farmer.id, pc.id, f"product{pcount}", "description", "image.jpg", 10, 10, 10, 10)
 
     def test_create_comment(self):
         comment = create_comment(self.product.id, self.user.id, "comment")
@@ -780,9 +738,7 @@ class TestProductReplyIntegration(unittest.TestCase):
     pc_count = get_total_category_count()
     pc = create_product_category(f"category{pc_count + 1}")
     pcount = get_total_product_count()
-    product = create_product(
-        farmer.id, pc.id, f"product{pcount}", "description", "image.jpg", 10, 10, 10, 10
-    )
+    product = create_product(farmer.id, pc.id, f"product{pcount}", "description", "image.jpg", 10, 10, 10, 10)
     comment = create_comment(product.id, user.id, "comment")
 
     def test_create_reply(self):
@@ -843,9 +799,7 @@ class TestProductQueryIntegration(unittest.TestCase):
     pc_count = get_total_category_count()
     pc = create_product_category(f"category{pc_count + 1}")
     pcount = get_total_product_count()
-    product = create_product(
-        farmer.id, pc.id, f"product{pcount}", "description", "image.jpg", 10, 10, 10, 10
-    )
+    product = create_product(farmer.id, pc.id, f"product{pcount}", "description", "image.jpg", 10, 10, 10, 10)
 
     def test_create_query(self):
         query = create_product_query(self.user.id, self.product.id, "query")
@@ -920,9 +874,7 @@ class TestProductQueryReplyIntegration(unittest.TestCase):
     pc_count = get_total_category_count()
     pc = create_product_category(f"category{pc_count + 1}")
     pcount = get_total_product_count()
-    product = create_product(
-        farmer.id, pc.id, f"product{pcount}", "description", "image.jpg", 10, 10, 10, 10
-    )
+    product = create_product(farmer.id, pc.id, f"product{pcount}", "description", "image.jpg", 10, 10, 10, 10)
     query = create_product_query(user.id, product.id, "query")
 
     def test_create_reply(self):

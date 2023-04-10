@@ -92,9 +92,7 @@ def update_review_action(review_id):
         if "rating" in data and "body" in data:
             review = update_review(review_id, data["rating"], data["body"])
             if review:
-                create_log(
-                    current_identity.id, "Review updated", f"Review {review.id} updated"
-                )
+                create_log(current_identity.id, "Review updated", f"Review {review.id} updated")
                 return jsonify(review.to_json()), 200
             return jsonify({"message": "review not updated"}), 400
         return jsonify({"message": "rating and body required"}), 400
@@ -109,8 +107,6 @@ def delete_review_action(review_id):
         if review.user_id != current_identity.id and not is_admin(current_identity):
             return jsonify({"message": "Not authorized"}), 401
         if delete_review(review_id):
-            create_log(
-                current_identity.id, "Review deleted", f"Review {review.id} deleted"
-            )
+            create_log(current_identity.id, "Review deleted", f"Review {review.id} deleted")
             return jsonify({"message": f"review {review_id} deleted"}), 200
     return jsonify({"message": f"review {review_id} not found"}), 404

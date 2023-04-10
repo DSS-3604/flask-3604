@@ -65,4 +65,3 @@ def resolve_contact_form_by_id(id):
         db.session.commit()
         return contact_form
     return False
-

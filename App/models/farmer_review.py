@@ -18,9 +18,7 @@ class FarmerReview(db.Model):
     timestamp = db.Column(db.DateTime, nullable=False)  # timestamp of comment
     updated_timestamp = db.Column(db.DateTime, nullable=False)
 
-    def __init__(
-        self, farmer_id, farmer_name, user_id, user_name, user_avatar, rating, body
-    ):
+    def __init__(self, farmer_id, farmer_name, user_id, user_name, user_avatar, rating, body):
         self.farmer_id = farmer_id
         self.farmer_name = farmer_name
         self.user_id = user_id

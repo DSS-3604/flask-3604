@@ -25,5 +25,5 @@ views = [
     report_views,
     logging_views,
     product_query_views,
-    query_reply_views
+    query_reply_views,
 ]
