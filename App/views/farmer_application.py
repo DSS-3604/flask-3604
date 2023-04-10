@@ -41,7 +41,7 @@ def get_all_farmer_applications_action():
             jsonify([f_application.to_json() for f_application in farmer_applications]),
             200,
         )
-    return jsonify({"message": "No farmer applications found"}), 404
+    return jsonify([]), 200
 
 
 @farmer_application_views.route("/api/farmer_applications/<int:id>", methods=["GET"])
@@ -157,7 +157,7 @@ def delete_all_farmer_applications_action():
 
 
 @farmer_application_views.route(
-    "/farmer_applications/approve/<int:id>", methods=["PUT"]
+    "/api/farmer_applications/approve/<int:id>", methods=["PUT"]
 )
 @jwt_required()
 def approve_farmer_application_action(id):
@@ -224,7 +224,7 @@ def get_all_approved_farmer_applications_action():
             jsonify([f_application.to_json() for f_application in farmer_applications]),
             200,
         )
-    return jsonify({"message": "No approved farmer applications found"}), 404
+    return jsonify([]), 200
 
 
 @farmer_application_views.route("/api/farmer_applications/rejected", methods=["GET"])
@@ -245,7 +245,7 @@ def get_all_rejected_farmer_applications_action():
             jsonify([f_application.to_json() for f_application in farmer_applications]),
             200,
         )
-    return jsonify({"message": "No rejected farmer applications found"}), 404
+    return jsonify([]), 200
 
 
 @farmer_application_views.route("/api/farmer_applications/pending", methods=["GET"])
@@ -266,4 +266,4 @@ def get_all_pending_farmer_applications_action():
             jsonify([f_application.to_json() for f_application in farmer_applications]),
             200,
         )
-    return jsonify({"message": "No pending farmer applications found"}), 404
+    return jsonify([]), 200
