@@ -110,3 +110,53 @@ def get_new_product_count_by_farmer():
             Product.timestamp >= datetime.now() - timedelta(days=7),
         ).count()
     return new_product_count_by_farmer
+
+
+# function to get each product category and the historic monthly price per kilogram of products in that category
+def get_average_monthly_price_history():
+    categories = ProductCategory.query.all()
+    average_monthly_price_by_category = {}
+    for category in categories:
+        products = Product.query.filter(Product.category_id == category.id).all()
+        if len(products) == 0:
+            average_monthly_price_by_category[category.name] = 0
+        else:
+            # split the products into months
+            products_by_month = {}
+            for product in products:
+                month_and_year = product.timestamp.strftime("%B %Y")
+                if month_and_year not in products_by_month:
+                    products_by_month[month_and_year] = []
+                products_by_month[month_and_year].append(product)
+            # calculate the average price per kilogram for each month
+            average_monthly_price = {}
+            for month_and_year in products_by_month:
+                average_monthly_price[month_and_year] = sum(
+                    [product.wholesale_price for product in products_by_month[month_and_year]]
+                ) / len(products_by_month[month_and_year])
+            # append to the dictionary
+            average_monthly_price_by_category[category.name] = average_monthly_price
+    return average_monthly_price_by_category
+
+
+# function to get the historic monthly price per kilogram of products in a given product category
+def get_average_monthly_price_history_by_category(category_id):
+    products = Product.query.filter(Product.category_id == category_id).all()
+    if len(products) == 0:
+        return 0
+    else:
+        # split the products into months
+        products_by_month = {}
+        for product in products:
+            month_and_year = product.timestamp.strftime("%B %Y")
+            if month_and_year not in products_by_month:
+                products_by_month[month_and_year] = []
+            products_by_month[month_and_year].append(product)
+        # calculate the average price per kilogram for each month
+        average_monthly_price = {}
+        for month_and_year in products_by_month:
+            average_monthly_price[month_and_year] = sum(
+                [product.wholesale_price for product in products_by_month[month_and_year]]
+            ) / len(products_by_month[month_and_year])
+        # append to the dictionary
+        return average_monthly_price

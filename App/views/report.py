@@ -29,6 +29,8 @@ from App.controllers.report import (
     get_total_farmer_review_count,
     get_average_farmer_rating,
     get_new_product_count_by_farmer,
+    get_average_monthly_price_history,
+    get_average_monthly_price_history_by_category,
 )
 
 
@@ -184,3 +186,21 @@ def get_logs_report_action():
     if not logs:
         return jsonify({"message": "No logs found"}), 404
     return excel.make_response_from_records(logs, "csv")
+
+
+# Get monthly price history for all product categories
+@report_views.route("/api/reports/price_history/all", methods=["GET"])
+def get_all_price_history_report_action():
+    price_history = get_average_monthly_price_history()
+    if not price_history:
+        return jsonify({"message": "No price history found"}), 404
+    return jsonify(price_history), 200
+
+
+# Get monthly price history for a specific product category
+@report_views.route("/api/reports/price_history/<int:product_category_id>", methods=["GET"])
+def get_price_history_report_action(product_category_id):
+    price_history = get_average_monthly_price_history_by_category(product_category_id)
+    if not price_history:
+        return jsonify({"message": "No price history found"}), 404
+    return jsonify(price_history), 200
