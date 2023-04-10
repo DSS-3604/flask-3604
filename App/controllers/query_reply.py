@@ -20,6 +20,10 @@ def get_all_query_replies():
     return QueryReply.query.all()
 
 
+def get_all_query_replies_json():
+    return [reply.to_json() for reply in get_all_query_replies()]
+
+
 def get_all_query_replies_by_query_id(query_id):
     return QueryReply.query.filter_by(query_id=query_id).all()
 

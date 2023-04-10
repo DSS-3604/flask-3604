@@ -10,7 +10,7 @@ from App.controllers.logging import create_log
 
 from App.controllers.query_reply import (
     create_query_reply,
-    get_all_query_replies,
+    get_all_query_replies_json,
     get_all_query_replies_by_query_id_json,
     get_query_reply_by_id_json,
     get_query_replies_by_user_name_json,
@@ -138,7 +138,7 @@ def get_query_replies_by_user_name_action(name):
 def get_query_replies_action():
     if not is_admin(current_identity):
         return jsonify({"message": "You are not authorized to view this query replies"}), 403
-    replies = get_all_query_replies()
+    replies = get_all_query_replies_json()
     if replies:
         return jsonify(replies), 200
     return jsonify([]), 200
