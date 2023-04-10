@@ -69,5 +69,3 @@ def delete_query_reply(reply_id):
         db.session.delete(reply)
         return db.session.commit()
     return None
-
-

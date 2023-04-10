@@ -13,7 +13,7 @@ from App.models import (
     ContactForm,
     Logging,
     ProductQuery,
-    QueryReply
+    QueryReply,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -355,25 +355,19 @@ class TestFarmerReviewUnit(unittest.TestCase):
 class TestFarmerApplicationUnit(unittest.TestCase):
     def test_new_farmer_application(self):
         user = User("bob3579", "bob3579@gmail.com", "bobpass")
-        application = FarmerApplication(
-            user_id=user.id, user_name=user.username, comment="Hello"
-        )
+        application = FarmerApplication(user_id=user.id, user_name=user.username, comment="Hello")
         assert application.user_id == user.id
 
     def test_farmer_application_attributes(self):
         user = User("bob3579", "bob3579@gmail.com", "bobpass")
-        application = FarmerApplication(
-            user_id=user.id, user_name=user.username, comment="Hello"
-        )
+        application = FarmerApplication(user_id=user.id, user_name=user.username, comment="Hello")
         assert application.user_id == user.id
         assert application.user_name == user.username
         assert application.comment == "Hello"
 
     def test_farmer_application_json(self):
         user = User("bob3579", "bob3579@gmail.com", "bobpass")
-        application = FarmerApplication(
-            user_id=user.id, user_name=user.username, comment="Hello"
-        )
+        application = FarmerApplication(user_id=user.id, user_name=user.username, comment="Hello")
         application_json = application.to_json()
         for key, val in application_json.items():
             assert getattr(application, key) == val
@@ -381,24 +375,18 @@ class TestFarmerApplicationUnit(unittest.TestCase):
 
 class TestContactFormUnit(unittest.TestCase):
     def test_new_contact_form(self):
-        form = ContactForm(
-            name="Bob", phone="1234567890", email="bob@gmail.com", message="Hello"
-        )
+        form = ContactForm(name="Bob", phone="1234567890", email="bob@gmail.com", message="Hello")
         assert form.name == "Bob"
 
     def test_contact_form_attributes(self):
-        form = ContactForm(
-            name="Bob", phone="1234567890", email="bob@gmail.com", message="Hello"
-        )
+        form = ContactForm(name="Bob", phone="1234567890", email="bob@gmail.com", message="Hello")
         assert form.name == "Bob"
         assert form.phone == "1234567890"
         assert form.email == "bob@gmail.com"
         assert form.message == "Hello"
 
     def test_contact_form_json(self):
-        form = ContactForm(
-            name="Bob", phone="1234567890", email="bob@gmail.com", message="Hello"
-        )
+        form = ContactForm(name="Bob", phone="1234567890", email="bob@gmail.com", message="Hello")
         form_json = form.to_json()
         for key, val in form_json.items():
             assert getattr(form, key) == val
@@ -448,6 +436,7 @@ class TestProductQueryUnit(unittest.TestCase):
         access="user",
         phone="1234567890",
     )
+
     def test_create_product_query(self):
         query = ProductQuery(
             user_id=self.user.id,

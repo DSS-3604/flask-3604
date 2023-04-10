@@ -77,7 +77,11 @@ def get_all_query_replies_by_query_id_action(id):
     query = get_product_query_by_id(id)
     if not query:
         return jsonify({"message": "No query found"}), 404
-    if not is_admin(current_identity.id) and query.user_id != current_identity.id and query.farmer_id != current_identity.id:
+    if (
+        not is_admin(current_identity.id)
+        and query.user_id != current_identity.id
+        and query.farmer_id != current_identity.id
+    ):
         return jsonify({"message": "You are not authorized to view this query replies"}), 403
     replies = get_all_query_replies_by_query_id_json(id)
     if replies:
@@ -91,7 +95,11 @@ def get_all_query_replies_by_query_id_action(id):
 def get_query_reply_by_id_action(id):
     reply = get_query_reply_by_id_json(id)
     query = get_product_query_by_id(reply["query_id"])
-    if not is_admin(current_identity.id) and query.user_id != current_identity.id and query.farmer_id != current_identity.id:
+    if (
+        not is_admin(current_identity.id)
+        and query.user_id != current_identity.id
+        and query.farmer_id != current_identity.id
+    ):
         return jsonify({"message": "You are not authorized to view this query reply"}), 403
     if reply:
         return jsonify(reply), 200

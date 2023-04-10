@@ -25,9 +25,7 @@ def get_all_logs_json():
 
 
 def get_all_logs_week():
-    return Logging.query.filter(
-        Logging.timestamp >= datetime.now() - timedelta(days=7)
-    ).all()
+    return Logging.query.filter(Logging.timestamp >= datetime.now() - timedelta(days=7)).all()
 
 
 def get_all_logs_week_json():

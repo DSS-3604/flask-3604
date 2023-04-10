@@ -120,9 +120,7 @@ def get_products_report_week_action():
 def get_product_categories_report_action():
     if not is_admin(current_identity):
         return (
-            jsonify(
-                {"message": "You are not authorized to view all product categories"}
-            ),
+            jsonify({"message": "You are not authorized to view all product categories"}),
             401,
         )
     product_categories = get_product_categories_json()
@@ -152,9 +150,7 @@ def get_contact_forms_report_action():
 def get_farmer_applications_report_action():
     if not is_admin(current_identity):
         return (
-            jsonify(
-                {"message": "You are not authorized to view all farmer applications"}
-            ),
+            jsonify({"message": "You are not authorized to view all farmer applications"}),
             401,
         )
     farmer_applications = get_all_farmer_applications_json()

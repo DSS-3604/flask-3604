@@ -3,9 +3,7 @@ from datetime import datetime
 
 
 class ProductReply(db.Model):
-    id = db.Column(
-        db.Integer, primary_key=True
-    )  # primary keys are required by SQLAlchemy
+    id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
     p_comment_id = db.Column(
         db.Integer, db.ForeignKey("product_comment.id"), nullable=False
     )  # foreign key links to product_comment.id in comment table

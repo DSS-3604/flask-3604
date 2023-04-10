@@ -3,9 +3,7 @@ from datetime import datetime
 
 
 class Product(db.Model):
-    id = db.Column(
-        db.Integer, primary_key=True
-    )  # primary keys are required by SQLAlchemy
+    id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
     farmer_id = db.Column(
         db.Integer, db.ForeignKey("user.id"), nullable=False
     )  # foreign key links to user.id in user table
@@ -21,23 +19,15 @@ class Product(db.Model):
         nullable=False,
         default="https://s3.eu-west-2.amazonaws.com/devo.core.images/products/b1bf55b2-18c6-4184-9522-72b28b13d62d_5054073003722.png",
     )  # image of product
-    retail_price = db.Column(
-        db.Float(decimal_return_scale=2), nullable=False
-    )  # price of product
-    wholesale_price = db.Column(
-        db.Float(decimal_return_scale=2), nullable=False
-    )  # wholesale price of product
-    wholesale_unit_quantity = db.Column(
-        db.Integer, nullable=False
-    )  # quantity of product for wholesale price
+    retail_price = db.Column(db.Float(decimal_return_scale=2), nullable=False)  # price of product
+    wholesale_price = db.Column(db.Float(decimal_return_scale=2), nullable=False)  # wholesale price of product
+    wholesale_unit_quantity = db.Column(db.Integer, nullable=False)  # quantity of product for wholesale price
     total_product_quantity = db.Column(db.Integer, nullable=False)  # unit of product
     comments = db.relationship(
         "ProductComment", backref="product", lazy=True, cascade="all, delete-orphan"
     )  # comments of product
     timestamp = db.Column(db.DateTime, nullable=False)  # timestamp of product creation
-    updated_timestamp = db.Column(
-        db.DateTime, nullable=False
-    )  # timestamp of product update
+    updated_timestamp = db.Column(db.DateTime, nullable=False)  # timestamp of product update
 
     def __init__(
         self,

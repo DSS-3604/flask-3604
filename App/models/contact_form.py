@@ -27,5 +27,5 @@ class ContactForm(db.Model):
             "email": self.email,
             "message": self.message,
             "timestamp": self.timestamp,
-            "resolved": self.resolved
+            "resolved": self.resolved,
         }

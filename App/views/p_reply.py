@@ -63,9 +63,7 @@ def update_reply_action(id):
         if "body" in data:
             reply = update_reply(reply_id=id, body=data["body"])
             if reply:
-                create_log(
-                    current_identity.id, "Reply updated", f"Reply {reply.id} updated"
-                )
+                create_log(current_identity.id, "Reply updated", f"Reply {reply.id} updated")
                 return jsonify(reply), 200
             return jsonify({"message": "Could not update reply"}), 500
         return jsonify({"message": "No body found"}), 400

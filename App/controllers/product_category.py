@@ -32,10 +32,7 @@ def get_product_category_by_name(name):
 
 
 def get_product_category_by_name_json(name):
-    return [
-        product_category.to_json()
-        for product_category in get_product_category_by_name(name)
-    ]
+    return [product_category.to_json() for product_category in get_product_category_by_name(name)]
 
 
 def update_product_category(id, name):

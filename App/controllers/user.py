@@ -179,9 +179,7 @@ def create_default_farmer():
             "800-1234",
             "University Drive",
         )
-        farmer_application = create_farmer_application(
-            user.id, "default farmer account"
-        )
+        farmer_application = create_farmer_application(user.id, "default farmer account")
         approve_farmer_application(farmer_application.id)
         print("farmer created")
         db.session.add(farmer_application)

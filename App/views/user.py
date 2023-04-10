@@ -58,9 +58,7 @@ def create_user_action():
     user = get_user_by_username(data["username"])
     if user:
         return jsonify({"message": "username already exists"}), 400
-    new_user = create_user(
-        data["username"], data["email"], data["password"], access="user"
-    )
+    new_user = create_user(data["username"], data["email"], data["password"], access="user")
     if new_user:
         create_log(new_user.id, "User created", f"User {new_user.username} created")
         return jsonify(new_user.to_json()), 201
@@ -80,13 +78,9 @@ def create_admin_action():
     user = get_user_by_username(data["username"])
     if user:
         return jsonify({"message": "username already exists"}), 400
-    new_user = create_user(
-        data["username"], data["email"], data["password"], access="admin"
-    )
+    new_user = create_user(data["username"], data["email"], data["password"], access="admin")
     if new_user:
-        create_log(
-            current_identity.id, "Admin created", f"User {new_user.username} created"
-        )
+        create_log(current_identity.id, "Admin created", f"User {new_user.username} created")
         return (
             jsonify(new_user.to_json()),
             201,
