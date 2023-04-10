@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 
 from flask_jwt import jwt_required, current_identity
 
-from App.controllers.product_query import get_product_query_by_id
+from App.controllers.product_query import get_product_query_by_id_json
 
 from App.controllers.user import is_admin
 
@@ -26,7 +26,7 @@ query_reply_views = Blueprint("query_reply_views", __name__, template_folder="..
 @query_reply_views.route("/api/query/<int:id>/reply", methods=["POST"])
 @jwt_required()
 def create_query_reply_action(id):
-    query = get_product_query_by_id(id)
+    query = get_product_query_by_id_json(id)
     if not query:
         return jsonify({"message": "No query found"}), 404
     data = request.json
@@ -76,13 +76,13 @@ def delete_query_reply_action(id):
 @query_reply_views.route("/api/query/<int:id>/replies", methods=["GET"])
 @jwt_required()
 def get_all_query_replies_by_query_id_action(id):
-    query = get_product_query_by_id(id)
+    query = get_product_query_by_id_json(id)
     if not query:
         return jsonify({"message": "No query found"}), 404
     if (
         not is_admin(current_identity)
-        and query.user_id != current_identity.id
-        and query.farmer_id != current_identity.id
+        and query["user_id"] != current_identity.id
+        and query["farmer_id"] != current_identity.id
     ):
         return jsonify({"message": "You are not authorized to view this query replies"}), 403
     replies = get_all_query_replies_by_query_id_json(id)
@@ -96,11 +96,11 @@ def get_all_query_replies_by_query_id_action(id):
 @jwt_required()
 def get_query_reply_by_id_action(id):
     reply = get_query_reply_by_id_json(id)
-    query = get_product_query_by_id(reply["query_id"])
+    query = get_product_query_by_id_json(reply["query_id"])
     if (
         not is_admin(current_identity)
-        and query.user_id != current_identity.id
-        and query.farmer_id != current_identity.id
+        and query["user_id"] != current_identity.id
+        and query["farmer_id"] != current_identity.id
     ):
         return jsonify({"message": "You are not authorized to view this query reply"}), 403
     if reply:
