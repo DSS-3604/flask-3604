@@ -68,6 +68,7 @@ from App.controllers.contact_form import (
     get_all_contact_forms_json,
     delete_contact_form_by_id,
     update_contact_form_by_id,
+    resolve_contact_form_by_id,
 )
 from App.controllers.farmer_review import (
     create_review,
@@ -592,6 +593,11 @@ class TestContactFormIntegration(unittest.TestCase):
         assert contact_form1.phone == "phone_update"
         assert contact_form1.email == "email_update"
         assert contact_form1.message == "message_update"
+
+    def test_resolve_contact_form(self):
+        contact_form = create_contact_form("name_resolve", "phone", "email", "message")
+        contact_form1 = resolve_contact_form_by_id(contact_form.id)
+        assert contact_form1.resolved is True
 
 
 class TestFarmerReviewIntegration(unittest.TestCase):
