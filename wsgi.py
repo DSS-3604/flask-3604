@@ -45,10 +45,6 @@ from App.controllers.farmer_review import (
     create_review,
 )
 
-from App.controllers.dummy_data import (
-    create_dummy_data,
-)
-
 # This commands file allow you to create convenient CLI commands for testing controllers
 
 app = create_app()
@@ -328,12 +324,6 @@ def demo_tests_command():
     print(f"review1: {review1.to_json()}")
     print(f"review2: {review2.to_json()}")
     print(f"review3: {review3.to_json()}")
-
-
-# create dummy data
-@test.command("dummy", help="Run Dummy tests")
-def create_dummy_data_command():
-    create_dummy_data()
 
 
 # get all products then
