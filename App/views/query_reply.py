@@ -29,7 +29,7 @@ def create_query_reply_action(id):
     query = get_product_query_by_id_json(id)
     if not query:
         return jsonify({"message": "No query found"}), 404
-    if not is_admin(current_identity) and query["user_id"] != current_identity.id:
+    if not is_admin(current_identity) and query["farmer_id"] != current_identity.id:
         return jsonify({"message": "You are not authorized to create a reply to this query"}), 403
     data = request.json
     if not data["body"]:
