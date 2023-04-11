@@ -193,7 +193,7 @@ def get_logs_report_action():
 def get_all_price_history_report_action():
     price_history = get_average_monthly_price_history()
     if not price_history:
-        return jsonify({"message": "No price history found"}), 404
+        return jsonify([]), 200
     return jsonify(price_history), 200
 
 
@@ -202,5 +202,5 @@ def get_all_price_history_report_action():
 def get_price_history_report_action(product_category_id):
     price_history = get_average_monthly_price_history_by_category(product_category_id)
     if not price_history:
-        return jsonify({"message": "No price history found"}), 404
+        return jsonify([]), 200
     return jsonify(price_history), 200
