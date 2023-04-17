@@ -157,5 +157,6 @@ def delete_product(id):
     product = get_product_by_id(id)
     if product:
         db.session.delete(product)
-        return db.session.commit()
+        db.session.commit()
+        return True
     return None

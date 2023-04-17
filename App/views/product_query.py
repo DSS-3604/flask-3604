@@ -128,7 +128,7 @@ def delete_product_query_action(id):
                 jsonify({"message": "You are not authorized to delete this product query"}),
                 403,
             )
-        if delete_product_query(product_query):
+        if delete_product_query(product_query.id):
             create_log(
                 current_identity.id,
                 "Product Query deleted",

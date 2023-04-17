@@ -63,5 +63,6 @@ def delete_comment(id):
     comment = get_comment_by_id(id)
     if comment:
         db.session.delete(comment)
-        return db.session.commit()
+        db.session.commit()
+        return True
     return None

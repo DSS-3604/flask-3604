@@ -67,5 +67,6 @@ def delete_review(id):
     review = get_review_by_id(id)
     if review:
         db.session.delete(review)
-        return db.session.commit()
+        db.session.commit()
+        return True
     return None
