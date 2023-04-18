@@ -14,6 +14,7 @@ from App.controllers.logging import create_log
 from App.controllers.product import get_product_by_id
 
 from flask_jwt import jwt_required, current_identity
+from App.controllers.user import is_farmer, is_admin
 
 comment_views = Blueprint("comment_views", __name__, template_folder="../templates")
 
@@ -82,7 +83,7 @@ def update_comment_action(id):
 def delete_comment_action(id):
     comment = get_comment_by_id(id)
     if comment:
-        if current_identity.id != comment.user_id and not current_identity.is_admin:
+        if current_identity.id != comment.user_id and not is_admin(current_identity):
             return (
                 jsonify({"message": "You are not allowed to delete this comment"}),
                 403,

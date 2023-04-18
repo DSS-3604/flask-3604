@@ -61,5 +61,6 @@ def delete_product_category(id):
     product_category = get_product_category_by_id(id)
     if product_category:
         db.session.delete(product_category)
-        return db.session.commit()
+        db.session.commit()
+        return True
     return None

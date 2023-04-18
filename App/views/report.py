@@ -162,7 +162,7 @@ def get_farmer_applications_report_action():
 
 
 # Export all farmer reviews to excel
-@report_views.route("/api/reports/export/farmer_reviews", methods=["GET"])
+@report_views.route("/api/reports/export/farmer_review", methods=["GET"])
 @jwt_required()
 def get_farmer_reviews_report_action():
     if not is_admin(current_identity):

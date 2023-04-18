@@ -71,5 +71,6 @@ def delete_query_reply(reply_id):
     reply = get_query_reply_by_id(reply_id)
     if reply:
         db.session.delete(reply)
-        return db.session.commit()
+        db.session.commit()
+        return reply
     return None

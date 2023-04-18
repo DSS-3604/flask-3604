@@ -59,7 +59,7 @@ def update_query_reply_action(id):
 
 
 # delete a reply
-@query_reply_views.route("/api/query/reply/<int:id>", methods=["DELETE"])
+@query_reply_views.route("/api/query/replies/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_query_reply_action(id):
     reply = get_query_reply_by_id_json(id)

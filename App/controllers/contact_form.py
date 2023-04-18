@@ -36,7 +36,8 @@ def delete_contact_form_by_id(id):
     contact_form = ContactForm.query.filter_by(id=id).first()
     if contact_form:
         db.session.delete(contact_form)
-        return db.session.commit()
+        db.session.commit()
+        return True
     return False
 
 
