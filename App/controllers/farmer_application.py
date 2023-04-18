@@ -68,7 +68,8 @@ def delete_farmer_application(id):
     f_application = get_farmer_application_by_id(id)
     if f_application:
         db.session.delete(f_application)
-        return db.session.commit()
+        db.session.commit()
+        return True
     return False
 
 
